@@ -1,2 +1,1 @@
-# greenhouse-api
-Greenhouse - Rest API
+# SEED Greenhouse

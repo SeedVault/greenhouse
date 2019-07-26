@@ -1,0 +1,25 @@
+<%- include('_header'); -%>
+
+<div class="container">
+
+  <% if (error.status === undefined) { %>
+
+    <h1>Oops!</h1>
+    <h3>Something went wrong :(</h3>
+    <div class="alert alert-danger" role="alert">
+      <%= message %>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <pre><%= error.stack %></pre>
+    </div>
+
+  <% } else { %>
+
+    <h1><%= error.status %></h1>
+    <h3><%= error.message %></h3>
+
+  <% } %>
+
+</div>
+
+<%- include('_footer'); -%>
