@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="16px" viewBox="0 0 20 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>F23A4E6A-3F75-4CD5-8115-BD8CAC9989B4@2x</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="07-Settings---Profile" transform="translate(-769.000000, -275.000000)">
+            <g id="Email" transform="translate(752.000000, 227.000000)">
+                <g id="outline-mail-24px" transform="translate(15.000000, 43.000000)">
+                    <g id="Bounding_Boxes">
+                        <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+                    </g>
+                    <g id="Outline" transform="translate(2.000000, 5.000000)" fill="#A2A7AF" fill-rule="nonzero">
+                        <path d="M20,2 C20,0.9 19.1,0 18,0 L2,0 C0.9,0 0,0.9 0,2 L0,14 C0,15.1 0.9,16 2,16 L18,16 C19.1,16 20,15.1 20,14 L20,2 Z M18,2 L10,6.99 L2,2 L18,2 Z M18,14 L2,14 L2,4 L10,9 L18,4 L18,14 Z" id="XMLID_497_"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

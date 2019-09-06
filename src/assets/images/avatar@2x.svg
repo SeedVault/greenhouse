@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>38C31685-C224-435D-9B52-A169520CF57C@2x</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <circle id="path-1" cx="20" cy="20" r="20"></circle>
+    </defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="08-Dashboard-Empty" transform="translate(-24.000000, -111.000000)">
+            <g id="Sidebar" transform="translate(16.000000, 37.000000)">
+                <g id="User" transform="translate(8.000000, 73.000000)">
+                    <g id="Avatar" transform="translate(0.000000, 1.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <use id="Mask" fill="#DEDFFF" xlink:href="#path-1"></use>
+                        <path d="M32.7777778,37.2222222 C32.7777778,44.279194 7.22222222,44.279194 7.22222222,37.2222222 C7.22222222,30.1652504 12.9430282,24.4444444 20,24.4444444 C27.0569718,24.4444444 32.7777778,30.1652504 32.7777778,37.2222222 Z M20,22.7777778 C16.6249265,22.7777778 13.8888889,20.0417401 13.8888889,16.6666667 C13.8888889,13.2915932 16.6249265,10.5555556 20,10.5555556 C23.3750735,10.5555556 26.1111111,13.2915932 26.1111111,16.6666667 C26.1111111,20.0417401 23.3750735,22.7777778 20,22.7777778 Z" id="User-Icon" fill="#6B4C9F" opacity="0.149999991" mask="url(#mask-2)"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

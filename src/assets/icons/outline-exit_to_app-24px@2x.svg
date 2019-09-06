@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>290F42D9-6923-4286-8D9D-41386B9E3E1D@2x</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="04-Dashboard" transform="translate(-35.000000, -526.000000)">
+            <g id="Sidebar" transform="translate(16.000000, 37.000000)">
+                <g id="Menu" transform="translate(0.000000, 224.000000)">
+                    <g id="Sign-Out" transform="translate(0.000000, 249.000000)">
+                        <g id="outline-exit_to_app-24px" transform="translate(16.000000, 13.000000)">
+                            <g id="Bounding_Boxes">
+                                <polygon id="Shape" points="0 0 24 0 24 24 0 24"></polygon>
+                            </g>
+                            <g id="Fill" transform="translate(3.000000, 3.000000)" fill="#A2A7AF" fill-rule="nonzero">
+                                <path d="M7.09,12.59 L8.5,14 L13.5,9 L8.5,4 L7.09,5.41 L9.67,8 L0,8 L0,10 L9.67,10 L7.09,12.59 Z M16,0 L2,0 C0.89,0 0,0.9 0,2 L0,6 L2,6 L2,2 L16,2 L16,16 L2,16 L2,12 L0,12 L0,16 C0,17.1 0.89,18 2,18 L16,18 C17.1,18 18,17.1 18,16 L18,2 C18,0.9 17.1,0 16,0 Z" id="Shape" transform="translate(9.000000, 9.000000) scale(-1, 1) translate(-9.000000, -9.000000) "></path>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

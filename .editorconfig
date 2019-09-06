@@ -1,20 +1,7 @@
-; top-most EditorConfig file
-root = true
-
-; Unix-style newlines
-[*]
-end_of_line = lf
-
-[*.{css,ejs,html,js}]
+[*.{js,jsx,ts,tsx,vue,js,html}]
 indent_style = space
 indent_size = 2
-charset = utf-8
+end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = true
-end_of_line = lf
-# editorconfig-tools is unable to ignore longs strings or urls
-max_line_length = null
-
-[*.{yaml,yml}]
-indent_style = space
-indent_size = 4
+max_line_length = 100

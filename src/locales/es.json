@@ -1,0 +1,138 @@
+{
+  "validation": {
+    "email": "Este valor no es una dirección de email válida.",
+    "csrf_token": "Token CSRF no válido.",
+    "greater_than_zero": "Este valor debe ser mayor que cero.",
+    "option": "El valor seleccionado no es una opción válida.",
+    "regex": "Este valor no es válido.",
+    "required": "Este valor no debería estar vacío."
+  },
+  "domain": {
+    "wallet": {
+      "validation": {
+        "wallet_not_found": "No se encuentra tu monedero",
+        "recipient_not_found": "Usuario no hallado",
+        "insufficient_funds": "Tu saldo es insuficiente para enviar esta cantidad",
+        "self_transfer_error": "No puedes enviar a tu propia cuenta."
+      }
+    },
+    "user": {
+      "email_address": "Correo electrónico",
+      "password": "Contraseña",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "username": "Usuario",
+      "country": "País"
+    },
+    "component": {
+      "component_type": "Tipo de componente",
+      "category": "Categoría",
+      "name": "Nombre",
+      "name_placeholder": "Nombre del component",
+      "description": "Descripción",
+      "description_placeholder": "Breve descripción del componente",
+      "function_name": "Nombre de la función",
+      "function_name_placeholder": "Nombre de la función que invoca al componente",
+      "url": "URL",
+      "url_placeholder": "URL",
+      "price": "Precio",
+      "price_placeholder": "Precio",
+      "status": "Status",
+      "properties": "Propiedades",
+      "validation": {
+        "component_not_found": "Componente no hallado",
+        "forbidden_component": "No tienes acceso a este componente",
+        "unique_url": "La URL ya existe.",
+        "unique_functionName": "Ese nombre de función ya existe."
+      }
+    },
+    "component_categories": {
+      "general": "General",
+      "weather": "Clima"
+    },
+    "component_types": {
+      "botengine": "Bot Engine",
+      "service": "Servicio",
+      "channel": "Canal"
+    },
+    "component_statuses": {
+      "all": "Todos",
+      "enabled": "Activado",
+      "disabled": "Desactivado"
+    }
+  },
+  "common": {
+    "back": "Regresar",
+    "date": "Fecha",
+    "privacy": "Privacidad",
+    "terms": "Condiciones",
+    "accept": "Aceptar",
+    "add_new": "Nuevo",
+    "edit": "Editar",
+    "modify": "Modificar",
+    "view": "Ver",
+    "reject": "Rechazar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "search": "Buscar",
+    "continue": "Continuar",
+    "previous": "Anterior",
+    "please_wait": "Por favor espera...",
+    "no": "No",
+    "oops": "¡Oops!",
+    "page": "Página",
+    "go_to_previous_page": "Ir a la página anterior",
+    "go_to_next_page": "Ir a la página siguiente",
+    "sort_by": "Ordenar por",
+    "something_went_wrong": "Algo salió mal",
+    "click_to_change_picture": "Click para cambiar imagen"
+  },
+  "app": {
+    "dashboard": "Inicio",
+    "my_products": "Mis productos",
+    "receive": "Recibir",
+    "privacy": "Privacidad",
+    "marketplace": "Marketplace",
+    "transactions": "Transacciones",
+    "settings": "Opciones",
+    "help": "Ayuda",
+    "sign_out": "Salir"
+  },
+  "apps": {
+    "accounts": "Accounts",
+    "wallet": "Wallet",
+    "greenhouse": "Greenhouse"
+  },
+  "home": {
+    "title": "Comparte, Descubre, Gana dinero",
+    "subheadline": "Greenhouse hace que sea rápido y fácil utilizar asombrosos bots mientras asegura que los datos y la privacidad de los usuarios finales estén protegidos",
+    "call_to_action": "Ingresa al marketplace"
+  },
+  "legal": {
+    "tos": {
+      "terms_of_service": "Condiciones del Servicio"
+    },
+    "privacy": {
+      "privacy_policy": "Política de Privacidad"
+    }
+  },
+  "dashboard": {
+    "balance": "Saldo",
+    "latest_transactions": "Últimas transacciones",
+    "there_are_no_transactions": "No hay transacciones",
+    "unknown": "(desconocido)",
+    "withdraw": "Retiro",
+    "deposit": "Depósito"
+  },
+  "products": {
+    "bots": "Bots",
+    "components": "Componentes"
+  },
+  "components": {
+    "new_component": "Nuevo componente",
+    "modify_component": "Modificar componente",
+    "updated": "Actualizado",
+    "delete_this_component": "¿Eliminar este componente?",
+    "there_are_no_components": "No hay componentes"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "validation": {
+    "email": "This value is not a valid email address.",
+    "csrf_token": "Invalid CSRF token.",
+    "greater_than_zero": "This value should be greater than zero.",
+    "option": "The value you selected is not a valid choice.",
+    "regex": "This value is not valid.",
+    "required": "This value should not be blank."
+  },
+  "domain": {
+    "wallet": {
+      "validation": {
+        "wallet_not_found": "Your wallet is missing.",
+        "recipient_not_found": "User not found.",
+        "insufficient_funds": "You do not have enough funds to send this amount.",
+        "self_transfer_error": "You can't send funds to yourself."
+      }
+    },
+    "user": {
+      "email_address": "E-mail address",
+      "password": "Password",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "username": "Username",
+      "country": "Country"
+    },
+    "component": {
+      "component_type": "Component type",
+      "category": "Category",
+      "name": "Name",
+      "name_placeholder": "Name of the component",
+      "description": "Description",
+      "description_placeholder": "Short component description",
+      "function_name": "Function name",
+      "function_name_placeholder": "Component funcion name",
+      "url": "URL",
+      "url_placeholder": "URL",
+      "price": "Price",
+      "price_placeholder": "Price",
+      "status": "Status",
+      "properties": "Properties",
+      "validation": {
+        "component_not_found": "Component not found.",
+        "forbidden_component": "Forbidden component.",
+        "unique_url": "URL already exist.",
+        "unique_functionName": "Function name already exist."
+      }
+    },
+    "component_categories": {
+      "general": "General",
+      "weather": "Weather"
+    },
+    "component_types": {
+      "botengine": "Bot Engine", 
+      "service": "Service",
+      "channel": "Channel"
+    },
+    "component_statuses": {
+      "all": "All",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
+    }
+  },
+  "common": {
+    "back": "Back",
+    "date": "Date",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "accept": "Accept",
+    "add_new": "Add New",
+    "edit": "Edit",
+    "modify": "Modify",
+    "view": "View",
+    "reject": "Reject",
+    "save": "Save",
+    "delete": "Delete",
+    "search": "Search",
+    "continue": "Continue",
+    "previous": "Previous",
+    "please_wait": "Please wait...",
+    "no": "No",
+    "oops": "Oops!",
+    "page": "Page",
+    "go_to_previous_page": "Go to previous page",
+    "go_to_next_page": "Go to next page",
+    "sort_by": "Sort by",
+    "something_went_wrong": "Something went wrong",
+    "click_to_change_picture": "Click to change picture"
+  },
+  "app": {
+    "dashboard": "Dashboard",
+    "my_products": "My products",
+    "receive": "Receive",
+    "privacy": "Privacy",
+    "marketplace": "Marketplace",
+    "transactions": "Transactions",
+    "settings": "Settings",
+    "help": "Help",
+    "sign_out": "Sign Out"
+  },
+  "apps": {
+    "accounts": "Accounts",
+    "wallet": "Wallet",
+    "greenhouse": "Greenhouse"
+  },
+  "home": {
+    "title": "Share, Discover, Earn",
+    "subheadline": "Greenhouse makes it fast and easy to use awesome bots while assuring end users' data and privacy are protected",
+    "call_to_action": "Enter the marketplace"
+  },
+  "legal": {
+    "tos": {
+      "terms_of_service": "Terms of Service"
+    },
+    "privacy": {
+      "privacy_policy": "Privacy Policy"
+    }
+  },
+  "dashboard": {
+    "balance": "Balance",
+    "latest_transactions": "Latest transactions",
+    "there_are_no_transactions": "There are no transactions",
+    "unknown": "(unknown)",
+    "withdraw": "Withdraw",
+    "deposit": "Deposit"
+  },
+  "products": {
+    "bots": "Bots",
+    "components": "Components"
+  },
+  "components": {
+    "new_component": "New component",
+    "modify_component": "Modify component",
+    "updated": "Updated",
+    "delete_this_component": "Delete this component?",
+    "there_are_no_components": "There are no components"
+  }
+}
