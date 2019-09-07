@@ -52,7 +52,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="name" :label="$t('domain.component.name')"
+                      <input-text v-model="name" id="name" :label="$t('domain.component.name')"
                         :placeholder="$t('domain.component.name_placeholder')" icon="outline-component-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>

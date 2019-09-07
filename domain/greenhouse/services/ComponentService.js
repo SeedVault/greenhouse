@@ -27,6 +27,7 @@ class PropertyNotFoundError extends ValidationError {
 }
 
 const ComponentService = {
+
   createComponent: async (componentType, category, name, description, functionName, url, price,
     status, username) => {
       let component = new Component({
@@ -40,8 +41,8 @@ const ComponentService = {
         status,
         username
       });
-      component.properties = [];
-      return await component.save();
+    component.properties = [];
+    return await component.save();
   },
 
   updateComponent: async (username, component) => {
@@ -103,10 +104,35 @@ const ComponentService = {
     return await Component.deleteOne({_id: id});
   },
 
+
+  normalizePropertyErrors(err) {
+    if (err.errors) {
+      let keys = Object.keys(err.errors);
+      let values = Object.values(err.errors);
+      for (let i = 0; i < keys.length; i++) {
+        if (keys[i].startsWith('properties.')) {
+          let parts = keys[i].split('.');
+          err.errors[keys[i]] = parts[2];
+          Object.defineProperty(err.errors, parts[2],
+            Object.getOwnPropertyDescriptor(err.errors, keys[i]));
+            err.errors[parts[2]] = values[i];
+            delete err.errors[keys[i]];
+        }
+      }
+    }
+    return err;
+  },
+
   addComponentProperty: async (username, id, property) => {
     let component = await ComponentService.findMyComponentById(username, id);
     component.properties.push(property);
-    return await component.save();
+    try {
+      return await component.save();
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throw ComponentService.normalizePropertyErrors(err);
+      }
+    }
   },
 
   findProperty: async (component, propertyId) => {
@@ -126,7 +152,13 @@ const ComponentService = {
     p.inputType = property.inputType;
     p.options = property.options;
     p.required = property.required;
-    return await component.save();
+    try {
+      await component.save();
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throw ComponentService.normalizePropertyErrors(err);
+      }
+    }
   },
 
   deleteComponentProperty: async (username, id, property) => {

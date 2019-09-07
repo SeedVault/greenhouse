@@ -88,7 +88,7 @@
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                           <li class="list-group-item" v-for="property in properties" :key="property._id">
                             <img style="margin-right: 10px;":src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
-                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.name }}</a>
+                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.label }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id)">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
@@ -99,8 +99,10 @@
                     </div>
 
                     <div class="propertyForm" v-show="showPropertyForm">
+<validation-box id="_" :validationErrors="validationErrors"></validation-box>
+
                       <h2 class="view__subtitle mb-4">{{ propertyName === ""? $t("properties.new_property"): $t("properties.modify_property") }}</h2>
-                      <validation-box id="_" :validationErrors="validationErrors"></validation-box>
+
                       <div class="saving text-center" v-show="saving || saved">
                         <div v-bind:class="[{ 'load-complete': saved }, 'circle-loader circle-text']">
                           <div class="checkmark draw" v-show="saved"></div>
@@ -109,31 +111,32 @@
                           {{ $t('common.please_wait') }}
                         </div>
                       </div>
+
                       <form @submit.prevent="saveProperty" v-show="!saving">
                         <div class="form-row">
                           <div class="form-group col-md-12">
-                            <input-text v-model="propertyName" :label="$t('domain.property.name')"
+                            <input-text id="name" v-model="propertyName" :label="$t('domain.property.name')"
                               :placeholder="$t('domain.property.name_placeholder')" icon="outline-icon-fingerprint-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
-                            <input-text v-model="propertyLabel" :label="$t('domain.property.label')"
+                            <input-text id="label" v-model="propertyLabel" :label="$t('domain.property.label')"
                               :placeholder="$t('domain.property.label_placeholder')" icon="outline-icon-label-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
-                            <input-select v-model="propertyInputType" :options="propertyInputTypes" id="propertyInputType"
+                            <input-select id="inputType" v-model="propertyInputType" :options="propertyInputTypes"
                               :label="$t('domain.property.input_type')"
                               icon="outline-icon-widgets-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
                           <div class="form-group col-md-12" v-show="propertyInputType === 'select'">
-                            <input-text v-model="propertyOptions" :label="$t('domain.property.options')"
+                            <input-text id="options" v-model="propertyOptions" :label="$t('domain.property.options')"
                               :placeholder="$t('domain.property.options_placeholder')" icon="outline-icon-list-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
-                            <input-select v-model="propertyRequired" :options="propertyRequiredOptions" id="propertyRequired"
+                            <input-select id="required" v-model="propertyRequired" :options="propertyRequiredOptions"
                               :label="$t('domain.property.required')"
                               icon="outline-icon-toggle-24px.svg"
                               :validationErrors="validationErrors"></input-select>
