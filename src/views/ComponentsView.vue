@@ -113,29 +113,29 @@
                         <div class="form-row">
                           <div class="form-group col-md-12">
                             <input-text v-model="propertyName" :label="$t('domain.property.name')"
-                              :placeholder="$t('domain.property.name_placeholder')" icon="outline-component-24px.svg"
+                              :placeholder="$t('domain.property.name_placeholder')" icon="outline-icon-fingerprint-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
                             <input-text v-model="propertyLabel" :label="$t('domain.property.label')"
-                              :placeholder="$t('domain.property.label_placeholder')" icon="outline-component-24px.svg"
+                              :placeholder="$t('domain.property.label_placeholder')" icon="outline-icon-label-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
                             <input-select v-model="propertyInputType" :options="propertyInputTypes" id="propertyInputType"
                               :label="$t('domain.property.input_type')"
-                              icon="outline-my-products-24px.svg"
+                              icon="outline-icon-widgets-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
                           <div class="form-group col-md-12" v-show="propertyInputType === 'select'">
                             <input-text v-model="propertyOptions" :label="$t('domain.property.options')"
-                              :placeholder="$t('domain.property.options_placeholder')" icon="outline-component-24px.svg"
+                              :placeholder="$t('domain.property.options_placeholder')" icon="outline-icon-list-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
                             <input-select v-model="propertyRequired" :options="propertyRequiredOptions" id="propertyRequired"
                               :label="$t('domain.property.required')"
-                              icon="outline-my-products-24px.svg"
+                              icon="outline-icon-toggle-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
                         </div>
