@@ -190,7 +190,7 @@ export default {
       deleted: false,
       saving: false,
       saved: false,
-      selectedTab: 'properties',
+      selectedTab: 'description',
       componentType: 'service',
       category: 'general',
       name: '',

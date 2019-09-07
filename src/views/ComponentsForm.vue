@@ -90,7 +90,7 @@
                     <div class="form-group col-md-4">
                       <input-select v-model="status" :options="componentStatuses" id="status"
                         :label="$t('domain.component.status')"
-                        icon="outline-icon-circle-24px.svg"
+                        icon="outline-icon-toggle-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
                   </div>

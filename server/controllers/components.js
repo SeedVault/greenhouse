@@ -102,6 +102,18 @@ const components = {
       return res.status(403).json('Forbidden');
     }
     try {
+      const component = await ComponentService.findMyComponentById(req.user.username, req.body.id);
+      const oldFile = resolve(`${__dirname}/../../public/uploads/${component.picture}`);
+      if (component.picture !== '') {
+        if (fs.existsSync(oldFile)) {
+          fs.unlink(oldFile, (err) => {
+            if (err) {
+              console.error(err)
+              return
+            }
+          })
+        }
+      }
       const data = await ComponentService.deleteComponentById(req.user.username, req.body.id);
       res.json(data);
     } catch (err) {
