@@ -38,7 +38,7 @@
                     <div class="form-group col-md-4">
                       <input-select v-model="componentType" :options="componentTypes" id="componentType"
                         :label="$t('domain.component.component_type')"
-                        icon="outline-icon-types-24px.svg"
+                        icon="outline-my-products-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
 
@@ -216,16 +216,6 @@ export default {
       }
       return componentTypeList;
     },
-    componentStatuses() {
-      const componentStatusList = [];
-      for (let i = 0; i < this.allComponentStatuses.length; i++) {
-        componentStatusList.push({
-          value: this.allComponentStatuses[i],
-          text: this.$i18n.t(`domain.component_statuses.${this.allComponentStatuses[i]}`),
-        });
-      }
-      return componentStatusList;
-    },
     componentCategories() {
       const componentCategoryList = [];
       for (let i = 0; i < this.allComponentCategories.length; i++) {
@@ -235,6 +225,16 @@ export default {
         });
       }
       return componentCategoryList;
+    },
+     componentStatuses() {
+      const componentStatusList = [];
+      for (let i = 0; i < this.allComponentStatuses.length; i++) {
+        componentStatusList.push({
+          value: this.allComponentStatuses[i],
+          text: this.$i18n.t(`domain.component_statuses.${this.allComponentStatuses[i]}`),
+        });
+      }
+      return componentStatusList;
     },
     isNew() {
       return (this.id === '');

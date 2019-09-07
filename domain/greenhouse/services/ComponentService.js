@@ -1,5 +1,5 @@
 const ValidationError = require('mongoose/lib/error/validation');
-const { Component, Attribute } = require('../entities/Component');
+const { Component, Property } = require('../entities/Component');
 
 
 class ComponentNotFoundError extends ValidationError {
@@ -18,6 +18,14 @@ class ForbiddenComponentError extends ValidationError {
   }
 }
 
+class PropertyNotFoundError extends ValidationError {
+  constructor(message) {
+    super(message);
+    this.name = 'PropertyNotFoundError';
+    this.errors['_'] = { message: 'domain.property.validation.property_not_found' };
+  }
+}
+
 const ComponentService = {
   createComponent: async (componentType, category, name, description, functionName, url, price,
     status, username) => {
@@ -32,11 +40,12 @@ const ComponentService = {
         status,
         username
       });
-      component.attributes = [];
+      component.properties = [];
       return await component.save();
   },
 
-  updateComponent: async (component) => {
+  updateComponent: async (username, component) => {
+    const savedComponent = await ComponentService.findMyComponentById(username, component._id);
     return await component.save();
   },
 
@@ -46,6 +55,18 @@ const ComponentService = {
       throw new ComponentNotFoundError();
     }
     return component;
+  },
+
+  findMyComponentById: async (username, id) => {
+    let component = await Component.findById(id).exec();
+    if (!component) {
+      throw new ComponentNotFoundError();
+    }
+    if (component.username === username) {
+      return component;
+    } else {
+      throw new ForbiddenComponentError('');
+    }
   },
 
   findPaginatedComponents: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
@@ -67,7 +88,7 @@ const ComponentService = {
       .sort(sorting)
       .skip((resultsPerPage * currentPage) - resultsPerPage)
       .limit(resultsPerPage);
-    const resultsCount = await Component.countDocuments();
+    const resultsCount = await Component.countDocuments(query);
     const pagesCount = Math.ceil(resultsCount / resultsPerPage);
     return {
       results,
@@ -77,22 +98,59 @@ const ComponentService = {
     }
   },
 
-  deleteComponentById: async (id, username) => {
-    let component = await Component.findById(id).exec();
-    if (!component) {
-      throw new ComponentNotFoundError();
-    }
-    if (component.username === username) {
-      return await Component.deleteOne({_id: id});
+  deleteComponentById: async (username, id) => {
+    let component = await ComponentService.findMyComponentById(username, id);
+    return await Component.deleteOne({_id: id});
+  },
+
+  addComponentProperty: async (username, id, property) => {
+    let component = await ComponentService.findMyComponentById(username, id);
+    component.properties.push(property);
+    return await component.save();
+  },
+
+  findProperty: async (component, propertyId) => {
+    let p = await component.properties.id(propertyId);
+    if (p === null) {
+      throw new PropertyNotFoundError();
     } else {
-      throw new ForbiddenComponentError('');
+      return p;
     }
   },
+
+  updateComponentProperty: async (username, id, property) => {
+    let component = await ComponentService.findMyComponentById(username, id);
+    let p = await ComponentService.findProperty(component, property._id);
+    p.name = property.name;
+    p.label = property.label;
+    p.inputType = property.inputType;
+    p.options = property.options;
+    p.required = property.required;
+    return await component.save();
+  },
+
+  deleteComponentProperty: async (username, id, property) => {
+    let component = await ComponentService.findMyComponentById(username, id);
+    let p = await ComponentService.findProperty(component, property._id);
+    p.remove();
+    return await component.save();
+  },
+
+  reorderComponentProperties: async (username, id, propertyIds) => {
+    let component = await ComponentService.findMyComponentById(username, id);
+    let p = new Array(propertyIds.length);
+    for (let i = 0; i < propertyIds.length; i++) {
+      p[i] = await ComponentService.findProperty(component, propertyIds[i]);
+    }
+    component.properties = p;
+    return await component.save();
+  }
 }
 
 module.exports = {
   ComponentNotFoundError,
   ForbiddenComponentError,
+  PropertyNotFoundError,
   ComponentService,
 }
 

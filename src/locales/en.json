@@ -59,10 +59,28 @@
       "all": "All",
       "enabled": "Enabled",
       "disabled": "Disabled"
+    },
+    "property": {
+      "name": "Name",
+      "name_placeholder": "It must start with a letter or an underscore and can cointain letters, numbers and underscores",
+      "label": "Label for the input type",
+      "label_placeholder": "It defines a text label for the input type",
+      "input_type": "Input type",
+      "required": "Required",
+      "options": "List of options",
+      "options_placeholder": "Enter a comma separated list of options (e.g: cheese, red wine, apple)",
+      "validation": {
+        "property_not_found": "Property not found"
+      }
+    },
+    "property_input_types": {
+      "text": "Single line of text",
+      "select": "List of options"
     }
   },
   "common": {
     "back": "Back",
+    "cancel": "Cancel",
     "date": "Date",
     "privacy": "Privacy",
     "terms": "Terms",
@@ -78,6 +96,7 @@
     "continue": "Continue",
     "previous": "Previous",
     "please_wait": "Please wait...",
+    "yes": "Yes",
     "no": "No",
     "oops": "Oops!",
     "page": "Page",
@@ -85,7 +104,8 @@
     "go_to_next_page": "Go to next page",
     "sort_by": "Sort by",
     "something_went_wrong": "Something went wrong",
-    "click_to_change_picture": "Click to change picture"
+    "click_to_change_picture": "Click to change picture",
+    "save_picture": "Save picture"
   },
   "app": {
     "dashboard": "Dashboard",
@@ -134,5 +154,11 @@
     "updated": "Updated",
     "delete_this_component": "Delete this component?",
     "there_are_no_components": "There are no components"
+  },
+  "properties": {
+    "new_property": "New property",
+    "modify_property": "Modify property",
+    "delete_this_property": "Delete this property?",
+    "there_are_no_properties": "There are no properties"
   }
 }

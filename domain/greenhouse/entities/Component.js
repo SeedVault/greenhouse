@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 
-const AttributeSchema = mongoose.Schema({
+const PropertySchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'validation.required'],
@@ -21,12 +21,22 @@ const AttributeSchema = mongoose.Schema({
       message: 'validation.option'
     },
     trim: true,
+    default: 'text',
+  },
+  options: {  // options: ["Ms", "Mr", "Mx", "Dr", "Madam", "Lord"]
+    type: String,
+    trim: true,
   },
   required: {
-    type: Boolean,
-    default: false
-  },
-  // options: ["Ms", "Mr", "Mx", "Dr", "Madam", "Lord"]
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['yes', 'no'],
+      message: 'validation.option'
+    },
+    trim: true,
+    default: 'yes'
+  }
 });
 
 
@@ -109,8 +119,8 @@ const ComponentSchema = mongoose.Schema({
     index: true,
     trim: true
   },
-  attributes: {
-    type: [ AttributeSchema ],
+  properties: {
+    type: [ PropertySchema ],
   }
 }, {timestamps: true});
 
@@ -128,6 +138,6 @@ ComponentSchema.virtual('pictureUrl').get(function () {
 });
 
 module.exports = {
-  AttributeSchema,
+  PropertySchema,
   Component: mongoose.model('Components', ComponentSchema)
 }

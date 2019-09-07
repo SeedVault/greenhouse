@@ -14,6 +14,7 @@ export default new Vuex.Store({
     allComponentCategories: ['general', 'weather'],
     allComponentTypes: ['botengine', 'service', 'channel'],
     allComponentStatuses: ['enabled', 'disabled'],
+    allPropertyInputTypes: ['select', 'text'],
     menu: [
       {
         text: 'app.dashboard',
@@ -60,6 +61,7 @@ export default new Vuex.Store({
     allComponentCategories: state => state.allComponentCategories,
     allComponentTypes: state => state.allComponentTypes,
     allComponentStatuses: state => state.allComponentStatuses,
+    allPropertyInputTypes: state => state.allPropertyInputTypes,
   },
   mutations: {
     SET_LANG(state, params) {

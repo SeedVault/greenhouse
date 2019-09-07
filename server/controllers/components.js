@@ -71,7 +71,7 @@ const components = {
         component.url = req.body.url;
         component.price = req.body.price;
         component.status = req.body.status;
-        await ComponentService.updateComponent(component);
+        await ComponentService.updateComponent(req.user.username, component);
       }
       res.status(200).json({saved: true, id: id});
     } catch (err) {
@@ -102,7 +102,7 @@ const components = {
       return res.status(403).json('Forbidden');
     }
     try {
-      const data = await ComponentService.deleteComponentById(req.body.id, req.user.username);
+      const data = await ComponentService.deleteComponentById(req.user.username, req.body.id);
       res.json(data);
     } catch (err) {
       next(err);
@@ -115,7 +115,7 @@ const components = {
       return res.status(403).json('Forbidden');
     }
     try {
-      const component = await ComponentService.findComponentById(req.params.id);
+      const component = await ComponentService.findMyComponentById(req.user.username, req.params.id);
       const oldFile = resolve(`${__dirname}/../../public/uploads/${component.picture}`);
       if (component.picture !== '') {
         if (fs.existsSync(oldFile)) {
@@ -128,10 +128,80 @@ const components = {
         }
       }
       component.picture = req.file.filename;
-      const data = await ComponentService.updateComponent(component);
+      const data = await ComponentService.updateComponent(req.user.username, component);
       res.status(200).json(oldFile);
     } catch (err) {
-      console.log(err);
+      next(err);
+    }
+  },
+
+  // POST - /components/property/save
+  saveProperty: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyId = req.body.propertyId;
+      if (propertyId === '') {
+        const p = {
+          name: req.body.propertyName,
+          label: req.body.propertyLabel,
+          inputType: req.body.propertyInputType,
+          options: req.body.propertyOptions,
+          required: req.body.propertyRequired,
+        };
+        await ComponentService.addComponentProperty(req.user.username, id, p);
+      } else {
+        const p = {
+          _id: propertyId,
+          name: req.body.propertyName,
+          label: req.body.propertyLabel,
+          inputType: req.body.propertyInputType,
+          options: req.body.propertyOptions,
+          required: req.body.propertyRequired,
+        };
+        await ComponentService.updateComponentProperty(req.user.username, id, p);
+      }
+      res.status(200).json({saved: true});
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        res.status(422).json(err);
+      } else {
+        return res.status(500).json(err);
+      }
+    }
+  },
+
+  // POST - /components/property/delete
+  deleteProperty: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyId = req.body.propertyId;
+      const p = {
+        _id: propertyId
+      }
+      await ComponentService.deleteComponentProperty(req.user.username, id, p);
+      res.status(200).json({deleted: true});
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // POST - /components/property/reorder
+  reorderProperties: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyIds = req.body.propertyIds.split(',');
+      await ComponentService.reorderComponentProperties(req.user.username, id, propertyIds);
+      res.status(200).json({saved: true});
+    } catch (err) {
       next(err);
     }
   },

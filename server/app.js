@@ -169,5 +169,8 @@ module.exports = function(app) {
   app.post('/api/components/save', components.save);
   app.post('/api/components/delete', components.delete);
   app.post('/api/components/:id/change-picture', upload.single('pictureFile'), components.changePicture);
+  app.post('/api/components/property/save', components.saveProperty);
+  app.post('/api/components/property/delete', components.deleteProperty);
+  app.post('/api/components/property/reorder', components.reorderProperties);
   app.get('/api/components/:id', components.view);
 }

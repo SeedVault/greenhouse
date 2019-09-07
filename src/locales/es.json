@@ -59,10 +59,28 @@
       "all": "Todos",
       "enabled": "Activado",
       "disabled": "Desactivado"
+    },
+    "property": {
+      "name": "Nombre",
+      "name_placeholder": "Debe comenzar con una letra o guión bajo y puede contener letras, números y guiones bajos",
+      "label": "Etiqueta para el control de entrada",
+      "label_placeholder": "Define una etiqueta de texto para el control de entrada",
+      "input_type": "Tipo de control",
+      "required": "Obligatorio",
+      "options": "Lista de opciones",
+      "options_placeholder": "Ingresa las opciones de la lista separadas por coma (ej: queso, vino tino, manzana)",
+      "validation": {
+        "property_not_found": "Propiedad no hallada"
+      }
+    },
+    "property_input_types": {
+      "text": "Línea de texto",
+      "select": "Lista de opciones"
     }
   },
   "common": {
     "back": "Regresar",
+    "cancel": "Cancelar",
     "date": "Fecha",
     "privacy": "Privacidad",
     "terms": "Condiciones",
@@ -78,6 +96,7 @@
     "continue": "Continuar",
     "previous": "Anterior",
     "please_wait": "Por favor espera...",
+    "yes": "Si",
     "no": "No",
     "oops": "¡Oops!",
     "page": "Página",
@@ -85,7 +104,8 @@
     "go_to_next_page": "Ir a la página siguiente",
     "sort_by": "Ordenar por",
     "something_went_wrong": "Algo salió mal",
-    "click_to_change_picture": "Click para cambiar imagen"
+    "click_to_change_picture": "Click para cambiar imagen",
+    "save_picture": "Guardar imagen"
   },
   "app": {
     "dashboard": "Inicio",
@@ -134,5 +154,12 @@
     "updated": "Actualizado",
     "delete_this_component": "¿Eliminar este componente?",
     "there_are_no_components": "No hay componentes"
+  },
+  "properties": {
+    "new_property": "Nueva propiedad",
+    "modify_property": "Modificar propiedad",
+    "delete_this_property": "¿Eliminar esta propiedad?",
+    "there_are_no_properties": "No hay propiedades"
   }
+
 }

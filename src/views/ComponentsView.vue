@@ -24,88 +24,137 @@
 
             <div class="row row-form view" v-show="!deleting && !deleted">
               <div class="col-md-3">
-
-                <div>
-                  <vue-avatar
-                    :width="228"
-                    :height="228"
-                    :rotation="rotation"
-                    :borderRadius="borderRadius"
-                    :scale="scale"
-                    :border= "0"
-                    :image="pictureUrl"
-                    :title="$t('common.click_to_change_picture')"
-                    ref="vueavatar"
-                    @vue-avatar-editor:image-ready="onImageReady"
-                    @select-file="onFileSelected"
-                    >
-                  </vue-avatar>
-                  <div v-show="showImageControls">
-                    <br>
-                    <label>
-                      Zoom : {{scale}}x
-                      <br>
-                      <input
-                        type="range"
-                        min=0
-                        max=3
-                        step=0.02
-                        v-model='scale'
-                      />
-                    </label>
-                    <br>
-                    <button v-on:click="saveClicked" class="btn btn-sm btn-primary mb-2 mr-2" style="height:30px">Save image</button>
-                    <button v-on:click="saveClicked" class="btn btn-sm btn-danger mb-2" style="height:30px">No image</button>
-                    <br>
-                    <img ref="image">
-                  </div>
-                </div>
-
-                <!-- <hr>
-                <template v-if="picture === ''"><img src="/images/component-default.png" class="view__image mr-4"></template>
-                <template v-else><img src="/images/component-default.png" class="view__image mr-4"></template>
-                <div class="rating">
-                  <star-rating :rating="3.5" :increment="0.5" :star-size="26" :show-rating="false" :inline="true" :read-only="true"></star-rating>
-                </div> -->
+                <picture-changer ref="pictureChanger"></picture-changer>
               </div>
-              <div class="col-md-9">
-                <div class="row">
-                  <div class="col-md-10">
-                    <h1 class="view__title">{{ name }}</h1>
-                <p>by <strong>{{ username }}</strong></p>
 
+              <div class="col-md-7">
+                <h1 class="view__title">{{ name }}</h1>
+                <p>by <strong>{{ username }}</strong></p>
+                <p>{{ $t("domain.component.price") }}: <strong>{{ price }} SEED</strong></p>
                 <p>
                   {{ $t("domain.component.category") }}:
                   {{ $t(`domain.component_categories.${category}`) }}
-                  <span class="view__updatedAt">{{ $t("components.updated") }}
-                  {{ updatedAt | toDate('short') }}</span>
                 </p>
-
-                <p>{{ $t("domain.component.price") }}: {{ price }} SEED</p>
-
-                  </div>
-                  <div class="col-md-2">
-                    <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="editComponent()">{{ $t('common.modify') }}</button>
-                    <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmDelete()">{{ $t('common.delete') }}</button>
+                <p>
+                  {{ $t("components.updated") }}
+                  {{ updatedAt | toDate('short') }}
+                </p>
+                </div>
+                <div class="col-md-2">
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="editComponent()">{{ $t('common.modify') }}</button>
+                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmDelete()">{{ $t('common.delete') }}</button>
+                </div>
+              </div>
+              <div class="row view">
+                <div class="col-md-3">
+                  <div class="rating">
+                    <star-rating :rating="3.5" :increment="0.5" :star-size="26" :show-rating="false" :inline="true" :read-only="true"></star-rating>
                   </div>
                 </div>
+                <div class="col-md-9">
+
+                  <ul class="nav nav-underline">
+                    <li class="nav-item active">
+                    <li v-bind:class="['nav-item', { 'active': selectedTab === 'description' }]">
+                      <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.component.description") }}</a>
+                    </li>
+                    <li v-bind:class="['nav-item', { 'active': selectedTab === 'properties' }]">
+                      <a class="nav-link" @click="selectedTab='properties'">{{ $t("domain.component.properties") }} ({{ properties.length }})</a>
+                    </li>
+                  </ul>
+
+                  <div v-show="selectedTab === 'description'">
+                    <h2 class="view__subtitle">{{ $t("domain.component.description") }}</h2>
+                    <p>{{ description }}</p>
+
+                    <h2 class="view__subtitle">{{ $t("domain.component.url") }}</h2>
+                    <p><a :href="url" target="_blank">{{ url }}</a></p>
+
+                    <h2 class="view__subtitle">{{ $t("domain.component.function_name") }}</h2>
+                    <p>{{ functionName }}</p>
+
+                    <h2 class="view__subtitle">{{ $t("domain.component.status") }}</h2>
+                    <p>{{ $t(`domain.component_statuses.${status}`) }}</p>
+                  </div>
+
+
+                  <div v-show="selectedTab === 'properties'">
+                    <div v-show="!showPropertyForm">
+                      <h2 class="view__subtitle">{{ $t("domain.component.properties") }}</h2>
+                      <div class="no_properties" v-show="properties.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <draggable v-model="properties" class="list-group" tag="ul" v-bind="dragOptions"
+                        @start="drag = true" @end="drag = false"
+                        @change="reorderProperties" ghost-class="ghost" v-show="properties.length > 0">
+                        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                          <li class="list-group-item" v-for="property in properties" :key="property._id">
+                            <img style="margin-right: 10px;":src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
+                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.name }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id)">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </transition-group>
+                      </draggable>
+                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty()">+ {{ $t('properties.new_property') }}</button>
+                    </div>
+
+                    <div class="propertyForm" v-show="showPropertyForm">
+                      <h2 class="view__subtitle mb-4">{{ propertyName === ""? $t("properties.new_property"): $t("properties.modify_property") }}</h2>
+                      <validation-box id="_" :validationErrors="validationErrors"></validation-box>
+                      <div class="saving text-center" v-show="saving || saved">
+                        <div v-bind:class="[{ 'load-complete': saved }, 'circle-loader circle-text']">
+                          <div class="checkmark draw" v-show="saved"></div>
+                        </div>
+                        <div v-if="saving && !saved">
+                          {{ $t('common.please_wait') }}
+                        </div>
+                      </div>
+                      <form @submit.prevent="saveProperty" v-show="!saving">
+                        <div class="form-row">
+                          <div class="form-group col-md-12">
+                            <input-text v-model="propertyName" :label="$t('domain.property.name')"
+                              :placeholder="$t('domain.property.name_placeholder')" icon="outline-component-24px.svg"
+                              :validationErrors="validationErrors"></input-text>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <input-text v-model="propertyLabel" :label="$t('domain.property.label')"
+                              :placeholder="$t('domain.property.label_placeholder')" icon="outline-component-24px.svg"
+                              :validationErrors="validationErrors"></input-text>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <input-select v-model="propertyInputType" :options="propertyInputTypes" id="propertyInputType"
+                              :label="$t('domain.property.input_type')"
+                              icon="outline-my-products-24px.svg"
+                              :validationErrors="validationErrors"></input-select>
+                          </div>
+                          <div class="form-group col-md-12" v-show="propertyInputType === 'select'">
+                            <input-text v-model="propertyOptions" :label="$t('domain.property.options')"
+                              :placeholder="$t('domain.property.options_placeholder')" icon="outline-component-24px.svg"
+                              :validationErrors="validationErrors"></input-text>
+                          </div>
+                          <div class="form-group col-md-12">
+                            <input-select v-model="propertyRequired" :options="propertyRequiredOptions" id="propertyRequired"
+                              :label="$t('domain.property.required')"
+                              icon="outline-my-products-24px.svg"
+                              :validationErrors="validationErrors"></input-select>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-4 mt-2">
+                            <input type="submit" id="submit" :value="$t('common.save')"
+                              class="btn btn-lg btn-primary mr-2"/>
+                            <input type="button" id="cancel" :value="$t('common.cancel')"
+                              class="btn btn-lg btn-secondary" @click="cancelPropertyForm"/>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
 
 
 
-                <h2 class="view__subtitle">{{ $t("domain.component.description") }}</h2>
-                <p>{{ description }}</p>
+                  </div>
 
-                <h2 class="view__subtitle">{{ $t("domain.component.url") }}</h2>
-                <p><a :href="url" target="_blank">{{ url }}</a></p>
-
-                <h2 class="view__subtitle">{{ $t("domain.component.function_name") }}</h2>
-                <p>{{ functionName }}</p>
-
-                <h2 class="view__subtitle">{{ $t("domain.component.status") }}</h2>
-                <p>{{ $t(`domain.component_statuses.${status}`) }}</p>
-
-                <h2 class="view__subtitle">{{ $t("domain.component.properties") }}</h2>
-
+                </div>
               </div>
             </div>
 
@@ -121,14 +170,17 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import VueAvatar from 'seed-theme/src/components/VueAvatar.vue';
+import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
 import StarRating from 'vue-star-rating';
+import draggable from 'vuedraggable';
+import { mapGetters } from 'vuex';
 export default {
   name: 'ComponentsView',
   components: {
     AppLayout,
     StarRating,
-    VueAvatar
+    PictureChanger,
+    draggable
   },
   data() {
     return {
@@ -136,6 +188,9 @@ export default {
       oops: false,
       deleting: false,
       deleted: false,
+      saving: false,
+      saved: false,
+      selectedTab: 'properties',
       componentType: 'service',
       category: 'general',
       name: '',
@@ -146,14 +201,20 @@ export default {
       price: '',
       status: 'enabled',
       picture: '',
+      properties: [],
       username: '',
       updatedAt: '',
       validationErrors: [],
 
-      showImageControls: false,
-      rotation: 0,
-      scale: 1,
-      borderRadius: 0
+      showPropertyForm: false,
+      propertyId: '',
+      propertyName: '',
+      propertyLabel: '',
+      propertyInputType: 'text',
+      propertyOptions: '',
+      propertyRequired: 'yes',
+
+      drag: false
     };
   },
   created() {
@@ -174,10 +235,15 @@ export default {
           this.price = result.data.price;
           this.status = result.data.status;
           this.picture = result.data.picture;
+          this.properties = result.data.properties;
           this.pictureUrl = result.data.pictureUrl;
           this.username = result.data.username;
           this.updatedAt = result.data.updatedAt;
-          this.$refs.vueavatar.loadImage(this.pictureUrl);
+          this.$refs.pictureChanger.loadImage(
+            this.pictureUrl,
+            `${this.$route.params.id}.jpg`,
+            `/api/components/${this.$route.params.id}/change-picture`
+          );
         })
         .catch((error) => {
           this.loading = false;
@@ -232,41 +298,150 @@ export default {
           }
         });
     },
-    saveClicked() {
-      const self = this;
-      var img = this.$refs.vueavatar.getImageScaled();
-      // this.$refs.image.src = img.toDataURL('image/jpeg', 1.0);
-      const canvas = document.getElementById('avatarEditorCanvas');
-      canvas.toBlob(function(blob) {
-        const formData = new FormData();
-        formData.append('pictureFile', blob, `${self.$route.params.id}.jpg`);
-        // Post via axios or other transport method
-        self.axios.post(`/api/components/${self.$route.params.id}/change-picture`, formData
-        )
+    addProperty() {
+      this.saving = false;
+      this.saved = false;
+      this.propertyId = '';
+      this.propertyName = '';
+      this.propertyLabel = '';
+      this.propertyInputType = 'text';
+      this.propertyOptions = '';
+      this.propertyRequired = 'yes';
+      this.showPropertyForm = true;
+    },
+    modifyProperty(p) {
+      this.saving = false;
+      this.saved = false;
+      this.propertyId = p._id;
+      this.propertyName = p.name;
+      this.propertyLabel = p.label;
+      this.propertyInputType = p.inputType;
+      this.propertyOptions = p.options;
+      this.propertyRequired = p.required;
+      this.showPropertyForm = true;
+    },
+    saveProperty() {
+      this.validationErrors = [];
+      this.saving = true;
+      this.saved = false;
+      this.axios.post('/api/components/property/save', {
+        id: this.$route.params.id,
+        propertyId: this.propertyId,
+        propertyName: this.propertyName,
+        propertyLabel: this.propertyLabel,
+        propertyInputType: this.propertyInputType,
+        propertyOptions: this.propertyOptions,
+        propertyRequired: this.propertyRequired,
+      })
         .then((result) => {
-          console.log('uploaded!');
-        }).catch((error) => {
-          console.error(error);
+          this.saving = false;
+          this.saved = true;
+          this.showPropertyForm = false;
+          this.getData();
+        })
+        .catch((error) => {
+          this.saving = false;
+          if (error.response.status === 422) {
+            this.validationErrors = this.normalizeErrors(error.response);
+          } else {
+            this.oops = true;
+          }
         });
-      }, 'image/jpeg', 1.0);
     },
-    onImageReady() {
-      this.scale = 1;
-      this.rotation = 0;
+    cancelPropertyForm() {
+      this.showPropertyForm = false;
     },
-    onFileSelected() {
-      this.showImageControls = true;
+    confirmDeleteProperty(propertyId) {
+      this.$bvModal.msgBoxConfirm(' ', {
+        title: this.$i18n.t('properties.delete_this_property'),
+        size: 'md',
+        buttonSize: 'md',
+        okVariant: 'danger',
+        okTitle: this.$i18n.t('common.delete'),
+        cancelTitle: this.$i18n.t('common.no'),
+        footerClass: 'p-2',
+        hideHeaderClose: true,
+        centered: true
+      })
+        .then(value => {
+          if (value === true) {
+            this.deleteProperty(propertyId);
+          }
+        })
+        .catch(err => {
+          this.oops = true;
+        })
     },
+    deleteProperty(propertyId) {
+      const id = this.$route.params.id;
+      this.axios.post('/api/components/property/delete', {
+        id: id,
+        propertyId: propertyId
+      })
+        .then((result) => {
+          this.getData();
+        })
+        .catch((error) => {
+          if (error.response.status === 422) {
+            this.validationErrors = this.normalizeErrors(error.response);
+          } else {
+            this.oops = true;
+          }
+        });
+    },
+    reorderProperties() {
+      let newOrder = [];
+      for (let i = 0; i < this.properties.length; i++) {
+        newOrder.push(this.properties[i]._id);
+      }
+      const id = this.$route.params.id;
+      this.axios.post('/api/components/property/reorder', {
+        id: id,
+        propertyIds: newOrder.join(',')
+      })
+        .then((result) => {
+          // this.getData();
+        })
+        .catch((error) => {
+          if (error.response.status === 422) {
+            this.validationErrors = this.normalizeErrors(error.response);
+          } else {
+            this.oops = true;
+          }
+        });
+    }
+  },
+  computed: {
+    ...mapGetters(['allPropertyInputTypes']),
+    propertyInputTypes() {
+      const inputTypeList = [];
+      for (let i = 0; i < this.allPropertyInputTypes.length; i++) {
+        inputTypeList.push({
+          value: this.allPropertyInputTypes[i],
+          text: this.$i18n.t(`domain.property_input_types.${this.allPropertyInputTypes[i]}`),
+        });
+      }
+      return inputTypeList;
+    },
+    propertyRequiredOptions() {
+      return [
+        { value: 'yes', text: this.$i18n.t('common.yes')},
+        { value: 'no', text: this.$i18n.t('common.no')}
+      ];
+    },
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost'
+      };
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
-canvas {
-  width: 228px;
-  height: 228px;
-}
 
 .view {
 
@@ -296,7 +471,7 @@ canvas {
 
 .rating {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   margin-bottom: 2rem;
 }
 
@@ -309,4 +484,67 @@ canvas {
   margin-bottom: 1em;
 }
 
+.addNewButton {
+  margin-top: 2rem;
+}
+
+.smallButton {
+  height: 32px;
+}
+
+.no_properties {
+  color: #686b77;
+  font-size: 16px;
+  text-align: left;
+  margin-top: 2rem;
+}
+
+.propertyForm {
+  margin-top: 2rem;
+}
+
+// Drag
+.flip-list-move {
+  transition: transform 0.5s;
+}
+.no-move {
+  transition: transform 0s;
+}
+
+.ghost {
+  opacity: 0.5;
+  background: #f6f6f6;
+}
+
+.list-group {
+  margin-top: 1rem;
+  min-height: 20px;
+}
+
+.list-group-item {
+  cursor: move;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+
+a.list-group-item-link {
+  color: #6b4c9f;
+  cursor: pointer;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
+
+a.list-group-item-delete {
+  float: right;
+  color: #6b4c9f;
+  cursor: pointer;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
 </style>
