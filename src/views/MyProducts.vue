@@ -82,6 +82,9 @@ export default {
         case 'componentsList':
           this.$router.push({ name: 'componentsForm' });
           break;
+        case 'botsList':
+          this.$router.push({ name: 'botsForm' });
+          break;
       }
     },
   }

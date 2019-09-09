@@ -63,8 +63,6 @@
     "property": {
       "name": "Nombre",
       "name_placeholder": "Debe comenzar con una letra o guión bajo y puede contener letras, números y guiones bajos",
-      "label": "Etiqueta para el control de entrada",
-      "label_placeholder": "Define una etiqueta de texto para el control de entrada",
       "input_type": "Tipo de control",
       "required": "Obligatorio",
       "options": "Lista de opciones",
@@ -76,6 +74,34 @@
     "property_input_types": {
       "text": "Línea de texto",
       "select": "Lista de opciones"
+    },
+    "bot": {
+      "name": "Nombre",
+      "category": "Categoría",
+      "name_placeholder": "Nombre del bot",
+      "description": "Descripción",
+      "description_placeholder": "Breve descripción del bot",
+      "features": "Características",
+      "features_placeholder": "Características",
+      "price": "Precio",
+      "price_placeholder": "Precio",
+      "status": "Status",
+      "bot_engine": "Bot Engine",
+      "services": "Servicios",
+      "channels": "Canales",
+      "validation": {
+        "bot_not_found": "Bot no hallado.",
+        "forbidden_bot": "No tienes acceso a este bot."
+      }
+    },
+    "bot_categories": {
+      "general": "General",
+      "weather": "Clima"
+    },
+    "bot_statuses": {
+      "all": "Todos",
+      "enabled": "Activado",
+      "disabled": "Desactivado"
     }
   },
   "common": {
@@ -105,7 +131,10 @@
     "sort_by": "Ordenar por",
     "something_went_wrong": "Algo salió mal",
     "click_to_change_picture": "Click para cambiar imagen",
-    "save_picture": "Guardar imagen"
+    "save_picture": "Guardar imagen",
+    "choose_from_list": "Elegir de la lista",
+    "free": "Gratis",
+    "get": "Usar"
   },
   "app": {
     "dashboard": "Inicio",
@@ -160,6 +189,14 @@
     "modify_property": "Modificar propiedad",
     "delete_this_property": "¿Eliminar esta propiedad?",
     "there_are_no_properties": "No hay propiedades"
+  },
+  "bots": {
+    "new_bot": "Nuevo bot",
+    "modify_bot": "Modificar bot",
+    "delete_this_bot": "¿Eliminar este bot?",
+    "there_are_no_bots": "No hay bots",
+    "list_of_botengine": "Bot Engines",
+    "list_of_service": "Servicios",
+    "list_of_channel": "Canales"
   }
-
 }

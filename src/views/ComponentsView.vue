@@ -88,7 +88,7 @@
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                           <li class="list-group-item" v-for="property in properties" :key="property._id">
                             <img style="margin-right: 10px;":src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
-                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.label }}</a>
+                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.name }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id)">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
@@ -117,11 +117,6 @@
                           <div class="form-group col-md-12">
                             <input-text id="name" v-model="propertyName" :label="$t('domain.property.name')"
                               :placeholder="$t('domain.property.name_placeholder')" icon="outline-icon-fingerprint-24px.svg"
-                              :validationErrors="validationErrors"></input-text>
-                          </div>
-                          <div class="form-group col-md-12">
-                            <input-text id="label" v-model="propertyLabel" :label="$t('domain.property.label')"
-                              :placeholder="$t('domain.property.label_placeholder')" icon="outline-icon-label-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
@@ -212,7 +207,6 @@ export default {
       showPropertyForm: false,
       propertyId: '',
       propertyName: '',
-      propertyLabel: '',
       propertyInputType: 'text',
       propertyOptions: '',
       propertyRequired: 'yes',
@@ -306,7 +300,6 @@ export default {
       this.saved = false;
       this.propertyId = '';
       this.propertyName = '';
-      this.propertyLabel = '';
       this.propertyInputType = 'text';
       this.propertyOptions = '';
       this.propertyRequired = 'yes';
@@ -317,7 +310,6 @@ export default {
       this.saved = false;
       this.propertyId = p._id;
       this.propertyName = p.name;
-      this.propertyLabel = p.label;
       this.propertyInputType = p.inputType;
       this.propertyOptions = p.options;
       this.propertyRequired = p.required;
@@ -331,7 +323,6 @@ export default {
         id: this.$route.params.id,
         propertyId: this.propertyId,
         propertyName: this.propertyName,
-        propertyLabel: this.propertyLabel,
         propertyInputType: this.propertyInputType,
         propertyOptions: this.propertyOptions,
         propertyRequired: this.propertyRequired,

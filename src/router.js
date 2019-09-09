@@ -78,6 +78,18 @@ const router = new Router({
           meta: { authenticated: true },
         },
         {
+          path: 'products/bots/form/:id?',
+          name: 'botsForm',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsForm.vue'),
+          meta: { authenticated: true },
+        },
+        {
+          path: 'products/bots/:id',
+          name: 'botsView',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsView.vue'),
+          meta: { authenticated: true },
+        },
+        {
           path: 'marketplace',
           name: 'marketplace',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/Marketplace.vue'),

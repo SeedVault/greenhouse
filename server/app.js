@@ -8,6 +8,7 @@ let session = require('express-session');
 let redisStoreProto = require('connect-redis');
 let api = require('./controllers/api');
 let components = require('./controllers/components');
+let bots = require('./controllers/bots');
 var multer  = require('multer')
 var storage = multer.diskStorage({
   destination: 'public/uploads/',
@@ -164,6 +165,7 @@ module.exports = function(app) {
 
   // App routes
   app.get('/api/dashboard', api.getDashboard);
+
   // Components
   app.get('/api/components', components.list);
   app.post('/api/components/save', components.save);
@@ -173,4 +175,11 @@ module.exports = function(app) {
   app.post('/api/components/property/delete', components.deleteProperty);
   app.post('/api/components/property/reorder', components.reorderProperties);
   app.get('/api/components/:id', components.view);
+
+  // Bots
+  app.get('/api/bots', bots.list);
+  app.post('/api/bots/save', bots.save);
+  app.post('/api/bots/delete', bots.delete);
+  app.post('/api/bots/:id/change-picture', upload.single('pictureFile'), bots.changePicture);
+  app.get('/api/bots/:id', bots.view);
 }

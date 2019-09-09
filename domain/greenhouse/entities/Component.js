@@ -5,12 +5,7 @@ const PropertySchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'validation.required'],
-    match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
-    trim: true,
-  },
-  label: {
-    type: String,
-    required: [true, 'validation.required'],
+    // match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
     trim: true,
   },
   inputType: {
@@ -65,7 +60,7 @@ const ComponentSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     // match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
-    match: [/^[^a-zA-Z_$]|[^\\w$]/, 'validation.regex'],
+    // match: [/^[^a-zA-Z_$]|[^\\w$]/, 'validation.regex'],
     index: true,
     unique: true,
     trim: true

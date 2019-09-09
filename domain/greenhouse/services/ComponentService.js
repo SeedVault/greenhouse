@@ -70,7 +70,7 @@ const ComponentService = {
     }
   },
 
-  findPaginatedComponents: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+  findPaginatedComponents: async (resultsPerPage, currentPage, username, search, componentType, status, sortBy, sortType) => {
     let query = {}
     let sorting = {}
     if (username !== '' ) {
@@ -78,6 +78,9 @@ const ComponentService = {
     }
     if (search !== '') {
       query['$and'] = [{ $or: [{name: { $regex:  `.*${search}.*`, $options: 'i' }}, {description: { $regex:  `.*${search}.*`, $options: 'i' }}] }];
+    }
+    if (componentType !== '' ) {
+      query['componentType'] = componentType;
     }
     if (status !== '' ) {
       query['status'] = status;
@@ -148,7 +151,6 @@ const ComponentService = {
     let component = await ComponentService.findMyComponentById(username, id);
     let p = await ComponentService.findProperty(component, property._id);
     p.name = property.name;
-    p.label = property.label;
     p.inputType = property.inputType;
     p.options = property.options;
     p.required = property.required;

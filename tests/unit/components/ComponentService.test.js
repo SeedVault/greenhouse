@@ -4,13 +4,15 @@ import {
 } from '../../../domain/greenhouse/services/ComponentService';
 
 async function createComponent(name) {
+  const noSpaces = name.replace(/\s/g, '');
+  const fn = noSpaces.charAt(0).toLowerCase() + noSpaces.slice(1);
   return componentService.createComponent(
     'botengine',
     'general',
     name,
     `Description of ${name}`,
-    `${name}Fn`,
-    `https:/www.${name}.com`,
+    `${fn}Fn`,
+    `https:/www.${noSpaces.toLowerCase()}.com`,
     0,
     'enabled',
     'johndoe',
@@ -20,7 +22,6 @@ async function createComponent(name) {
 async function addProperty(username, id, propertyName) {
   const newProperty = {
     name: propertyName,
-    label: propertyName,
     inputType: 'text',
     options: '',
     required: 'yes',
@@ -44,14 +45,14 @@ describe('Components', () => {
     }
   });
 
-  it('should throw a validation error when the component name is already in use', async () => {
+  /*it('should throw a validation error when the component name is already in use', async () => {
     try {
       await createComponent('chatscript');
       await createComponent('ChatScript');
     } catch (err) {
       expect(err.errors.name.message).toBe('domain.component.validation.unique_name');
     }
-  });
+  });*/
 
   it('should throw a "component not found" error when passed a wrong component id', async () => {
     try {
@@ -101,19 +102,19 @@ describe('Components', () => {
     await createComponent('two');
     await createComponent('three');
     await createComponent('four');
-    const resultsPageOne = await componentService.findPaginatedComponents(3, 1, '', '', '', 'name', 'asc');
+    const resultsPageOne = await componentService.findPaginatedComponents(3, 1, '', '', '', '', 'name', 'asc');
     expect(resultsPageOne.results.length).toBe(3);
     expect(resultsPageOne.resultsCount).toBe(4);
     expect(resultsPageOne.currentPage).toBe(1);
     expect(resultsPageOne.pagesCount).toBe(2);
-    const resultsPageTwo = await componentService.findPaginatedComponents(3, 2, '', '', '', 'name', 'asc');
+    const resultsPageTwo = await componentService.findPaginatedComponents(3, 2, '', '', '', '', 'name', 'asc');
     expect(resultsPageTwo.results.length).toBe(1);
     expect(resultsPageTwo.resultsCount).toBe(4);
     expect(resultsPageTwo.currentPage).toBe(2);
     expect(resultsPageTwo.pagesCount).toBe(2);
   });
 
-  it('should filter results by username, search text and status', async () => {
+  it('should filter results by username, search text, component type and status', async () => {
     await createComponent('one');
     await createComponent('two');
     await createComponent('three');
@@ -121,13 +122,21 @@ describe('Components', () => {
     four.username = 'janedoe';
     four.status = 'disabled';
     await componentService.updateComponent('johndoe', four);
-    let rows = await componentService.findPaginatedComponents(3, 1, 'johndoe', '', '', 'name', 'asc');
+    // username
+    let rows = await componentService.findPaginatedComponents(3, 1, 'johndoe', '', '', '', 'name', 'asc');
     expect(rows.results.length).toBe(3);
-    rows = await componentService.findPaginatedComponents(3, 1, 'janedoe', '', 'disabled', 'name', 'asc');
+    rows = await componentService.findPaginatedComponents(3, 1, 'janedoe', '', '', 'disabled', 'name', 'asc');
     expect(rows.results.length).toBe(1);
-    rows = await componentService.findPaginatedComponents(3, 1, 'mike', '', '', 'name', 'asc');
+    rows = await componentService.findPaginatedComponents(3, 1, 'mike', '', '', '', 'name', 'asc');
     expect(rows.results.length).toBe(0);
-    rows = await componentService.findPaginatedComponents(3, 1, 'johndoe', 'three', '', 'name', 'asc');
+    // Component type
+    rows = await componentService.findPaginatedComponents(3, 1, '', '', 'botengine', 'enabled', 'name', 'asc');
+    expect(rows.results.length).toBe(3);
+    // Status
+    rows = await componentService.findPaginatedComponents(3, 1, '', '', '', 'disabled', 'name', 'asc');
+    expect(rows.results.length).toBe(1);
+    // search
+    rows = await componentService.findPaginatedComponents(3, 1, 'johndoe', 'three', '', '', 'name', 'asc');
     expect(rows.results.length).toBe(1);
   });
 

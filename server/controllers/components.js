@@ -14,6 +14,10 @@ const components = {
       const resultsPerPage = 10;
       const page = req.query.page || 1;
       const search = req.query.search || '';
+      let componentType = req.query.componentType || '';
+      if (componentType !== 'botengine' && componentType !== 'service' && componentType !== 'channel') {
+        componentType = '';
+      }
       let status = req.query.status || '';
       if (status !== 'enabled' && status !== 'disabled') {
         status = '';
@@ -31,6 +35,7 @@ const components = {
         page,
         req.user.username,
         search,
+        componentType,
         status,
         sortBy,
         sortType,
@@ -158,7 +163,6 @@ const components = {
       if (propertyId === '') {
         const p = {
           name: req.body.propertyName,
-          label: req.body.propertyLabel,
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
@@ -168,7 +172,6 @@ const components = {
         const p = {
           _id: propertyId,
           name: req.body.propertyName,
-          label: req.body.propertyLabel,
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,

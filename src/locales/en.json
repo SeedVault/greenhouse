@@ -63,8 +63,6 @@
     "property": {
       "name": "Name",
       "name_placeholder": "It must start with a letter or an underscore and can cointain letters, numbers and underscores",
-      "label": "Label for the input type",
-      "label_placeholder": "It defines a text label for the input type",
       "input_type": "Input type",
       "required": "Required",
       "options": "List of options",
@@ -76,6 +74,34 @@
     "property_input_types": {
       "text": "Single line of text",
       "select": "List of options"
+    },
+    "bot": {
+      "name": "Name",
+      "category": "Category",
+      "name_placeholder": "Name of the bot",
+      "description": "Description",
+      "description_placeholder": "Short bot description",
+      "features": "Features",
+      "features_placeholder": "Features",
+      "price": "Price",
+      "price_placeholder": "Price",
+      "status": "Status",
+      "bot_engine": "Bot Engine",
+      "services": "Services",
+      "channels": "Channels",
+      "validation": {
+        "bot_not_found": "Bot not found.",
+        "forbidden_bot": "Forbidden bot."
+      }
+    },
+    "bot_categories": {
+      "general": "General",
+      "weather": "Weather"
+    },
+    "bot_statuses": {
+      "all": "All",
+      "enabled": "Enabled",
+      "disabled": "Disabled"
     }
   },
   "common": {
@@ -105,7 +131,10 @@
     "sort_by": "Sort by",
     "something_went_wrong": "Something went wrong",
     "click_to_change_picture": "Click to change picture",
-    "save_picture": "Save picture"
+    "save_picture": "Save picture",
+    "choose_from_list": "Choose from list",
+    "free": "Free",
+    "get": "Get"
   },
   "app": {
     "dashboard": "Dashboard",
@@ -160,5 +189,14 @@
     "modify_property": "Modify property",
     "delete_this_property": "Delete this property?",
     "there_are_no_properties": "There are no properties"
+  },
+  "bots": {
+    "new_bot": "New bot",
+    "modify_bot": "Modify bot",
+    "delete_this_bot": "Delete this bot?",
+    "there_are_no_bots": "There are no bots",
+    "list_of_botengine": "Bot Engines",
+    "list_of_service": "Services",
+    "list_of_channel": "Channels"
   }
 }
