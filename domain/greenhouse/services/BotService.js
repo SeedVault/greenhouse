@@ -20,15 +20,43 @@ class ForbiddenBotError extends ValidationError {
   }
 }
 
+class BotEngineRequiredError extends ValidationError {
+  constructor(message) {
+    super(message);
+    this.name = 'BotEngineRequiredError';
+    this.errors['_'] = { message: 'domain.bot.validation.bot_engine_required' };
+  }
+}
+
+class ChannelRequiredError extends ValidationError {
+  constructor(message) {
+    super(message);
+    this.name = 'ChannelRequiredError';
+    this.errors['_'] = { message: 'domain.bot.validation.channel_required' };
+  }
+}
+
 const BotService = {
 
   createConfig: async (componentParams) => {
+    if (typeof componentParams.component == 'undefined') {
+      return {};
+    }
     const component = await ComponentService.findComponentById(componentParams.component);
     let config = new Config({
       component: component._id,
       values: componentParams.values
     });
     return config;
+  },
+
+  checkComponents: async (bot) => {
+    if (typeof bot.botEngine.component == 'undefined') {
+      throw new BotEngineRequiredError();
+    }
+    if (bot.channels.length === 0) {
+      throw new ChannelRequiredError();
+    }
   },
 
   createBot: async (category, name, description, features, price, status, username,
@@ -54,10 +82,12 @@ const BotService = {
       services,
       channels
     });
+    await BotService.checkComponents(bot);
     return await bot.save();
   },
 
   updateBot: async (username, bot) => {
+    await BotService.checkComponents(bot);
     const savedBot = await BotService.findMyBotById(username, bot._id);
     return await bot.save();
   },
@@ -121,5 +151,7 @@ const BotService = {
 module.exports = {
   BotNotFoundError,
   ForbiddenBotError,
+  BotEngineRequiredError,
+  ChannelRequiredError,
   BotService,
 }

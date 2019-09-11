@@ -88,7 +88,7 @@ const bots = {
         bot.features = req.body.features;
         bot.price = req.body.price;
         bot.status = req.body.status;
-        bot.botengine = botengine;
+        bot.botEngine = botengine;
         bot.services = services;
         bot.channels = channels;
         await BotService.updateBot(req.user.username, bot);
@@ -100,16 +100,6 @@ const bots = {
       } else {
         return res.status(500).json(err);
       }
-    }
-  },
-
-  getComponentValues: async (m) => {
-    console.log(m);
-    /*for (const [k, v] of m.entries()) {
-      console.log(k, v)
-    }*/
-    return {
-
     }
   },
 

@@ -4,6 +4,7 @@ import {
 } from '../../../domain/greenhouse/services/ComponentService';
 import {
   BotService as botService, BotNotFoundError, ForbiddenBotError,
+  BotEngineRequiredError, ChannelRequiredError,
 } from '../../../domain/greenhouse/services/BotService';
 import { Config } from '@jest/types';
 
@@ -102,13 +103,27 @@ describe('Bots', () => {
     expect(savedBot.name).toBe(bot.name);
   });
 
-/*  it('should throw validation errors when passed empty data', async () => {
+  it('should throw a "bot engine required" error when a bot engine is missing', async () => {
     try {
-      await botService.createBot();
+      const components = await createAllComponents();
+      const bot = await createBot('my bot', components);
+      bot.botEngine = {};
+      await botService.updateBot('johndoe', bot);
     } catch (err) {
-      expect(err.name).toBe('ValidationError');
+      expect(err).toBeInstanceOf(BotEngineRequiredError);
     }
-  }); */
+  });
+
+  it('should throw a "channel required" error when a channel is missing', async () => {
+    try {
+      const components = await createAllComponents();
+      const bot = await createBot('my bot', components);
+      bot.channels = [];
+      await botService.updateBot('johndoe', bot);
+    } catch (err) {
+      expect(err).toBeInstanceOf(ChannelRequiredError);
+    }
+  });
 
   it('should throw a "bot not found" error when passed a wrong bot id', async () => {
     try {

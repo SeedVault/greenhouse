@@ -16,7 +16,7 @@
               <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
             </a>
 
-            <a class="nav-link back" @click="showPropertiesForm = false; showComponentList = true" v-show="showPropertiesForm">
+            <a class="nav-link back" @click="showPropertiesForm = false; showComponentList = !editMode" v-show="showPropertiesForm">
               <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
             </a>
 
@@ -98,8 +98,8 @@
                       <template v-if="botengine.component">
                         <ul class="list-group">
                           <li class="list-group-item">
-                            <img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine')">{{ cachedComponentName(botengine.component) }}</a>
+                            <a style="cursor: pointer" @click="selectComponent(botengine.component, 'botengine', true)"><img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" /></a>
+                            <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine', true)">{{ cachedComponentName(botengine.component) }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(botengine.component, 'botengine')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
@@ -125,7 +125,7 @@
                         ​<ul class="list-group">
                           <li v-for="service in services" class="list-group-item">
                             <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(service.component, 'service')">{{ cachedComponentName(service.component) }}</a>
+                            <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(service.component, 'service')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
@@ -137,7 +137,7 @@
                       </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
-                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('service')">{{ $t('common.choose_from_list') }}</a>
+                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('service', true)">{{ $t('common.choose_from_list') }}</a>
                     </div>
                   </div>
 
@@ -151,7 +151,7 @@
                         <ul class="list-group">
                           <li v-for="channel in channels" class="list-group-item">
                             <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel')">{{ cachedComponentName(channel.component) }}</a>
+                            <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(channel.component, 'channel')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
@@ -253,7 +253,7 @@
                     </div>
                   </div>
                   <div class="col-sm-2 align-self-center">
-                    <button class="btn btn-sm btn-primary btn-block mb-2" @click="selectComponent(component._id, componentType)">{{ $t('common.get') }}</button>
+                    <button class="btn btn-sm btn-primary btn-block mb-2" @click="selectComponent(component._id, componentType, false)">{{ $t('common.get') }}</button>
                   </div>
                 </div>
                 <hr >
@@ -288,7 +288,7 @@
                     <h4 class="component-title">{{ componentName }}</h4>
                   </div>
                   <div class="col-md-9">
-                    <property-form :properties="properties" v-model="propertiesData" :validationErrors="validationErrors"></property-form>
+                    <property-form :properties="properties" v-model="propertiesData" :propertiesData="propertiesData" :validationErrors="validationErrorsProperties"></property-form>
                     <div class="form-row">
                       <div class="form-group col-md-4 button-area">
                           <input type="submit" id="submitProperty" :value="$t('common.save')"
@@ -338,6 +338,7 @@ export default {
       services: [],
       channels: [],
       validationErrors: [],
+      validationErrorsProperties: [],
 
       showComponentList: false,
       componentType: 'botengine',
@@ -357,7 +358,9 @@ export default {
       properties: [],
       propertiesData: [],
 
-      cachedComponents: []
+      cachedComponents: [],
+
+      editMode: false,
     };
   },
   created() {
@@ -510,7 +513,9 @@ export default {
         return `${price} SEED`;
       }
     },
-    selectComponent(componentId, cType) {
+    selectComponent(componentId, cType, eMode) {
+      this.validationErrorsProperties = [];
+      this.editMode = eMode;
       this.fetching = true;
       this.showPropertiesForm = false;
       this.axios.get('/api/components/' + componentId)
@@ -525,9 +530,49 @@ export default {
           for (let j = 0; j < k.length; j++) {
             this.$delete(this.propertiesData, k[j]);
           }
+          // Load current data
+          this.currentData = [];
+          switch(cType) {
+            case 'botengine':
+              if (this.botengine) {
+                this.currentData = this.botengine.values;
+              }
+              break;
+            case 'service':
+              for (let i = 0; i < this.services.length; i++) {
+                if (this.services[i].component === componentId) {
+                  this.currentData = Object.assign({}, this.services[i].values);
+                  break;
+                }
+              }
+              break;
+            case 'channel':
+              for (let i = 0; i < this.channels.length; i++) {
+                if (this.channels[i].component === componentId) {
+                  this.currentData = Object.assign({}, this.channels[i].values);
+                  break;
+                }
+              }
+              break;
+          }
+          if (typeof this.currentData === 'undefined') {
+            this.currentData = [];
+          }
+          let currentDataKeys = Object.keys(this.currentData);
+          let currentDataValues = Object.values(this.currentData);
+          // Set values
           this.propertiesData = [];
           for (let i = 0; i < this.properties.length; i++) {
-            this.$set(this.propertiesData, `_${this.properties[i]._id}`, '');
+            let vKey = `_${this.properties[i]._id}`;
+            let v = '';
+            for (let j = 0; j < currentDataKeys.length; j++) {
+              if (currentDataKeys[j] === vKey) {
+                v = currentDataValues[j];
+                break;
+              }
+            }
+            this.$set(this.propertiesData, vKey, v);
+            this.properties[i].value = v;
             if (this.properties[i].inputType === 'text') {
               this.properties[i].inputType = 'PropertyInputText';
             }
@@ -543,7 +588,7 @@ export default {
         });
     },
     savePropertiesForm() {
-      this.showPropertiesForm = false;
+      this.validationErrorsProperties = [];
       let k = Object.keys(this.propertiesData);
       let v = Object.values(this.propertiesData);
       let c = {
@@ -553,6 +598,22 @@ export default {
       for (let j = 0; j < k.length; j++) {
         c.values[k[j]] = v[j];
       }
+      let isValid = true;
+      for (let i = 0; i < this.properties.length; i++) {
+        if (this.properties[i].required === 'yes' && v[i].trim() === '' ) {
+          let id = `_${this.properties[i]._id}`;
+          this.validationErrorsProperties[id] = {
+            err: {
+              msg: 'validation.required'
+            }
+          };
+          isValid = false;
+        }
+      }
+      if (isValid === false) {
+        return;
+      }
+      this.showPropertiesForm = false;
       this.showComponentList = false;
       let found = false;
       switch(this.componentType) {
@@ -868,6 +929,7 @@ h4.component-title {
 a.list-group-item-link {
   color: #6b4c9f;
   cursor: pointer;
+  font-size: 1rem;
   &:hover {
     color: #6b4c9f;
     text-decoration: underline;

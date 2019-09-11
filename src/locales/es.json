@@ -96,7 +96,9 @@
       "channels": "Canales",
       "validation": {
         "bot_not_found": "Bot no hallado.",
-        "forbidden_bot": "No tienes acceso a este bot."
+        "forbidden_bot": "No tienes acceso a este bot.",
+        "bot_engine_required": "Debes seleccionar un Bot engine.",
+        "channel_required": "Debes seleccionar al menos un canal."
       }
     },
     "bot_categories": {

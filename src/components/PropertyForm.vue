@@ -12,6 +12,7 @@
         :name="inputName(property._id)"
         :value="propertiesData[inputName(property._id)]"
         :validationErrors="validationErrors"
+        :propertiesData="propertiesData"
         @input="updateForm(inputName(property._id), $event)"
         v-bind="property">
       </component>
@@ -28,10 +29,10 @@ export default {
     PropertyInputText,
     PropertyInputSelect
   },
-  props: ['properties', 'value', 'validationErrors'],
+  props: ['properties', 'value', 'validationErrors', 'propertiesData'],
   data() {
     return {
-      propertiesData: this.value || {}
+      // propertiesData: this.value || {}
     };
   },
   methods: {
