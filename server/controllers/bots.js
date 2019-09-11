@@ -41,6 +41,15 @@ const bots = {
     }
   },
 
+
+  toComponentValues: async (c) => {
+    let v = Object.values(c);
+    return {
+      component: v[0],
+      values: v[1]
+    };
+  },
+
   // POST - /bots/save
   save: async (req, res, next) => {
     if (!req.user) {
@@ -48,6 +57,15 @@ const bots = {
     }
     try {
       let id = req.body.id;
+      let botengine = await bots.toComponentValues(req.body.botengine);
+      let services = [];
+      for (let i = 0; i < req.body.services.length; i++) {
+        services.push(await bots.toComponentValues(req.body.services[i]));
+      }
+      let channels = [];
+      for (let i = 0; i < req.body.channels.length; i++) {
+        channels.push(await bots.toComponentValues(req.body.channels[i]));
+      }
       if (req.body.id === '') {
         const result = await BotService.createBot(
           req.body.category,
@@ -56,7 +74,10 @@ const bots = {
           req.body.features,
           req.body.price,
           req.body.status,
-          req.user.username
+          req.user.username,
+          botengine,
+          services,
+          channels,
         );
         id = result._id;
       } else {
@@ -67,6 +88,9 @@ const bots = {
         bot.features = req.body.features;
         bot.price = req.body.price;
         bot.status = req.body.status;
+        bot.botengine = botengine;
+        bot.services = services;
+        bot.channels = channels;
         await BotService.updateBot(req.user.username, bot);
       }
       res.status(200).json({saved: true, id: id});
@@ -76,6 +100,16 @@ const bots = {
       } else {
         return res.status(500).json(err);
       }
+    }
+  },
+
+  getComponentValues: async (m) => {
+    console.log(m);
+    /*for (const [k, v] of m.entries()) {
+      console.log(k, v)
+    }*/
+    return {
+
     }
   },
 

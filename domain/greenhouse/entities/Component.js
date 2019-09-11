@@ -5,7 +5,6 @@ const PropertySchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'validation.required'],
-    // match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
     trim: true,
   },
   inputType: {
@@ -31,7 +30,13 @@ const PropertySchema = mongoose.Schema({
     },
     trim: true,
     default: 'yes'
-  }
+  },
+  key: {
+    type: String,
+    required: [true, 'validation.required'],
+    match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
+    trim: true
+  },
 });
 
 
@@ -59,8 +64,6 @@ const ComponentSchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'validation.required'],
-    // match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
-    // match: [/^[^a-zA-Z_$]|[^\\w$]/, 'validation.regex'],
     index: true,
     unique: true,
     trim: true
@@ -70,19 +73,24 @@ const ComponentSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  key: {
+    type: String,
+    required: [true, 'validation.required'],
+    match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
+    // match: [/^[^a-zA-Z_$]|[^\\w$]/, 'validation.regex'],
+    index: true,
+    unique: true,
+    trim: true
+  },
   functionName: {
     type: String,
     required: [true, 'validation.required'],
     match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
-    /*index: true,
-    unique: true, */
     trim: true
   },
   url: {
     type: String,
     required: [true, 'validation.required'],
-    /*index: true,
-    unique: true,*/
     trim: true
   },
   price: {
@@ -117,7 +125,12 @@ const ComponentSchema = mongoose.Schema({
   },
   properties: {
     type: [ PropertySchema ],
-  }
+  },
+  rhizomeTemplate: {
+    type: String,
+    trim: true,
+    default: '',
+  },
 }, {timestamps: true});
 
 ComponentSchema.set('toJSON', { getters: true, virtuals: true });

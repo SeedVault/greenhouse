@@ -94,10 +94,21 @@
                   <div class="form-row">
                     <div class="form-group col-md-6">
                       <a name="botengine"></a>
-                      <label>{{ $t('domain.bot.bot_engine') }}</label>
-                      <ul>
-                        <li>{{ botengine }}</li>
-                      </ul>
+                      <label><h5>{{ $t('domain.bot.bot_engine') }}</h5></label>
+                      <template v-if="botengine.component">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" />
+                            <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine')">{{ cachedComponentName(botengine.component) }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(botengine.component, 'botengine')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </ul>
+                      </template>
+                      <template v-else>
+                        <div class="no-component-selected">{{ $t('bots.there_are_no_bot_engines_selected') }}</div>
+                      </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
                       <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('botengine')">{{ $t('common.choose_from_list') }}</a>
@@ -109,12 +120,21 @@
                   <div class="form-row">
                     <a name="service"></a>
                     <div class="form-group col-md-6">
-                      <label>{{ $t('domain.bot.services') }}</label>
-                      <ul>
-                        <li v-for="service in services">
-                          {{ service }}
-                        </li>
-                      </ul>
+                      <label><h5>{{ $t('domain.bot.services') }}</h5></label>
+                      <template v-if="services.length > 0">
+                        ​<ul class="list-group">
+                          <li v-for="service in services" class="list-group-item">
+                            <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
+                            <a class="list-group-item-link" @click="selectComponent(service.component, 'service')">{{ cachedComponentName(service.component) }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(service.component, 'service')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </ul>
+                      </template>
+                      <template v-else>
+                        <div class="no-component-selected">{{ $t('bots.there_are_no_services_selected') }}</div>
+                      </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
                       <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('service')">{{ $t('common.choose_from_list') }}</a>
@@ -126,12 +146,21 @@
                   <div class="form-row">
                     <a name="channel"></a>
                     <div class="form-group col-md-6">
-                      <label>{{ $t('domain.bot.channels') }}</label>
-                      <ul>
-                        <li v-for="channel in channels">
-                          {{ channel }}
-                        </li>
-                      </ul>
+                      <label><h5>{{ $t('domain.bot.channels') }}</h5></label>
+                      <template v-if="channels.length > 0">
+                        <ul class="list-group">
+                          <li v-for="channel in channels" class="list-group-item">
+                            <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
+                            <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel')">{{ cachedComponentName(channel.component) }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(channel.component, 'channel')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </ul>
+                      </template>
+                      <template v-else>
+                        <div class="no-component-selected">{{ $t('bots.there_are_no_channels_selected') }}</div>
+                      </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
                       <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('channel')">{{ $t('common.choose_from_list') }}</a>
@@ -224,7 +253,7 @@
                     </div>
                   </div>
                   <div class="col-sm-2 align-self-center">
-                    <button class="btn btn-sm btn-primary btn-block mb-2" @click="selectComponent(component._id)">{{ $t('common.get') }}</button>
+                    <button class="btn btn-sm btn-primary btn-block mb-2" @click="selectComponent(component._id, componentType)">{{ $t('common.get') }}</button>
                   </div>
                 </div>
                 <hr >
@@ -303,7 +332,6 @@ export default {
       name: '',
       description: '',
       features: '',
-      url: '',
       price: '',
       status: 'enabled',
       botengine: {},
@@ -327,10 +355,13 @@ export default {
       componentName: null,
       componentId: null,
       properties: [],
-      propertiesData: []
+      propertiesData: [],
+
+      cachedComponents: []
     };
   },
   created() {
+    this.cachedComponents = new Map();
     if (typeof this.$route.params.id === 'undefined') {
       this.id = '';
     } else {
@@ -340,20 +371,47 @@ export default {
   },
   methods: {
     getData() {
+      this.cachedComponents = new Map();
       this.loading = true;
       this.axios.get(`/api/bots/${this.id}`)
         .then((result) => {
-          this.loading = false;
+          let ids = [];
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
           this.features = result.data.features;
-          this.url = result.data.url;
           this.price = result.data.price;
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.username = result.data.username;
           this.updatedAt = result.data.updatedAt;
+          this.botengine = result.data.botEngine;
+          ids.push(this.botengine.component);
+          delete(this.botengine['_id']);
+          this.services = result.data.services;
+          for (let i = 0; i < this.services.length; i++) {
+            ids.push(this.services[i].component);
+            delete(this.services[i]['_id']);
+          }
+          this.channels = result.data.channels;
+          for (let i = 0; i < this.channels.length; i++) {
+            ids.push(this.channels[i].component);
+            delete(this.channels[i]['_id']);
+          }
+          this.getCachedComponents(ids);
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.oops = true;
+        });
+    },
+    getCachedComponents(ids) {
+      this.axios.get(`/api/components/lookup`, { params: { ids: ids.join(',') } })
+        .then((results) => {
+          for (let i = 0; i < results.data.length; i++) {
+            this.cachedComponents.set(results.data[i]._id, results.data[i]);
+          }
+          this.loading = false;
         })
         .catch((error) => {
           this.loading = false;
@@ -370,7 +428,6 @@ export default {
         name: this.name,
         description: this.description,
         features: this.features,
-        url: this.url,
         price: this.price,
         status: this.status,
         botengine: this.botengine,
@@ -393,6 +450,7 @@ export default {
         });
     },
     componentList(componentTypeFilter) {
+      this.validationErrors = [];
       this.showComponentList = true;
       this.componentType = componentTypeFilter;
       this.search = '';
@@ -452,18 +510,24 @@ export default {
         return `${price} SEED`;
       }
     },
-    selectComponent(componentId) {
+    selectComponent(componentId, cType) {
       this.fetching = true;
       this.showPropertiesForm = false;
       this.axios.get('/api/components/' + componentId)
         .then((result) => {
           this.fetching = false;
+          this.cachedComponents.set(result.data._id, result.data);
           this.showPropertiesForm = true;
           this.componentId = result.data._id;
           this.componentName = result.data.name;
           this.properties = result.data.properties;
+          const k = Object.keys(this.propertiesData);
+          for (let j = 0; j < k.length; j++) {
+            this.$delete(this.propertiesData, k[j]);
+          }
           this.propertiesData = [];
           for (let i = 0; i < this.properties.length; i++) {
+            this.$set(this.propertiesData, `_${this.properties[i]._id}`, '');
             if (this.properties[i].inputType === 'text') {
               this.properties[i].inputType = 'PropertyInputText';
             }
@@ -489,55 +553,93 @@ export default {
       for (let j = 0; j < k.length; j++) {
         c.values[k[j]] = v[j];
       }
-      console.log(c.values);
       this.showComponentList = false;
       let found = false;
       switch(this.componentType) {
         case 'botengine':
-          this.botengine = c;
+          this.botengine = Object.assign({}, c);
           break;
         case 'service':
           for (let i = 0; i < this.services.length; i++) {
             if (this.services[i].component === c.component) {
-              this.services[i].values = c.values;
+              this.services[i].values = Object.assign({}, c.values);
               found = true;
               break;
             }
           }
           if (found === false) {
-            this.services.push(c);
+            this.services.push(Object.assign({}, c));
           }
           break;
         case 'channel':
           for (let i = 0; i < this.channels.length; i++) {
             if (this.channels[i].component === c.component) {
-              this.channels[i].values = c.values;
+              this.channels[i].values = Object.assign({}, c.values);
               found = true;
               break;
             }
           }
           if (found === false) {
-            this.channels.push(c);
+            this.channels.push(Object.assign({}, c));
           }
           break;
       }
-      console.log('************************');
-      console.log('componentType: ', this.componentType);
-      console.log('c:');
-      console.log(c);
-      console.log('------------------------');
-      console.log('botengine:');
-      console.log(this.botengine);
-      console.log('------------------------');
-      console.log('services:');
-      console.log(this.services);
-      console.log('------------------------');
-      console.log('channels:');
-      console.log(this.channels);
-      console.log('************************');
-      /*
-       */
-    }
+    },
+    cachedComponentName(componentId) {
+      if (this.cachedComponents.has(componentId)) {
+        return this.cachedComponents.get(componentId).name;
+      } else {
+        return componentId;
+      }
+    },
+    cachedComponentPictureUrl(componentId) {
+      if (this.cachedComponents.has(componentId)) {
+        return this.cachedComponents.get(componentId).pictureUrl;
+      } else {
+        return componentId;
+      }
+    },
+    confirmDeleteComponent(componentId, cType) {
+      this.$bvModal.msgBoxConfirm(' ', {
+        title: this.$i18n.t('components.delete_this_component'),
+        size: 'md',
+        buttonSize: 'md',
+        okVariant: 'danger',
+        okTitle: this.$i18n.t('common.delete'),
+        cancelTitle: this.$i18n.t('common.no'),
+        footerClass: 'p-2',
+        hideHeaderClose: true,
+        centered: true
+      })
+        .then(value => {
+          if (value === true) {
+            switch(cType) {
+              case 'botengine':
+                this.botengine = {};
+                break;
+              case 'service':
+                for (let i = 0; i < this.services.length; i++) {
+                  if (this.services[i].component === componentId) {
+                    this.services.splice(i, 1);
+                    break;
+                  }
+                }
+                break;
+              case 'channel':
+                for (let i = 0; i < this.channels.length; i++) {
+                  if (this.channels[i].component === componentId) {
+                    this.channels.splice(i, 1);
+                    break;
+                  }
+                }
+                break;
+            }
+          }
+        })
+        .catch(err => {
+          this.oops = true;
+        })
+    },
   },
   computed: {
     ...mapGetters(['allBotCategories', 'allBotStatuses']),
@@ -573,7 +675,7 @@ export default {
     },
     componentTypeContext() {
       return `#${this.componentType}`;
-    }
+    },
   }
 };
 </script>
@@ -749,4 +851,43 @@ h4.component-title {
   line-height: 2;
 }
 
+.no-component-selected {
+  padding: 2rem 0;
+  color: #495057;
+}
+
+.list-group {
+  margin-top: 1rem;
+  min-height: 20px;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+
+a.list-group-item-link {
+  color: #6b4c9f;
+  cursor: pointer;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
+
+a.list-group-item-delete {
+  float: right;
+  color: #6b4c9f;
+  cursor: pointer;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
+
+.component-logo-small {
+  margin-right: 15px;
+  vertical-align: middle;
+  width: 26px;
+  border-radius: 5px;
+}
 </style>

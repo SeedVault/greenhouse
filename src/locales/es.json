@@ -31,6 +31,8 @@
       "name_placeholder": "Nombre del component",
       "description": "Descripción",
       "description_placeholder": "Breve descripción del componente",
+      "key": "Nombre del componente para serialización",
+      "key_placeholder": "Nombre del componente para serialización (ej: mi_componente)",
       "function_name": "Nombre de la función",
       "function_name_placeholder": "Nombre de la función que invoca al componente",
       "url": "URL",
@@ -43,6 +45,7 @@
         "component_not_found": "Componente no hallado",
         "forbidden_component": "No tienes acceso a este componente",
         "unique_url": "La URL ya existe.",
+        "unique_key": "Nombre del componente para serialización ya existe.",
         "unique_functionName": "Ese nombre de función ya existe."
       }
     },
@@ -67,6 +70,8 @@
       "required": "Obligatorio",
       "options": "Lista de opciones",
       "options_placeholder": "Ingresa las opciones de la lista separadas por coma (ej: queso, vino tino, manzana)",
+      "key": "Nombre para serialización",
+      "key_placeholder": "Nombre de la propiedad para serialización (ej: mi_propiedad)",
       "validation": {
         "property_not_found": "Propiedad no hallada"
       }
@@ -193,10 +198,14 @@
   "bots": {
     "new_bot": "Nuevo bot",
     "modify_bot": "Modificar bot",
+    "updated": "Actualizado",
     "delete_this_bot": "¿Eliminar este bot?",
     "there_are_no_bots": "No hay bots",
     "list_of_botengine": "Bot Engines",
     "list_of_service": "Servicios",
-    "list_of_channel": "Canales"
+    "list_of_channel": "Canales",
+    "there_are_no_bot_engines_selected": "No hay bot engines seleccionados",
+    "there_are_no_services_selected": "No hay servicios seleccionados",
+    "there_are_no_channels_selected": "No hay canales seleccionados"
   }
 }

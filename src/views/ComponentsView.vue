@@ -70,6 +70,9 @@
                     <h2 class="view__subtitle">{{ $t("domain.component.url") }}</h2>
                     <p><a :href="url" target="_blank">{{ url }}</a></p>
 
+                    <h2 class="view__subtitle">{{ $t("domain.component.key") }}</h2>
+                    <p>{{ key }}</p>
+
                     <h2 class="view__subtitle">{{ $t("domain.component.function_name") }}</h2>
                     <p>{{ functionName }}</p>
 
@@ -136,6 +139,13 @@
                               icon="outline-icon-toggle-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
+                          <div class="form-group col-md-12">
+                            <input-text id="key" v-model="propertyKey"
+                              :label="$t('domain.property.key')"
+                              :placeholder="$t('domain.property.key_placeholder')"
+                              icon="outline-icon-label-24px.svg"
+                              :validationErrors="validationErrors"></input-text>
+                          </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-4 mt-2">
@@ -148,8 +158,6 @@
                       </form>
                     </div>
 
-
-
                   </div>
 
                 </div>
@@ -159,10 +167,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-
-
   </app-layout>
 </template>
 
@@ -193,6 +197,7 @@ export default {
       category: 'general',
       name: '',
       description: '',
+      key: '',
       functionName: '',
       url: '',
       pictureUrl: '',
@@ -210,6 +215,7 @@ export default {
       propertyInputType: 'text',
       propertyOptions: '',
       propertyRequired: 'yes',
+      propertyKey: '',
 
       drag: false
     };
@@ -227,6 +233,7 @@ export default {
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
+          this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
           this.price = result.data.price;
@@ -303,6 +310,7 @@ export default {
       this.propertyInputType = 'text';
       this.propertyOptions = '';
       this.propertyRequired = 'yes';
+      this.propertyKey = '';
       this.showPropertyForm = true;
     },
     modifyProperty(p) {
@@ -313,6 +321,7 @@ export default {
       this.propertyInputType = p.inputType;
       this.propertyOptions = p.options;
       this.propertyRequired = p.required;
+      this.propertyKey = p.key;
       this.showPropertyForm = true;
     },
     saveProperty() {
@@ -326,6 +335,7 @@ export default {
         propertyInputType: this.propertyInputType,
         propertyOptions: this.propertyOptions,
         propertyRequired: this.propertyRequired,
+        propertyKey: this.propertyKey,
       })
         .then((result) => {
           this.saving = false;

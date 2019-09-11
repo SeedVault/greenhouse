@@ -11,6 +11,7 @@ async function createComponent(name) {
     'general',
     name,
     `Description of ${name}`,
+    `${fn}`,
     `${fn}Fn`,
     `https:/www.${noSpaces.toLowerCase()}.com`,
     0,
@@ -25,6 +26,7 @@ async function addProperty(username, id, propertyName) {
     inputType: 'text',
     options: '',
     required: 'yes',
+    key: propertyName.replace(/\s/g, ''),
   };
   return componentService.addComponentProperty(username, id, newProperty);
 }
@@ -95,6 +97,14 @@ describe('Components', () => {
     await componentService.updateComponent('johndoe', component);
     const savedComponent = await componentService.findComponentById(id);
     expect(savedComponent.pictureUrl).toBe('/uploads/12345678.jpg');
+  });
+
+  it('should retrieve components in an array of ids', async () => {
+    const one = await createComponent('one');
+    const two = await createComponent('two');
+    await createComponent('three');
+    const results = await componentService.findComponentsWithIdInArray([one._id, two._id]);
+    expect(results.length).toBe(2);
   });
 
   it('should retrieve paginated results', async () => {

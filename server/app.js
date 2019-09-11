@@ -174,7 +174,9 @@ module.exports = function(app) {
   app.post('/api/components/property/save', components.saveProperty);
   app.post('/api/components/property/delete', components.deleteProperty);
   app.post('/api/components/property/reorder', components.reorderProperties);
+  app.get('/api/components/lookup', components.lookup);
   app.get('/api/components/:id', components.view);
+
 
   // Bots
   app.get('/api/bots', bots.list);

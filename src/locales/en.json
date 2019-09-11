@@ -31,6 +31,8 @@
       "name_placeholder": "Name of the component",
       "description": "Description",
       "description_placeholder": "Short component description",
+      "key": "Name of the component for serialization",
+      "key_placeholder": "Name of the component for serialization (e.g: my_component)",
       "function_name": "Function name",
       "function_name_placeholder": "Component funcion name",
       "url": "URL",
@@ -43,6 +45,7 @@
         "component_not_found": "Component not found.",
         "forbidden_component": "Forbidden component.",
         "unique_url": "URL already exist.",
+        "unique_key": "Name of the compnente for serialization already exist.",
         "unique_functionName": "Function name already exist."
       }
     },
@@ -67,6 +70,8 @@
       "required": "Required",
       "options": "List of options",
       "options_placeholder": "Enter a comma separated list of options (e.g: cheese, red wine, apple)",
+      "key": "Serialization name",
+      "key_placeholder": "Name of the property for serialization (e.g: my_property)",
       "validation": {
         "property_not_found": "Property not found"
       }
@@ -193,10 +198,14 @@
   "bots": {
     "new_bot": "New bot",
     "modify_bot": "Modify bot",
+    "updated": "Updated",
     "delete_this_bot": "Delete this bot?",
     "there_are_no_bots": "There are no bots",
     "list_of_botengine": "Bot Engines",
     "list_of_service": "Services",
-    "list_of_channel": "Channels"
+    "list_of_channel": "Channels",
+    "there_are_no_bot_engines_selected": "There are no bot engines selected",
+    "there_are_no_services_selected": "There are no services selected",
+    "there_are_no_channels_selected": "There are no channels selected"
   }
 }

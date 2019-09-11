@@ -15,6 +15,7 @@ async function createComponent(name, componentType) {
     'general',
     name,
     `Description of ${name}`,
+    `${fn}`,
     `${fn}Fn`,
     `https:/www.${noSpaces.toLowerCase()}.com`,
     0,
@@ -29,6 +30,7 @@ async function addProperty(id, propertyName) {
     inputType: 'text',
     options: '',
     required: 'yes',
+    key: propertyName.replace(/\s/g, ''),
   };
   return componentService.addComponentProperty('johndoe', id, newProperty);
 }

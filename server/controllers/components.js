@@ -59,6 +59,7 @@ const components = {
           req.body.category,
           req.body.name,
           req.body.description,
+          req.body.key,
           req.body.functionName,
           req.body.url,
           req.body.price,
@@ -72,6 +73,7 @@ const components = {
         component.category = req.body.category;
         component.name = req.body.name;
         component.description = req.body.description;
+        component.key = req.body.key,
         component.functionName = req.body.functionName;
         component.url = req.body.url;
         component.price = req.body.price;
@@ -85,6 +87,19 @@ const components = {
       } else {
         return res.status(500).json(err);
       }
+    }
+  },
+
+  // GET - /components/lookup
+  lookup: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      const data = await ComponentService.findComponentsWithIdInArray(req.query.ids.split(','));
+      res.json(data);
+    } catch (err) {
+      next(err);
     }
   },
 
@@ -166,6 +181,7 @@ const components = {
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
+          key: req.body.propertyKey,
         };
         await ComponentService.addComponentProperty(req.user.username, id, p);
       } else {
@@ -175,6 +191,7 @@ const components = {
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
+          key: req.body.propertyKey,
         };
         await ComponentService.updateComponentProperty(req.user.username, id, p);
       }

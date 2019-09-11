@@ -28,13 +28,14 @@ class PropertyNotFoundError extends ValidationError {
 
 const ComponentService = {
 
-  createComponent: async (componentType, category, name, description, functionName, url, price,
+  createComponent: async (componentType, category, name, description, key, functionName, url, price,
     status, username) => {
       let component = new Component({
         componentType,
         category,
         name,
         description,
+        key,
         functionName,
         url,
         price,
@@ -68,6 +69,10 @@ const ComponentService = {
     } else {
       throw new ForbiddenComponentError('');
     }
+  },
+
+  findComponentsWithIdInArray: async (ids) => {
+    return await Component.find().where('_id').in(ids).exec();
   },
 
   findPaginatedComponents: async (resultsPerPage, currentPage, username, search, componentType, status, sortBy, sortType) => {
@@ -154,6 +159,7 @@ const ComponentService = {
     p.inputType = property.inputType;
     p.options = property.options;
     p.required = property.required;
+    p.key = property.key;
     try {
       await component.save();
     } catch (err) {

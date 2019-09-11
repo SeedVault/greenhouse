@@ -75,6 +75,14 @@
                   </div>
 
                   <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <input-text v-model="key" id="key" :label="$t('domain.component.key')"
+                        :placeholder="$t('domain.component.key_placeholder')" icon="outline-icon-code-24px.svg"
+                        :validationErrors="validationErrors"></input-text>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
                     <div class="form-group col-md-4">
                       <input-text v-model="functionName" id="functionName" :label="$t('domain.component.function_name')"
                         :placeholder="$t('domain.component.function_name_placeholder')" icon="outline-icon-function-24px.svg"
@@ -133,6 +141,7 @@ export default {
       category: 'general',
       name: '',
       description: '',
+      key: '',
       functionName: '',
       url: '',
       price: '',
@@ -158,6 +167,7 @@ export default {
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
+          this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
           this.price = result.data.price;
@@ -181,6 +191,7 @@ export default {
         category: this.category,
         name: this.name,
         description: this.description,
+        key: this.key,
         functionName: this.functionName,
         url: this.url,
         price: this.price,
