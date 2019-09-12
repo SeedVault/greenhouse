@@ -22,12 +22,15 @@
 
 <script>
 import PropertyInputText from '@/components/PropertyInputText.vue';
+import PropertyInputTextarea from '@/components/PropertyInputTextarea.vue';
 import PropertyInputSelect from '@/components/PropertyInputSelect.vue';
+
 export default {
-  name: "PropertyForm",
+  name: 'PropertyForm',
   components: {
     PropertyInputText,
-    PropertyInputSelect
+    PropertyInputTextarea,
+    PropertyInputSelect,
   },
   props: ['properties', 'value', 'validationErrors', 'propertiesData'],
   data() {
@@ -38,11 +41,11 @@ export default {
   methods: {
     updateForm(fieldName, value) {
       this.$set(this.propertiesData, fieldName, value);
-      this.$emit("input", this.propertiesData);
+      this.$emit('input', this.propertiesData);
     },
     inputName(_id) {
       return `_${_id}`;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -125,6 +125,7 @@
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'ComponentsForm',
   components: {
@@ -195,10 +196,10 @@ export default {
         functionName: this.functionName,
         url: this.url,
         price: this.price,
-        status: this.status
+        status: this.status,
       })
         .then((result) => {
-          let id = result.data.id;
+          const { id } = result.data;
           this.saving = false;
           this.saved = true;
           this.$router.push({ name: 'componentsView', params: { id } });
@@ -235,7 +236,7 @@ export default {
       }
       return componentCategoryList;
     },
-     componentStatuses() {
+    componentStatuses() {
       const componentStatusList = [];
       for (let i = 0; i < this.allComponentStatuses.length; i++) {
         componentStatusList.push({
@@ -251,11 +252,10 @@ export default {
     urlToGoBack() {
       if (this.isNew) {
         return { name: 'componentsList' };
-      } else {
-        return { name: 'componentsView', params: { id: this.id }};
       }
-    }
-  }
+      return { name: 'componentsView', params: { id: this.id } };
+    },
+  },
 };
 </script>
 

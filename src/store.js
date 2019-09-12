@@ -14,7 +14,7 @@ export default new Vuex.Store({
     allComponentCategories: ['general', 'weather'],
     allComponentTypes: ['botengine', 'service', 'channel'],
     allComponentStatuses: ['enabled', 'disabled'],
-    allPropertyInputTypes: ['select', 'text'],
+    allPropertyInputTypes: ['select', 'text', 'textarea'],
     allBotCategories: ['general', 'weather'],
     allBotStatuses: ['enabled', 'disabled'],
     menu: [
@@ -26,12 +26,17 @@ export default new Vuex.Store({
       {
         text: 'app.marketplace',
         icon: 'outline-marketplace-24px.svg',
-        target: 'marketplace',
+        target: 'marketplaceBotsList',
       },
       {
         text: 'app.my_products',
         icon: 'outline-my-products-24px.svg',
         target: 'botsList',
+      },
+      {
+        text: 'app.my_subscriptions',
+        icon: 'outline-icon-subscriptions-24px.svg',
+        target: 'subscriptionsList',
       },
       {
         text: 'app.privacy',
@@ -43,12 +48,12 @@ export default new Vuex.Store({
       {
         text: 'apps.accounts',
         icon: 'outline-app-24px@2x.svg',
-        url:  (process.env.NODE_ENV === 'production'? 'https://accounts.seedtoken.io': 'https://127.0.0.1:9000') + `/{{ locale }}/sign-in`,
+        url: `${process.env.NODE_ENV === 'production' ? 'https://accounts.seedtoken.io' : 'https://127.0.0.1:9000'}/{{ locale }}/sign-in`,
       },
       {
         text: 'apps.wallet',
         icon: 'outline-app-24px@2x.svg',
-        url:  (process.env.NODE_ENV === 'production'? 'https://wallet-dev.seedtoken.io': 'https://127.0.0.1:9001') + `/{{ locale }}/dashboard`,
+        url: `${process.env.NODE_ENV === 'production' ? 'https://wallet-dev.seedtoken.io' : 'https://127.0.0.1:9001'}/{{ locale }}/dashboard`,
       },
     ],
   },

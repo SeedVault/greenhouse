@@ -74,7 +74,7 @@
 
                   <div v-show="selectedTab === 'features'">
                     <h2 class="view__subtitle"></h2>
-                    <p>{{ features }}</p>
+                    <p class="nl2br">{{ features }}</p>
                   </div>
 
                 </div>
@@ -92,6 +92,7 @@ import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
 import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'BotsView',
   components: {
@@ -118,16 +119,16 @@ export default {
       updatedAt: '',
       botengine: {},
       services: [],
-      channels: []
-    }
+      channels: [],
+    };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
     getData() {
       this.loading = true;
-      this.axios.get('/api/bots/' + this.$route.params.id)
+      this.axios.get(`/api/bots/${this.$route.params.id}`)
         .then((result) => {
           this.loading = false;
           this.category = result.data.category;
@@ -146,7 +147,7 @@ export default {
           this.$refs.pictureChanger.loadImage(
             this.pictureUrl,
             `${this.$route.params.id}.jpg`,
-            `/api/bots/${this.$route.params.id}/change-picture`
+            `/api/bots/${this.$route.params.id}/change-picture`,
           );
         })
         .catch((error) => {
@@ -155,11 +156,11 @@ export default {
         });
     },
     editBot() {
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.$router.push({ name: 'botsForm', params: { id } });
     },
     confirmDelete() {
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.$bvModal.msgBoxConfirm(' ', {
         title: this.$i18n.t('bots.delete_this_bot'),
         size: 'md',
@@ -169,24 +170,24 @@ export default {
         cancelTitle: this.$i18n.t('common.no'),
         footerClass: 'p-2',
         hideHeaderClose: true,
-        centered: true
+        centered: true,
       })
-        .then(value => {
+        .then((value) => {
           if (value === true) {
             this.deleteBot();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.oops = true;
-        })
+        });
     },
     deleteBot() {
       this.validationErrors = [];
       this.deleting = true;
       this.deleted = false;
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.axios.post('/api/bots/delete', {
-        id: id,
+        id,
       })
         .then((result) => {
           this.deleting = false;
@@ -202,8 +203,8 @@ export default {
           }
         });
     },
-  }
-}
+  },
+};
 </script>
 <style lang="scss" scoped>
 

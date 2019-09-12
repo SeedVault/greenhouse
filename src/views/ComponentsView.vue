@@ -90,7 +90,7 @@
                         @change="reorderProperties" ghost-class="ghost" v-show="properties.length > 0">
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                           <li class="list-group-item" v-for="property in properties" :key="property._id">
-                            <img style="margin-right: 10px;":src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
+                            <img style="margin-right: 10px;" :src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
                             <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.name }}</a>
                             <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id)">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
@@ -176,13 +176,14 @@ import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
 import StarRating from 'vue-star-rating';
 import draggable from 'vuedraggable';
 import { mapGetters } from 'vuex';
+
 export default {
   name: 'ComponentsView',
   components: {
     AppLayout,
     StarRating,
     PictureChanger,
-    draggable
+    draggable,
   },
   data() {
     return {
@@ -217,16 +218,16 @@ export default {
       propertyRequired: 'yes',
       propertyKey: '',
 
-      drag: false
+      drag: false,
     };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
     getData() {
       this.loading = true;
-      this.axios.get('/api/components/' + this.$route.params.id)
+      this.axios.get(`/api/components/${this.$route.params.id}`)
         .then((result) => {
           this.loading = false;
           this.componentType = result.data.componentType;
@@ -246,7 +247,7 @@ export default {
           this.$refs.pictureChanger.loadImage(
             this.pictureUrl,
             `${this.$route.params.id}.jpg`,
-            `/api/components/${this.$route.params.id}/change-picture`
+            `/api/components/${this.$route.params.id}/change-picture`,
           );
         })
         .catch((error) => {
@@ -255,11 +256,11 @@ export default {
         });
     },
     editComponent() {
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.$router.push({ name: 'componentsForm', params: { id } });
     },
     confirmDelete() {
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.$bvModal.msgBoxConfirm(' ', {
         title: this.$i18n.t('components.delete_this_component'),
         size: 'md',
@@ -269,24 +270,24 @@ export default {
         cancelTitle: this.$i18n.t('common.no'),
         footerClass: 'p-2',
         hideHeaderClose: true,
-        centered: true
+        centered: true,
       })
-        .then(value => {
+        .then((value) => {
           if (value === true) {
             this.deleteComponent();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.oops = true;
-        })
+        });
     },
     deleteComponent() {
       this.validationErrors = [];
       this.deleting = true;
       this.deleted = false;
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.axios.post('/api/components/delete', {
-        id: id,
+        id,
       })
         .then((result) => {
           this.deleting = false;
@@ -365,22 +366,22 @@ export default {
         cancelTitle: this.$i18n.t('common.no'),
         footerClass: 'p-2',
         hideHeaderClose: true,
-        centered: true
+        centered: true,
       })
-        .then(value => {
+        .then((value) => {
           if (value === true) {
             this.deleteProperty(propertyId);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.oops = true;
-        })
+        });
     },
     deleteProperty(propertyId) {
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.axios.post('/api/components/property/delete', {
-        id: id,
-        propertyId: propertyId
+        id,
+        propertyId,
       })
         .then((result) => {
           this.getData();
@@ -394,14 +395,14 @@ export default {
         });
     },
     reorderProperties() {
-      let newOrder = [];
+      const newOrder = [];
       for (let i = 0; i < this.properties.length; i++) {
         newOrder.push(this.properties[i]._id);
       }
-      const id = this.$route.params.id;
+      const { id } = this.$route.params;
       this.axios.post('/api/components/property/reorder', {
-        id: id,
-        propertyIds: newOrder.join(',')
+        id,
+        propertyIds: newOrder.join(','),
       })
         .then((result) => {
           // this.getData();
@@ -413,7 +414,7 @@ export default {
             this.oops = true;
           }
         });
-    }
+    },
   },
   computed: {
     ...mapGetters(['allPropertyInputTypes']),
@@ -429,8 +430,8 @@ export default {
     },
     propertyRequiredOptions() {
       return [
-        { value: 'yes', text: this.$i18n.t('common.yes')},
-        { value: 'no', text: this.$i18n.t('common.no')}
+        { value: 'yes', text: this.$i18n.t('common.yes') },
+        { value: 'no', text: this.$i18n.t('common.no') },
       ];
     },
     dragOptions() {
@@ -438,9 +439,9 @@ export default {
         animation: 200,
         group: 'description',
         disabled: false,
-        ghostClass: 'ghost'
+        ghostClass: 'ghost',
       };
-    }
+    },
   },
 };
 </script>

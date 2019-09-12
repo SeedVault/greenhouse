@@ -47,14 +47,16 @@ describe('Components', () => {
     }
   });
 
-  /*it('should throw a validation error when the component name is already in use', async () => {
+  it('should throw a validation error when the component name is already in use', async () => {
     try {
-      await createComponent('chatscript');
+      const component = await createComponent('chatscript');
+      component.url = 'anything';
+      await componentService.updateComponent('johndoe', component);
       await createComponent('ChatScript');
     } catch (err) {
       expect(err.errors.name.message).toBe('domain.component.validation.unique_name');
     }
-  });*/
+  });
 
   it('should throw a "component not found" error when passed a wrong component id', async () => {
     try {
@@ -67,10 +69,10 @@ describe('Components', () => {
   it('should update a valid component', async () => {
     const component = await createComponent('chatscript');
     expect(component).toHaveProperty('_id');
-    let id = component._id;
+    const id = component._id;
     let savedComponent = await componentService.findComponentById(id);
     component.name = 'MyNewName';
-    const saved = await componentService.updateComponent('johndoe', component);
+    await componentService.updateComponent('johndoe', component);
     savedComponent = await componentService.findComponentById(id);
     expect(savedComponent.name).toBe('MyNewName');
   });
@@ -78,8 +80,8 @@ describe('Components', () => {
   it('should throw a "forbidden component" error when trying to update a component that doesn\'t belong to me', async () => {
     const component = await createComponent('chatscript');
     expect(component).toHaveProperty('_id');
-    let id = component._id;
-    let savedComponent = await componentService.findComponentById(id);
+    const id = component._id;
+    await componentService.findComponentById(id);
     component.name = 'MyNewName';
     try {
       await componentService.updateComponent('notmine', component);
@@ -92,7 +94,7 @@ describe('Components', () => {
     const component = await createComponent('chatscript');
     expect(component).toHaveProperty('_id');
     expect(component.pictureUrl).toBe('/images/component-default.png');
-    let id = component._id;
+    const id = component._id;
     component.picture = '12345678.jpg';
     await componentService.updateComponent('johndoe', component);
     const savedComponent = await componentService.findComponentById(id);
@@ -199,7 +201,7 @@ describe('Properties', () => {
     let component = await createComponent('chatscript');
     const id = component._id;
     component = await addProperty('johndoe', id, 'host');
-    let property = component.properties[0];
+    const property = component.properties[0];
     property.name = 'port';
     await componentService.updateComponentProperty('johndoe', id, property);
     const savedComponent = await componentService.findComponentById(id);
@@ -210,7 +212,7 @@ describe('Properties', () => {
     let component = await createComponent('chatscript');
     const id = component._id;
     component = await addProperty('johndoe', id, 'host');
-    let property = component.properties[0];
+    const property = component.properties[0];
     property.name = 'port';
     try {
       component = await addProperty('notmine', id, 'host');
@@ -220,7 +222,7 @@ describe('Properties', () => {
   });
 
   it('should throw a "property not found" error when passed a wrong property id', async () => {
-    let component = await createComponent('chatscript');
+    const component = await createComponent('chatscript');
     const id = component._id;
     const property = {
       _id: 'itDoesNotExist',

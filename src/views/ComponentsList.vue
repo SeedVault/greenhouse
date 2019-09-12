@@ -80,6 +80,7 @@
 <script>
 import StarRating from 'vue-star-rating';
 import MyProducts from '@/views/MyProducts.vue';
+
 export default {
   name: 'ComponentsList',
   components: {
@@ -95,11 +96,11 @@ export default {
       page: 1,
       status: '',
       sortBy: 'name',
-      sortType: 'asc'
-    }
+      sortType: 'asc',
+    };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
     doSearch() {
@@ -109,13 +110,16 @@ export default {
     getData() {
       this.fetching = true;
       this.components = [];
-      this.axios.get('/api/components', { params: {
-        page: this.page,
-        search: this.$parent.$parent.search,
-        status: this.status,
-        sortBy: this.sortBy,
-        sortType: this.sortType
-      } } )
+      this.axios.get('/api/components', {
+        params: {
+          username: this.$store.getters.user.username,
+          page: this.page,
+          search: this.$parent.$parent.search,
+          status: this.status,
+          sortBy: this.sortBy,
+          sortType: this.sortType,
+        },
+      })
         .then((results) => {
           this.fetching = false;
           this.pagesCount = results.data.pagesCount;
@@ -136,7 +140,7 @@ export default {
       this.doSearch();
     },
     toggleSortType() {
-      this.sortType = (this.sortType === 'asc'? 'desc': 'asc');
+      this.sortType = (this.sortType === 'asc' ? 'desc' : 'asc');
       this.doSearch();
     },
     jumpToPage(pageNumber) {
@@ -144,8 +148,8 @@ export default {
       this.getData();
     },
     viewComponent(id) {
-      this.$router.push({ name: 'componentsView', params: { id } })
-    }
+      this.$router.push({ name: 'componentsView', params: { id } });
+    },
   },
 };
 </script>
@@ -263,7 +267,6 @@ export default {
     }
   }
 }
-
 
 
 hr {

@@ -1,14 +1,14 @@
 <script>
-import { Line } from 'vue-chartjs'
+import { Line } from 'vue-chartjs';
 
 export default {
   extends: Line,
   props: ['chartdata', 'options'],
-  mounted () {
+  mounted() {
     this.renderChart(this.chartdata, this.options),
-    {responsive: true, maintainAspectRatio: false}
-  }
-}
+    { responsive: true, maintainAspectRatio: false };
+  },
+};
 </script>
 
 <style>

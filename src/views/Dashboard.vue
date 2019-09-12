@@ -12,7 +12,8 @@
               <img src="@/assets/images/seed-icon@2x.svg" />
               {{ balance | toCryptoCurrency() }}
             </div>
-            <balance-chart v-if="!loading" :chartdata="chartBalanceData" :options="chartBalanceOptions" :height="200"></balance-chart>
+            <balance-chart v-if="!loading" :chartdata="chartBalanceData"
+            :options="chartBalanceOptions" :height="200"></balance-chart>
           </div>
         </div>
       </div>
@@ -20,18 +21,22 @@
       <div class="col-lg-5">
         <div class="card box">
           <div class="card-body">
-            <h4 class="card-title" style="margin-bottom: 30px">{{ $t('dashboard.latest_transactions') }}</h4>
+            <h4 class="card-title" style="margin-bottom: 30px">
+              {{ $t('dashboard.latest_transactions') }}</h4>
             <p class="no-transactions" v-if="latestTransactions.length === 0">
               {{ $t('dashboard.there_are_no_transactions') }}
             </p>
-            <table class="table table-responsive-xs transactions__table" v-if="latestTransactions.length > 0">
+            <table class="table table-responsive-xs transactions__table"
+            v-if="latestTransactions.length > 0">
               <tbody>
                 <tr v-for="(transaction, index) in latestTransactions" :key="index">
                   <td>
                     <div class="transactions__date">{{ transaction.date | toDate('short') }}</div>
-                    <div class="transactions__user">{{ transaction.user !== ''? transaction.user: $t('dashboard.unknown') }}</div>
+                    <div class="transactions__user">{{ transaction.user !== ''?
+                      transaction.user: $t('dashboard.unknown') }}</div>
                   </td>
-                  <td>{{ (transaction.sent? $t('dashboard.withdraw'): $t('dashboard.deposit')) }}</td>
+                  <td>{{ (transaction.sent? $t('dashboard.withdraw'):
+                    $t('dashboard.deposit')) }}</td>
                   <template v-if="transaction.sent">
                     <td class="v-if transactions__amount-withdraw">
                       <img src="@/assets/icons/ArrowOut@2x.svg" />
@@ -56,9 +61,8 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import BalanceChart from '../components/BalanceChart.vue';
 import BigNumber from 'bignumber.js';
-import { Line } from 'vue-chartjs';
+import BalanceChart from '../components/BalanceChart.vue';
 
 export default {
   name: 'Dashboard',
@@ -83,14 +87,14 @@ export default {
           {
             // label: 'Data One',
             backgroundColor: '#9bdaa4',
-            data: []
-          }
-        ]
+            data: [],
+          },
+        ],
       },
     };
   },
   created() {
-    this.getData()
+    this.getData();
   },
   methods: {
     getData() {
@@ -103,10 +107,10 @@ export default {
           this.chartBalanceData.labels = [];
           this.chartBalanceData.datasets[0].data = [];
           let balanceHistory = new BigNumber(result.data.balance);
-          let hist = [balanceHistory];
-          for (let i = 0; i < this.latestTransactions.length; i++) {
+          const hist = [balanceHistory];
+          for (let i = 0; i < this.latestTransactions.length; i += 1) {
             // console.log(i, this.latestTransactions[i].amount);
-            let amount = new BigNumber(this.latestTransactions[i].amount);
+            const amount = new BigNumber(this.latestTransactions[i].amount);
             if (this.latestTransactions[i].sent) {
               balanceHistory = balanceHistory.plus(amount);
             } else {
@@ -114,16 +118,16 @@ export default {
             }
             hist.push(balanceHistory);
           }
-          for (let i = this.latestTransactions.length - 1; i >= 0; i--) {
+          for (let i = this.latestTransactions.length - 1; i >= 0; i -= 1) {
             this.chartBalanceData.labels.push(this.$options.filters.toDate(this.latestTransactions[i].date, 'short'));
             this.chartBalanceData.datasets[0].data.push(hist[i]);
           }
         })
-        .catch((error) => {
+        .catch(() => {
           this.loading = false;
           this.oops = true;
         });
-    }
+    },
   },
 };
 </script>

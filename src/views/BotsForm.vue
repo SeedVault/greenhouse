@@ -70,9 +70,9 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="features" id="description" :label="$t('domain.bot.features')"
+                      <input-textarea v-model="features" id="features" :label="$t('domain.bot.features')" :rows="5"
                         :placeholder="$t('domain.bot.description_placeholder')" icon="outline-icon-description-24px.svg"
-                        :validationErrors="validationErrors"></input-text>
+                        :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>
 
@@ -310,16 +310,16 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import PropertyForm from '@/components/PropertyForm.vue';
 import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
+import PropertyForm from '@/components/PropertyForm.vue';
 
 export default {
   name: 'BotsForm',
   components: {
     AppLayout,
     StarRating,
-    PropertyForm
+    PropertyForm,
   },
   data() {
     return {
@@ -378,7 +378,7 @@ export default {
       this.loading = true;
       this.axios.get(`/api/bots/${this.id}`)
         .then((result) => {
-          let ids = [];
+          const ids = [];
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
@@ -390,16 +390,16 @@ export default {
           this.updatedAt = result.data.updatedAt;
           this.botengine = result.data.botEngine;
           ids.push(this.botengine.component);
-          delete(this.botengine['_id']);
+          delete (this.botengine._id);
           this.services = result.data.services;
           for (let i = 0; i < this.services.length; i++) {
             ids.push(this.services[i].component);
-            delete(this.services[i]['_id']);
+            delete (this.services[i]._id);
           }
           this.channels = result.data.channels;
           for (let i = 0; i < this.channels.length; i++) {
             ids.push(this.channels[i].component);
-            delete(this.channels[i]['_id']);
+            delete (this.channels[i]._id);
           }
           this.getCachedComponents(ids);
         })
@@ -409,7 +409,7 @@ export default {
         });
     },
     getCachedComponents(ids) {
-      this.axios.get(`/api/components/lookup`, { params: { ids: ids.join(',') } })
+      this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } })
         .then((results) => {
           for (let i = 0; i < results.data.length; i++) {
             this.cachedComponents.set(results.data[i]._id, results.data[i]);
@@ -435,10 +435,10 @@ export default {
         status: this.status,
         botengine: this.botengine,
         services: this.services,
-        channels: this.channels
+        channels: this.channels,
       })
         .then((result) => {
-          let id = result.data.id;
+          const { id } = result.data;
           this.saving = false;
           this.saved = true;
           this.$router.push({ name: 'botsView', params: { id } });
@@ -458,7 +458,7 @@ export default {
       this.componentType = componentTypeFilter;
       this.search = '';
       this.page = 1;
-      this.sortBy =  'name';
+      this.sortBy = 'name';
       this.sortType = 'asc';
       this.getComponents();
     },
@@ -477,7 +477,7 @@ export default {
       this.doSearch();
     },
     toggleSortType() {
-      this.sortType = (this.sortType === 'asc'? 'desc': 'asc');
+      this.sortType = (this.sortType === 'asc' ? 'desc' : 'asc');
       this.doSearch();
     },
     jumpToPage(pageNumber) {
@@ -487,14 +487,16 @@ export default {
     getComponents() {
       this.fetching = true;
       this.components = [];
-      this.axios.get('/api/components', { params: {
-        page: this.page,
-        componentType: this.componentType,
-        search: this.search,
-        status: 'enabled',
-        sortBy: this.sortBy,
-        sortType: this.sortType
-      } } )
+      this.axios.get('/api/components', {
+        params: {
+          page: this.page,
+          componentType: this.componentType,
+          search: this.search,
+          status: 'enabled',
+          sortBy: this.sortBy,
+          sortType: this.sortType,
+        },
+      })
         .then((results) => {
           this.fetching = false;
           this.pagesCount = results.data.pagesCount;
@@ -509,16 +511,15 @@ export default {
     priceWithFormat(price) {
       if (price === 0) {
         return this.$i18n.t('common.free');
-      } else {
-        return `${price} SEED`;
       }
+      return `${price} SEED`;
     },
     selectComponent(componentId, cType, eMode) {
       this.validationErrorsProperties = [];
       this.editMode = eMode;
       this.fetching = true;
       this.showPropertiesForm = false;
-      this.axios.get('/api/components/' + componentId)
+      this.axios.get(`/api/components/${componentId}`)
         .then((result) => {
           this.fetching = false;
           this.cachedComponents.set(result.data._id, result.data);
@@ -532,7 +533,7 @@ export default {
           }
           // Load current data
           this.currentData = [];
-          switch(cType) {
+          switch (cType) {
             case 'botengine':
               if (this.botengine) {
                 this.currentData = this.botengine.values;
@@ -558,12 +559,12 @@ export default {
           if (typeof this.currentData === 'undefined') {
             this.currentData = [];
           }
-          let currentDataKeys = Object.keys(this.currentData);
-          let currentDataValues = Object.values(this.currentData);
+          const currentDataKeys = Object.keys(this.currentData);
+          const currentDataValues = Object.values(this.currentData);
           // Set values
           this.propertiesData = [];
           for (let i = 0; i < this.properties.length; i++) {
-            let vKey = `_${this.properties[i]._id}`;
+            const vKey = `_${this.properties[i]._id}`;
             let v = '';
             for (let j = 0; j < currentDataKeys.length; j++) {
               if (currentDataKeys[j] === vKey) {
@@ -575,6 +576,9 @@ export default {
             this.properties[i].value = v;
             if (this.properties[i].inputType === 'text') {
               this.properties[i].inputType = 'PropertyInputText';
+            }
+            if (this.properties[i].inputType === 'textarea') {
+              this.properties[i].inputType = 'PropertyInputTextarea';
             }
             if (this.properties[i].inputType === 'select') {
               this.properties[i].inputType = 'PropertyInputSelect';
@@ -589,23 +593,23 @@ export default {
     },
     savePropertiesForm() {
       this.validationErrorsProperties = [];
-      let k = Object.keys(this.propertiesData);
-      let v = Object.values(this.propertiesData);
-      let c = {
+      const k = Object.keys(this.propertiesData);
+      const v = Object.values(this.propertiesData);
+      const c = {
         component: this.componentId,
-        values: {}
+        values: {},
       };
       for (let j = 0; j < k.length; j++) {
         c.values[k[j]] = v[j];
       }
       let isValid = true;
       for (let i = 0; i < this.properties.length; i++) {
-        if (this.properties[i].required === 'yes' && v[i].trim() === '' ) {
-          let id = `_${this.properties[i]._id}`;
+        if (this.properties[i].required === 'yes' && v[i].trim() === '') {
+          const id = `_${this.properties[i]._id}`;
           this.validationErrorsProperties[id] = {
             err: {
-              msg: 'validation.required'
-            }
+              msg: 'validation.required',
+            },
           };
           isValid = false;
         }
@@ -616,7 +620,7 @@ export default {
       this.showPropertiesForm = false;
       this.showComponentList = false;
       let found = false;
-      switch(this.componentType) {
+      switch (this.componentType) {
         case 'botengine':
           this.botengine = Object.assign({}, c);
           break;
@@ -649,16 +653,14 @@ export default {
     cachedComponentName(componentId) {
       if (this.cachedComponents.has(componentId)) {
         return this.cachedComponents.get(componentId).name;
-      } else {
-        return componentId;
       }
+      return componentId;
     },
     cachedComponentPictureUrl(componentId) {
       if (this.cachedComponents.has(componentId)) {
         return this.cachedComponents.get(componentId).pictureUrl;
-      } else {
-        return componentId;
       }
+      return componentId;
     },
     confirmDeleteComponent(componentId, cType) {
       this.$bvModal.msgBoxConfirm(' ', {
@@ -670,11 +672,11 @@ export default {
         cancelTitle: this.$i18n.t('common.no'),
         footerClass: 'p-2',
         hideHeaderClose: true,
-        centered: true
+        centered: true,
       })
-        .then(value => {
+        .then((value) => {
           if (value === true) {
-            switch(cType) {
+            switch (cType) {
               case 'botengine':
                 this.botengine = {};
                 break;
@@ -697,9 +699,9 @@ export default {
             }
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.oops = true;
-        })
+        });
     },
   },
   computed: {
@@ -714,7 +716,7 @@ export default {
       }
       return botCategoryList;
     },
-     botStatuses() {
+    botStatuses() {
       const botStatusList = [];
       for (let i = 0; i < this.allBotStatuses.length; i++) {
         botStatusList.push({
@@ -730,14 +732,13 @@ export default {
     urlToGoBack() {
       if (this.isNew) {
         return { name: 'botsList' };
-      } else {
-        return { name: 'botsView', params: { id: this.id }};
       }
+      return { name: 'botsView', params: { id: this.id } };
     },
     componentTypeContext() {
       return `#${this.componentType}`;
     },
-  }
+  },
 };
 </script>
 

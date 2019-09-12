@@ -14,6 +14,7 @@ const components = {
       const resultsPerPage = 10;
       const page = req.query.page || 1;
       const search = req.query.search || '';
+      let username = req.query.username || '';  // req.user.username
       let componentType = req.query.componentType || '';
       if (componentType !== 'botengine' && componentType !== 'service' && componentType !== 'channel') {
         componentType = '';
@@ -33,7 +34,7 @@ const components = {
       const data = await ComponentService.findPaginatedComponents(
         resultsPerPage,
         page,
-        req.user.username,
+        username,
         search,
         componentType,
         status,

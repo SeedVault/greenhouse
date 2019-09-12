@@ -94,6 +94,17 @@ const router = new Router({
           name: 'marketplace',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/Marketplace.vue'),
           meta: { authenticated: true },
+          children: [{
+            path: 'bots',
+            name: 'marketplaceBotsList',
+            component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsList.vue'),
+          }],
+        },
+        {
+          path: 'subscriptionsList',
+          name: 'subscriptionsList',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/SubscriptionsList.vue'),
+          meta: { authenticated: true },
         },
         {
           path: 'privacy',

@@ -78,6 +78,7 @@
     },
     "property_input_types": {
       "text": "Línea de texto",
+      "textarea": "Varias líneas de texto",
       "select": "Lista de opciones"
     },
     "bot": {
@@ -146,6 +147,7 @@
   "app": {
     "dashboard": "Inicio",
     "my_products": "Mis productos",
+    "my_subscriptions": "Mis suscripciones",
     "receive": "Recibir",
     "privacy": "Privacidad",
     "marketplace": "Marketplace",

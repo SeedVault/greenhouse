@@ -45,7 +45,7 @@
     "seedtoken-api-client": "file:../seedtoken-api-client",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
-    "vue-i18n": "^8.14.0",
+    "vue-i18n": "^8.14.1",
     "vue-router": "^3.1.3",
     "vue-star-rating": "^1.6.1",
     "vuedraggable": "^2.23.0",
@@ -63,7 +63,7 @@
     "jest": "^24.9.0",
     "jquery": "^3.4.1",
     "nodemon": "^1.19.2",
-    "sass": "^1.22.10",
+    "sass": "^1.22.12",
     "sass-loader": "^7.3.1",
     "vue-cli-plugin-i18n": "^0.6.0",
     "vue-template-compiler": "^2.6.10"

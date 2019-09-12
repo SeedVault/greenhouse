@@ -10,25 +10,31 @@
                   <ul class="nav menu">
                     <li class="nav-item">
                       <router-link class="nav-link" :to="{ name: 'botsList' }">
-                        <img :src="require('@/assets/icons/outline-bot-icon-24.svg')" /> {{ $t('products.bots') }}
+                        <img :src="require('@/assets/icons/outline-bot-icon-24.svg')" />
+                        {{ $t('products.bots') }}
                       </router-link>
                     </li>
                     <li class="nav-item">
                       <router-link class="nav-link" :to="{ name: 'componentsList' }">
-                        <img :src="require('@/assets/icons/outline-component-24px.svg')" /> {{ $t('products.components') }}
+                        <img :src="require('@/assets/icons/outline-component-24px.svg')" />
+                        {{ $t('products.components') }}
                       </router-link>
                     </li>
                   </ul>
                 </div>
                 <div class="col-12 col-sm-2 mb-2">
-                  <button @click.prevent="addNew" class="btn btn-primary medium-size">+ {{ $t('common.add_new') }}</button>
+                  <button @click.prevent="addNew" class="btn btn-primary medium-size">+
+                    {{ $t('common.add_new') }}</button>
                 </div>
                 <div class="col-12 col-sm-4 mb-2">
                   <div class="input-group">
-                    <input type="text" v-model="search" class="form-control medium-size" :placeholder="$t('common.search')"
+                    <input type="text" v-model="search" class="form-control medium-size"
+                    :placeholder="$t('common.search')"
                     v-on:keydown.enter.prevent="doSearch" @blur="searchBlur" @focus="searchFocus">
                     <div class="input-group-append">
-                      <span v-bind:class="{'input-group-text': true, 'search-button': !focusOnSearch, 'search-button-focused': focusOnSearch }" @click.prevent="doSearch">
+                      <span v-bind:class="{'input-group-text': true,
+                      'search-button': !focusOnSearch, 'search-button-focused': focusOnSearch }"
+                      @click.prevent="doSearch">
                         <template v-if="focusOnSearch">
                           <img :src="require('@/assets/icons/outline-search-white-24px.svg')" />
                         </template>
@@ -65,7 +71,7 @@ export default {
     return {
       search: '',
       focusOnSearch: false,
-    }
+    };
   },
   methods: {
     searchFocus() {
@@ -85,9 +91,11 @@ export default {
         case 'botsList':
           this.$router.push({ name: 'botsForm' });
           break;
+        default:
+          // do nothing
       }
     },
-  }
+  },
 };
 </script>
 
@@ -147,7 +155,8 @@ export default {
       color: #6b4c9f;
       font-weight: 500;
       img {
-        filter: invert(38%) sepia(13%) saturate(2389%) hue-rotate(221deg) brightness(75%) contrast(92%);
+        filter: invert(38%) sepia(13%) saturate(2389%) hue-rotate(221deg)
+        brightness(75%) contrast(92%);
       }
     }
 
@@ -155,7 +164,8 @@ export default {
       color: #6b4c9f;
       font-weight: 500;
       img {
-        filter: invert(38%) sepia(13%) saturate(2389%) hue-rotate(221deg) brightness(75%) contrast(92%);
+        filter: invert(38%) sepia(13%) saturate(2389%) hue-rotate(221deg)
+        brightness(75%) contrast(92%);
       }
     }
   }

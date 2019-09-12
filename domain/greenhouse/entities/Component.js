@@ -11,7 +11,7 @@ const PropertySchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     enum:  {
-      values: ['select', 'text'],
+      values: ['select', 'text', 'textarea'],
       message: 'validation.option'
     },
     trim: true,

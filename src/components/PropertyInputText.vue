@@ -16,6 +16,6 @@
 <script>
 export default {
   name: 'PropertyInputText',
-  props: ['id', 'name', 'label', 'value', 'validationErrors']
-}
+  props: ['id', 'name', 'label', 'value', 'validationErrors'],
+};
 </script>

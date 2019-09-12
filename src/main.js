@@ -3,11 +3,13 @@ import BootstrapVue from 'bootstrap-vue';
 import 'seed-theme/src/styles/seed.scss';
 import Icon from 'seed-theme/src/components/Icon.vue';
 import InputText from 'seed-theme/src/components/InputText.vue';
+import InputTextarea from 'seed-theme/src/components/InputTextarea.vue';
 import InputPassword from 'seed-theme/src/components/InputPassword.vue';
 import InputSelect from 'seed-theme/src/components/InputSelect.vue';
 import InputCheckbox from 'seed-theme/src/components/InputCheckbox.vue';
 import LocaleChanger from 'seed-theme/src/components/LocaleChanger.vue';
 import IconInsideInput from 'seed-theme/src/components/IconInsideInput.vue';
+import IconInsideTextarea from 'seed-theme/src/components/IconInsideTextarea.vue';
 import ValidationBox from 'seed-theme/src/components/ValidationBox.vue';
 import ValidationMessages from 'seed-theme/src/components/ValidationMessages.vue';
 import Oops from 'seed-theme/src/components/Oops.vue';
@@ -23,7 +25,9 @@ import i18n from './i18n';
 Vue.component('icon', Icon);
 Vue.component('input-select', InputSelect);
 Vue.component('icon-inside-input', IconInsideInput);
+Vue.component('icon-inside-textarea', IconInsideTextarea);
 Vue.component('input-text', InputText);
+Vue.component('input-textarea', InputTextarea);
 Vue.component('input-password', InputPassword);
 Vue.component('input-checkbox', InputCheckbox);
 Vue.component('locale-changer', LocaleChanger);
@@ -46,7 +50,7 @@ Vue.prototype.normalizeErrors = (errors) => {
 };
 
 // Global filters
-Vue.filter('toCryptoCurrency', function (value) {
+Vue.filter('toCryptoCurrency', (value) => {
   value = value.toString();
   let sInt = '';
   let sDec = '';
@@ -55,7 +59,7 @@ Vue.filter('toCryptoCurrency', function (value) {
   if (!value.includes('.')) {
     sInt = value;
   } else {
-    let parts = value.split('.');
+    const parts = value.split('.');
     sInt = parts[0];
     sDec = parts[1];
   }
@@ -63,7 +67,7 @@ Vue.filter('toCryptoCurrency', function (value) {
     thousandsSeparator = '.';
     decimalSeparator = ',';
   }
-  let s = sInt.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + thousandsSeparator);
+  let s = sInt.replace(/(\d)(?=(\d{3})+(?!\d))/g, `$1${thousandsSeparator}`);
   if (sDec !== '') {
     s += decimalSeparator + sDec;
   }
@@ -72,13 +76,13 @@ Vue.filter('toCryptoCurrency', function (value) {
 });
 
 
-Vue.filter('toDate', function (value, format) {
-  let date = new Date(value);
+Vue.filter('toDate', (value, format) => {
+  const date = new Date(value);
   let locale = 'en-US';
   if (i18n.locale === 'es') {
     locale = 'es-AR';
   }
-  switch(format) {
+  switch (format) {
     case 'short':
       return date.toLocaleDateString(locale);
     default:
@@ -86,24 +90,24 @@ Vue.filter('toDate', function (value, format) {
   }
 });
 
-Vue.filter('toCurrency', function (value, decimals) {
+Vue.filter('toCurrency', (value, decimals) => {
   if (!value) return '';
   if (typeof value !== 'number') {
     return value;
   }
   if (!decimals) {
-    decimals = 0
+    decimals = 0;
   }
   if (typeof decimals !== 'number') {
-    decimals = 0
+    decimals = 0;
   }
-  var formatter = new Intl.NumberFormat('en-US', {
+  const formatter = new Intl.NumberFormat('en-US', {
     style: 'decimal',
     currency: 'USD',
     minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
-  })
-  return formatter.format(value)
+    maximumFractionDigits: decimals,
+  });
+  return formatter.format(value);
 });
 
 new Vue({

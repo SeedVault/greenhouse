@@ -78,6 +78,7 @@
     },
     "property_input_types": {
       "text": "Single line of text",
+      "textarea": "Many lines of text",
       "select": "List of options"
     },
     "bot": {
@@ -146,6 +147,7 @@
   "app": {
     "dashboard": "Dashboard",
     "my_products": "My products",
+    "my_subscriptions": "My subscriptions",
     "receive": "Receive",
     "privacy": "Privacy",
     "marketplace": "Marketplace",

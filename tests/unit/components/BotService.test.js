@@ -1,12 +1,10 @@
 import {
-  ComponentService as componentService, ComponentNotFoundError,
-  ForbiddenComponentError, PropertyNotFoundError,
+  ComponentService as componentService,
 } from '../../../domain/greenhouse/services/ComponentService';
 import {
   BotService as botService, BotNotFoundError, ForbiddenBotError,
   BotEngineRequiredError, ChannelRequiredError,
 } from '../../../domain/greenhouse/services/BotService';
-import { Config } from '@jest/types';
 
 async function createComponent(name, componentType) {
   const noSpaces = name.replace(/\s/g, '');
@@ -37,36 +35,36 @@ async function addProperty(id, propertyName) {
 }
 
 async function createAllComponents() {
-  let allComponents = [];
+  const allComponents = [];
   // if (typeof allComponents.chatscript === 'undefined') {
-    allComponents.chatscript = await createComponent('ChatScript', 'botengine');
-    allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Bot ID');
-    allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Host');
-    allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Port');
-    allComponents.accuWeather = await createComponent('AccuWeather', 'service');
-    allComponents.accuWeather = await addProperty(allComponents.accuWeather._id, 'API Key');
-    allComponents.googleTranslate = await createComponent('Google Translate', 'service');
-    allComponents.telegram = await createComponent('Telegram', 'channel');
-    allComponents.telegram = await addProperty(allComponents.telegram._id, 'Token');
+  allComponents.chatscript = await createComponent('ChatScript', 'botengine');
+  allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Bot ID');
+  allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Host');
+  allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Port');
+  allComponents.accuWeather = await createComponent('AccuWeather', 'service');
+  allComponents.accuWeather = await addProperty(allComponents.accuWeather._id, 'API Key');
+  allComponents.googleTranslate = await createComponent('Google Translate', 'service');
+  allComponents.telegram = await createComponent('Telegram', 'channel');
+  allComponents.telegram = await addProperty(allComponents.telegram._id, 'Token');
   // }
   return allComponents;
 }
 
 async function createBot(name, components) {
-  let chatscriptValues = new Map();
+  const chatscriptValues = new Map();
   chatscriptValues.set(`_${components.chatscript.properties[0]._id}`, 'myId');
   chatscriptValues.set(`_${components.chatscript.properties[1]._id}`, 'http://127.0.0.1');
   chatscriptValues.set(`_${components.chatscript.properties[2]._id}`, '1024');
-  let accuWeatherValues = new Map();
+  const accuWeatherValues = new Map();
   accuWeatherValues.set(`_${components.accuWeather.properties[0]._id}`, 'myAccuWeatherKey');
-  let googleTranslateValues = new Map();
-  let telegramValues = new Map();
+  const googleTranslateValues = new Map();
+  const telegramValues = new Map();
   telegramValues.set(`_${components.telegram.properties[0]._id}`, 'telegram3itqF3eoXaY');
   const bot = await botService.createBot(
     'general',
     name,
     'This is my bot',
-    `Features of my bot`,
+    'Features of my bot',
     0,
     'enabled',
     'johndoe',
@@ -137,10 +135,10 @@ describe('Bots', () => {
     const components = await createAllComponents();
     const bot = await createBot('my bot', components);
     expect(bot).toHaveProperty('_id');
-    let id = bot._id;
+    const id = bot._id;
     let savedBot = await botService.findBotById(id);
     bot.name = 'MyNewName';
-    const saved = await botService.updateBot('johndoe', bot);
+    await botService.updateBot('johndoe', bot);
     savedBot = await botService.findBotById(id);
     expect(savedBot.name).toBe('MyNewName');
   });
@@ -150,8 +148,8 @@ describe('Bots', () => {
     const components = await createAllComponents();
     const bot = await createBot('my bot', components);
     expect(bot).toHaveProperty('_id');
-    let id = bot._id;
-    let savedBot = await botService.findBotById(id);
+    const id = bot._id;
+    await botService.findBotById(id);
     bot.name = 'MyNewName';
     try {
       await botService.updateBot('notmine', bot);
@@ -165,7 +163,7 @@ describe('Bots', () => {
     const bot = await createBot('my bot', components);
     expect(bot).toHaveProperty('_id');
     expect(bot.pictureUrl).toBe('/images/bot-default.png');
-    let id = bot._id;
+    const id = bot._id;
     bot.picture = '12345678.jpg';
     await botService.updateBot('johndoe', bot);
     const savedBot = await botService.findBotById(id);
