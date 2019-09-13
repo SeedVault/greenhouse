@@ -4,8 +4,9 @@ let helmet = require('helmet');
 var db = require('../domain/services/database');
 let csrf = require('csurf');
 let passport = require('passport');
-let session = require('express-session');
-let redisStoreProto = require('connect-redis');
+const redis = require('redis')
+const session = require('express-session')
+let RedisStore = require('connect-redis')(session)
 let api = require('./controllers/api');
 let components = require('./controllers/components');
 let bots = require('./controllers/bots');
@@ -36,7 +37,18 @@ const availableLocales = ['en', 'es'];
 // const locale = ':locale(' + availableLocales.join('|') + ')';
 module.exports = function(app) {
 
-  const RedisStore = redisStoreProto(session);
+  // Redis
+  let redisClient = redis.createClient({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+    password: process.env.REDIS_PASSWORD,
+    db: 1,
+  });
+  redisClient.unref();
+  redisClient.on('error', console.log);
+
+  // let redisStore = new RedisStore({ redisClient });
+
   // const { ensureLoggedIn } = require('connect-ensure-login');
   // const cors = require('cors');
   const client = require('passport-seed-accounts/lib');
@@ -67,12 +79,7 @@ module.exports = function(app) {
   app.use(session(
     {
       secret: process.env.ACCOUNTS_SESSION_SECRET,
-      store: new RedisStore({
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT,
-        pass: process.env.REDIS_PASSWORD,
-        // ttl: 260,
-      }),
+      store: new RedisStore({ client: redisClient }),
       resave: false,
       saveUninitialized: true,
     },
