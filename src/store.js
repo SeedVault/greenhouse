@@ -48,7 +48,7 @@ export default new Vuex.Store({
       {
         text: 'apps.accounts',
         icon: 'outline-app-24px@2x.svg',
-        url: `${process.env.NODE_ENV === 'production' ? 'https://accounts.seedtoken.io' : 'https://127.0.0.1:9000'}/{{ locale }}/sign-in`,
+        url: `${process.env.NODE_ENV === 'production' ? 'https://accounts.seedtoken.io' : 'https://127.0.0.1:9000'}/{{ locale }}/profile`,
       },
       {
         text: 'apps.wallet',
