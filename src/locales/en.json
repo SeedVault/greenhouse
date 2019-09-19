@@ -149,7 +149,7 @@
     "my_products": "My products",
     "my_subscriptions": "My subscriptions",
     "receive": "Receive",
-    "privacy": "Privacy",
+    "privacy": "My Data",
     "marketplace": "Marketplace",
     "transactions": "Transactions",
     "settings": "Settings",
@@ -157,7 +157,7 @@
     "sign_out": "Sign Out"
   },
   "apps": {
-    "accounts": "Accounts",
+    "accounts": "My Account",
     "wallet": "Wallet",
     "greenhouse": "Greenhouse"
   },
