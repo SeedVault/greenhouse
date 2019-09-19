@@ -149,7 +149,7 @@
     "my_products": "Mis productos",
     "my_subscriptions": "Mis suscripciones",
     "receive": "Recibir",
-    "privacy": "Privacidad",
+    "privacy": "Mis Datos",
     "marketplace": "Marketplace",
     "transactions": "Transacciones",
     "settings": "Opciones",
@@ -157,7 +157,7 @@
     "sign_out": "Salir"
   },
   "apps": {
-    "accounts": "Accounts",
+    "accounts": "Mi Cuenta",
     "wallet": "Wallet",
     "greenhouse": "Greenhouse"
   },
