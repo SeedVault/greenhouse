@@ -77,16 +77,33 @@
                   </div>
 
                   <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <input-text v-model="price" id="price" :label="$t('domain.bot.price')"
-                        :placeholder="$t('domain.bot.price_placeholder')" icon="outline-coin-24px@2x.svg"
+                    <div class="form-group col-md-4">
+                      <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
+                        :label="$t('domain.bot.pricing_model')"
+                        icon="outline-icon-types-24px.svg"
+                        :validationErrors="validationErrors"></input-select>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <input-text v-show="pricingModel==='paid'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
+                        :placeholder="$t('domain.bot.price_per_use')" icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
+                      <input-text v-show="pricingModel==='paid'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
+                        :placeholder="$t('domain.bot.price_per_month')" icon="outline-coin-24px@2x.svg"
+                        :validationErrors="validationErrors"></input-text>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
                       <input-select v-model="status" :options="botStatuses" id="status"
                         :label="$t('domain.bot.status')"
                         icon="outline-icon-toggle-24px.svg"
                         :validationErrors="validationErrors"></input-select>
+                    </div>
+                    <div class="form-group col-md-8">
+
                     </div>
                   </div>
 
@@ -249,7 +266,7 @@
                   </div>
                   <div class="col-sm-2 align-self-center text-right">
                     <div class="list__price">
-                      {{ priceWithFormat(component.price) }}
+                      {{ priceWithFormat(component.pricingModel, component.pricePerUse, component.pricePerMonth) }}
                     </div>
                   </div>
                   <div class="col-sm-2 align-self-center">
@@ -332,7 +349,9 @@ export default {
       name: '',
       description: '',
       features: '',
-      price: '',
+      pricingModel: 'free',
+      pricePerUse: '',
+      pricePerMonth: '',
       status: 'enabled',
       botengine: {},
       services: [],
@@ -383,7 +402,9 @@ export default {
           this.name = result.data.name;
           this.description = result.data.description;
           this.features = result.data.features;
-          this.price = result.data.price;
+          this.pricingModel = result.data.pricingModel;
+          this.pricePerUse = result.data.pricePerUse;
+          this.pricePerMonth = result.data.pricePerMonth;
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.username = result.data.username;
@@ -425,13 +446,19 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
+      if (this.pricingModel === 'free') {
+        this.pricePerUse = '0';
+        this.pricePerMonth = '0';
+      }
       this.axios.post('/api/bots/save', {
         id: this.id,
         category: this.category,
         name: this.name,
         description: this.description,
         features: this.features,
-        price: this.price,
+        pricingModel: this.pricingModel,
+        pricePerUse: this.pricePerUse,
+        pricePerMonth: this.pricePerMonth,
         status: this.status,
         botengine: this.botengine,
         services: this.services,
@@ -508,11 +535,13 @@ export default {
           this.oops = true;
         });
     },
-    priceWithFormat(price) {
-      if (price === 0) {
+    priceWithFormat(pricingModel, pricePerUse, pricePerMonth) {
+      if (pricingModel === 'free') {
         return this.$i18n.t('common.free');
+      } else {
+        return `${pricePerUse} SEED/use or ${pricePerMonth} SEED/month`;
       }
-      return `${price} SEED`;
+
     },
     selectComponent(componentId, cType, eMode) {
       this.validationErrorsProperties = [];
@@ -705,7 +734,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allBotCategories', 'allBotStatuses']),
+    ...mapGetters(['allBotCategories', 'allBotStatuses', 'allPricingModels']),
     botCategories() {
       const botCategoryList = [];
       for (let i = 0; i < this.allBotCategories.length; i++) {
@@ -725,6 +754,16 @@ export default {
         });
       }
       return botStatusList;
+    },
+    pricingModels() {
+      const pricingModelList = [];
+      for (let i = 0; i < this.allPricingModels.length; i++) {
+        pricingModelList.push({
+          value: this.allPricingModels[i],
+          text: this.$i18n.t(`domain.pricing_models.${this.allPricingModels[i]}`),
+        });
+      }
+      return pricingModelList;
     },
     isNew() {
       return (this.id === '');

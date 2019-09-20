@@ -30,7 +30,19 @@
               <div class="col-md-7">
                 <h1 class="view__title">{{ name }}</h1>
                 <p>by <strong>{{ username }}</strong></p>
-                <p>{{ $t("domain.component.price") }}: <strong>{{ price }} SEED</strong></p>
+                <div v-if="pricingModel === 'free'">
+                  <p>{{ $t("domain.bot.price") }}: <strong>
+                  {{ $t('common.free') }}
+                  </strong></p>
+                </div>
+                <div v-else>
+                  <p>{{ $t("domain.bot.price_per_use") }}: <strong>
+                    {{ pricePerUse }} SEED
+                  </strong></p>
+                  <p>{{ $t("domain.bot.price_per_month") }}: <strong>
+                    {{ pricePerMonth }} SEED
+                  </strong></p>
+                </div>
                 <p>
                   {{ $t("domain.component.category") }}:
                   {{ $t(`domain.component_categories.${category}`) }}
@@ -202,7 +214,9 @@ export default {
       functionName: '',
       url: '',
       pictureUrl: '',
-      price: '',
+      pricingModel: 'free',
+      pricePerUse: '',
+      pricePerMonth: '',
       status: 'enabled',
       picture: '',
       properties: [],
@@ -237,7 +251,9 @@ export default {
           this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
-          this.price = result.data.price;
+          this.pricingModel = result.data.pricingModel;
+          this.pricePerUse = result.data.pricePerUse;
+          this.pricePerMonth = result.data.pricePerMonth;
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.properties = result.data.properties;

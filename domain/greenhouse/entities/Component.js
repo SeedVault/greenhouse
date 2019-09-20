@@ -93,7 +93,25 @@ const ComponentSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
-  price: {
+  pricingModel: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['free', 'paid'],
+      message: 'validation.option'
+    },
+    trim: true,
+    index: true,
+  },
+  pricePerUse: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+    index: true
+  },
+  pricePerMonth: {
     type: Number,
     min: [0, 'validation.option'],
     max: [9999, 'validation.option'],

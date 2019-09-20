@@ -39,6 +39,9 @@
       "url_placeholder": "URL",
       "price": "Precio",
       "price_placeholder": "Precio",
+      "pricing_model": "Modelo de precios",
+      "price_per_use": "Precio por uso", 
+      "price_per_month": "Precio por mes",
       "status": "Status",
       "properties": "Propiedades",
       "validation": {
@@ -48,6 +51,10 @@
         "unique_key": "Nombre del componente para serialización ya existe.",
         "unique_functionName": "Ese nombre de función ya existe."
       }
+    },
+    "pricing_models": {
+      "free": "Gratis",
+      "paid": "Pago"
     },
     "component_categories": {
       "general": "General",
@@ -91,6 +98,9 @@
       "features_placeholder": "Características",
       "price": "Precio",
       "price_placeholder": "Precio",
+      "pricing_model": "Modelo de precios",
+      "price_per_use": "Precio por uso", 
+      "price_per_month": "Precio por mes",
       "status": "Status",
       "bot_engine": "Bot Engine",
       "services": "Servicios",

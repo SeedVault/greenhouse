@@ -14,6 +14,8 @@ async function createComponent(name) {
     `${fn}`,
     `${fn}Fn`,
     `https:/www.${noSpaces.toLowerCase()}.com`,
+    'free',
+    0,
     0,
     'enabled',
     'johndoe',

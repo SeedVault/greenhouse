@@ -28,8 +28,8 @@ class PropertyNotFoundError extends ValidationError {
 
 const ComponentService = {
 
-  createComponent: async (componentType, category, name, description, key, functionName, url, price,
-    status, username) => {
+  createComponent: async (componentType, category, name, description, key, functionName, url,
+    pricingModel, pricePerUse, pricePerMonth, status, username) => {
       let component = new Component({
         componentType,
         category,
@@ -38,7 +38,9 @@ const ComponentService = {
         key,
         functionName,
         url,
-        price,
+        pricingModel,
+        pricePerUse,
+        pricePerMonth,
         status,
         username
       });
@@ -47,7 +49,7 @@ const ComponentService = {
   },
 
   updateComponent: async (username, component) => {
-    const savedComponent = await ComponentService.findMyComponentById(username, component._id);
+    await ComponentService.findMyComponentById(username, component._id);
     return await component.save();
   },
 

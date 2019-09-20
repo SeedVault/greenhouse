@@ -30,7 +30,21 @@
               <div class="col-md-7">
                 <h1 class="view__title">{{ name }}</h1>
                 <p>by <strong>{{ username }}</strong></p>
-                <p>{{ $t("domain.bot.price") }}: <strong>{{ price }} SEED</strong></p>
+
+                <div v-if="pricingModel === 'free'">
+                  <p>{{ $t("domain.bot.price") }}: <strong>
+                  {{ $t('common.free') }}
+                  </strong></p>
+                </div>
+                <div v-else>
+                  <p>{{ $t("domain.bot.price_per_use") }}: <strong>
+                    {{ pricePerUse }} SEED
+                  </strong></p>
+                  <p>{{ $t("domain.bot.price_per_month") }}: <strong>
+                    {{ pricePerMonth }} SEED
+                  </strong></p>
+                </div>
+
                 <p>
                   {{ $t("domain.bot.category") }}:
                   {{ $t(`domain.bot_categories.${category}`) }}
@@ -112,7 +126,9 @@ export default {
       description: '',
       features: '',
       pictureUrl: '',
-      price: '',
+      pricingModel: 'free',
+      pricePerUse: '',
+      pricePerMonth: '',
       status: 'enabled',
       picture: '',
       username: '',
@@ -135,7 +151,9 @@ export default {
           this.name = result.data.name;
           this.description = result.data.description;
           this.features = result.data.features;
-          this.price = result.data.price;
+          this.pricingModel = result.data.pricingModel;
+          this.pricePerUse = result.data.pricePerUse;
+          this.pricePerMonth = result.data.pricePerMonth;
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.pictureUrl = result.data.pictureUrl;

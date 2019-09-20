@@ -84,14 +84,27 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <input-text v-model="functionName" id="functionName" :label="$t('domain.component.function_name')"
-                        :placeholder="$t('domain.component.function_name_placeholder')" icon="outline-icon-function-24px.svg"
+                      <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
+                        :label="$t('domain.component.pricing_model')"
+                        icon="outline-icon-types-24px.svg"
+                        :validationErrors="validationErrors"></input-select>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <input-text v-show="pricingModel==='paid'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
+                        :placeholder="$t('domain.component.price_per_use')" icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
-
                     <div class="form-group col-md-4">
-                      <input-text v-model="price" id="price" :label="$t('domain.component.price')"
-                        :placeholder="$t('domain.component.price_placeholder')" icon="outline-coin-24px@2x.svg"
+                      <input-text v-show="pricingModel==='paid'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
+                        :placeholder="$t('domain.component.price_per_month')" icon="outline-coin-24px@2x.svg"
+                        :validationErrors="validationErrors"></input-text>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-8">
+                      <input-text v-model="functionName" id="functionName" :label="$t('domain.component.function_name')"
+                        :placeholder="$t('domain.component.function_name_placeholder')" icon="outline-icon-function-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
 
@@ -145,7 +158,10 @@ export default {
       key: '',
       functionName: '',
       url: '',
-      price: '',
+      pricingModel: 'free',
+      pricePerUse: '',
+      pricePerMonth: '',
+
       status: 'enabled',
       validationErrors: [],
     };
@@ -171,7 +187,9 @@ export default {
           this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
-          this.price = result.data.price;
+          this.pricingModel = result.data.pricingModel;
+          this.pricePerUse = result.data.pricePerUse;
+          this.pricePerMonth = result.data.pricePerMonth;
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.username = result.data.username;
@@ -186,6 +204,10 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
+      if (this.pricingModel === 'free') {
+        this.pricePerUse = '0';
+        this.pricePerMonth = '0';
+      }
       this.axios.post('/api/components/save', {
         id: this.id,
         componentType: this.componentType,
@@ -195,7 +217,9 @@ export default {
         key: this.key,
         functionName: this.functionName,
         url: this.url,
-        price: this.price,
+        pricingModel: this.pricingModel,
+        pricePerUse: this.pricePerUse,
+        pricePerMonth: this.pricePerMonth,
         status: this.status,
       })
         .then((result) => {
@@ -215,7 +239,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allComponentTypes', 'allComponentCategories', 'allComponentStatuses']),
+    ...mapGetters(['allComponentTypes', 'allComponentCategories', 'allComponentStatuses', 'allPricingModels']),
     componentTypes() {
       const componentTypeList = [];
       for (let i = 0; i < this.allComponentTypes.length; i++) {
@@ -245,6 +269,16 @@ export default {
         });
       }
       return componentStatusList;
+    },
+    pricingModels() {
+      const pricingModelList = [];
+      for (let i = 0; i < this.allPricingModels.length; i++) {
+        pricingModelList.push({
+          value: this.allPricingModels[i],
+          text: this.$i18n.t(`domain.pricing_models.${this.allPricingModels[i]}`),
+        });
+      }
+      return pricingModelList;
     },
     isNew() {
       return (this.id === '');

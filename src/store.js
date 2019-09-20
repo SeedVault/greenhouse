@@ -17,6 +17,7 @@ export default new Vuex.Store({
     allPropertyInputTypes: ['select', 'text', 'textarea'],
     allBotCategories: ['general', 'weather'],
     allBotStatuses: ['enabled', 'disabled'],
+    allPricingModels: ['free', 'paid'],
     menu: [
       {
         text: 'app.dashboard',
@@ -71,6 +72,7 @@ export default new Vuex.Store({
     allPropertyInputTypes: state => state.allPropertyInputTypes,
     allBotCategories: state => state.allBotCategories,
     allBotStatuses: state => state.allBotStatuses,
+    allPricingModels: state => state.allPricingModels,
   },
   mutations: {
     SET_LANG(state, params) {

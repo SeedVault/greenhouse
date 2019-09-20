@@ -59,8 +59,8 @@ const BotService = {
     }
   },
 
-  createBot: async (category, name, description, features, price, status, username,
-    botEngineParams, servicesParams, channelsParams) => {
+  createBot: async (category, name, description, features, pricingModel, pricePerUse,
+    pricePerMonth, status, username, botEngineParams, servicesParams, channelsParams) => {
     const botEngine = await BotService.createConfig(botEngineParams);
     let services = [];
     for (let i = 0; i < servicesParams.length; i++) {
@@ -75,7 +75,9 @@ const BotService = {
       name,
       description,
       features,
-      price,
+      pricingModel,
+      pricePerUse,
+      pricePerMonth,
       status,
       username,
       botEngine,
@@ -88,7 +90,7 @@ const BotService = {
 
   updateBot: async (username, bot) => {
     await BotService.checkComponents(bot);
-    const savedBot = await BotService.findMyBotById(username, bot._id);
+    await BotService.findMyBotById(username, bot._id);
     return await bot.save();
   },
 
@@ -142,7 +144,7 @@ const BotService = {
   },
 
   deleteBotById: async (username, id) => {
-    let bot = await BotService.findMyBotById(username, id);
+    await BotService.findMyBotById(username, id);
     return await Bot.deleteOne({_id: id});
   },
 

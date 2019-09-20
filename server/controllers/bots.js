@@ -72,7 +72,9 @@ const bots = {
           req.body.name,
           req.body.description,
           req.body.features,
-          req.body.price,
+          req.body.pricingModel,
+          req.body.pricePerUse,
+          req.body.pricePerMonth,
           req.body.status,
           req.user.username,
           botengine,
@@ -86,7 +88,9 @@ const bots = {
         bot.name = req.body.name;
         bot.description = req.body.description;
         bot.features = req.body.features;
-        bot.price = req.body.price;
+        bot.pricingModel = req.body.pricingModel;
+        bot.pricePerUse = req.body.pricePerUse;
+        bot.pricePerMonth = req.body.pricePerMonth;
         bot.status = req.body.status;
         bot.botEngine = botengine;
         bot.services = services;

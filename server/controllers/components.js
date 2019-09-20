@@ -63,7 +63,9 @@ const components = {
           req.body.key,
           req.body.functionName,
           req.body.url,
-          req.body.price,
+          req.body.pricingModel,
+          req.body.pricePerUse,
+          req.body.pricePerMonth,
           req.body.status,
           req.user.username
         );
@@ -77,7 +79,9 @@ const components = {
         component.key = req.body.key,
         component.functionName = req.body.functionName;
         component.url = req.body.url;
-        component.price = req.body.price;
+        component.pricingModel = req.body.pricingModel;
+        component.pricePerUse = req.body.pricePerUse;
+        component.pricePerMonth = req.body.pricePerMonth;
         component.status = req.body.status;
         await ComponentService.updateComponent(req.user.username, component);
       }
