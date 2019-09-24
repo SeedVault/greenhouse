@@ -44,6 +44,9 @@
       "price_per_month": "Precio por mes",
       "status": "Status",
       "properties": "Propiedades",
+      "headers": "Headers",
+      "predefinedVars": "Predefined vars",
+      "mappedVars": "Mapped vars",
       "validation": {
         "component_not_found": "Componente no hallado",
         "forbidden_component": "No tienes acceso a este componente",
@@ -73,15 +76,21 @@
     "property": {
       "name": "Nombre",
       "name_placeholder": "Debe comenzar con una letra o guión bajo y puede contener letras, números y guiones bajos",
+      "value_type": "Tipo de valor",
       "input_type": "Tipo de control",
       "required": "Obligatorio",
       "options": "Lista de opciones",
       "options_placeholder": "Ingresa las opciones de la lista separadas por coma (ej: queso, vino tino, manzana)",
-      "key": "Nombre para serialización",
-      "key_placeholder": "Nombre de la propiedad para serialización (ej: mi_propiedad)",
+      "value": "Valor",
+      "value_placeholder": "Ingresa el valor",
       "validation": {
         "property_not_found": "Propiedad no hallada"
       }
+    },
+    "property_value_types": {
+      "fixed": "Valor fijo",
+      "developer": "El bot developer ingresa el valor",
+      "publisher": "El publisher ingresa el valor"
     },
     "property_input_types": {
       "text": "Línea de texto",
@@ -152,7 +161,8 @@
     "save_picture": "Guardar imagen",
     "choose_from_list": "Elegir de la lista",
     "free": "Gratis",
-    "get": "Usar"
+    "get": "Usar",
+    "subscription_type": "Tipo de suscripción"
   },
   "app": {
     "dashboard": "Inicio",

@@ -133,9 +133,22 @@ const ComponentService = {
     return err;
   },
 
-  addComponentProperty: async (username, id, property) => {
+  addComponentProperty: async (username, id, property, propertyGroup) => {
     let component = await ComponentService.findMyComponentById(username, id);
-    component.properties.push(property);
+    switch (propertyGroup) {
+      case 'properties':
+        component.properties.push(property);
+        break;
+      case 'headers':
+        component.headers.push(property);
+        break;
+      case 'predefinedVars':
+        component.predefinedVars.push(property);
+        break;
+      case 'mappedVars':
+        component.mappedVars.push(property);
+        break;
+    }
     try {
       return await component.save();
     } catch (err) {
@@ -145,8 +158,22 @@ const ComponentService = {
     }
   },
 
-  findProperty: async (component, propertyId) => {
-    let p = await component.properties.id(propertyId);
+  findProperty: async (component, propertyId, propertyGroup) => {
+    let p = null;
+    switch (propertyGroup) {
+      case 'properties':
+        p = await component.properties.id(propertyId);
+        break;
+      case 'headers':
+        p = await component.headers.id(propertyId);
+        break;
+      case 'predefinedVars':
+        p = await component.predefinedVars.id(propertyId);
+        break;
+      case 'mappedVars':
+        p = await component.mappedVars.id(propertyId);
+        break;
+    }
     if (p === null) {
       throw new PropertyNotFoundError();
     } else {
@@ -154,14 +181,15 @@ const ComponentService = {
     }
   },
 
-  updateComponentProperty: async (username, id, property) => {
+  updateComponentProperty: async (username, id, property, propertyGroup) => {
     let component = await ComponentService.findMyComponentById(username, id);
-    let p = await ComponentService.findProperty(component, property._id);
+    let p = await ComponentService.findProperty(component, property._id, propertyGroup);
     p.name = property.name;
+    p.valueType = property.valueType;
     p.inputType = property.inputType;
     p.options = property.options;
     p.required = property.required;
-    p.key = property.key;
+    p.value = property.value;
     try {
       await component.save();
     } catch (err) {
@@ -171,20 +199,33 @@ const ComponentService = {
     }
   },
 
-  deleteComponentProperty: async (username, id, property) => {
+  deleteComponentProperty: async (username, id, property, propertyGroup) => {
     let component = await ComponentService.findMyComponentById(username, id);
-    let p = await ComponentService.findProperty(component, property._id);
+    let p = await ComponentService.findProperty(component, property._id, propertyGroup);
     p.remove();
     return await component.save();
   },
 
-  reorderComponentProperties: async (username, id, propertyIds) => {
+  reorderComponentProperties: async (username, id, propertyIds, propertyGroup) => {
     let component = await ComponentService.findMyComponentById(username, id);
     let p = new Array(propertyIds.length);
     for (let i = 0; i < propertyIds.length; i++) {
-      p[i] = await ComponentService.findProperty(component, propertyIds[i]);
+      p[i] = await ComponentService.findProperty(component, propertyIds[i], propertyGroup);
     }
-    component.properties = p;
+    switch (propertyGroup) {
+      case 'properties':
+        component.properties = p;
+        break;
+      case 'headers':
+        component.headers = p;
+        break;
+      case 'predefinedVars':
+        component.predefinedVars = p;
+        break;
+      case 'mappedVars':
+        component.mappedVars = p;
+        break;
+    }
     return await component.save();
   }
 }

@@ -13,7 +13,9 @@
         :value="propertiesData[inputName(property._id)]"
         :validationErrors="validationErrors"
         :propertiesData="propertiesData"
+        :valueType="valueType"
         @input="updateForm(inputName(property._id), $event)"
+        v-show="checkValueType(property.valueType)"
         v-bind="property">
       </component>
     </form>
@@ -32,7 +34,7 @@ export default {
     PropertyInputTextarea,
     PropertyInputSelect,
   },
-  props: ['properties', 'value', 'validationErrors', 'propertiesData'],
+  props: ['properties', 'value', 'validationErrors', 'propertiesData', 'valueType'],
   data() {
     return {
       // propertiesData: this.value || {}
@@ -46,6 +48,9 @@ export default {
     inputName(_id) {
       return `_${_id}`;
     },
+    checkValueType(propertyValueType) {
+      return propertyValueType === this.valueType;
+    }
   },
 };
 </script>

@@ -44,6 +44,9 @@
       "price_per_month": "Price per month",
       "status": "Status",
       "properties": "Properties",
+      "headers": "Headers",
+      "predefinedVars": "Predefined vars",
+      "mappedVars": "Mapped vars",
       "validation": {
         "component_not_found": "Component not found.",
         "forbidden_component": "Forbidden component.",
@@ -73,15 +76,21 @@
     "property": {
       "name": "Name",
       "name_placeholder": "It must start with a letter or an underscore and can cointain letters, numbers and underscores",
+      "value_type": "Value type",
       "input_type": "Input type",
       "required": "Required",
       "options": "List of options",
       "options_placeholder": "Enter a comma separated list of options (e.g: cheese, red wine, apple)",
-      "key": "Serialization name",
-      "key_placeholder": "Name of the property for serialization (e.g: my_property)",
+      "value": "Value",
+      "value_placeholder": "Enter the value",
       "validation": {
         "property_not_found": "Property not found"
       }
+    },
+    "property_value_types": {
+      "fixed": "Fixed value",
+      "developer": "The bot developer enters the value",
+      "publisher": "The publisher enters the value"
     },
     "property_input_types": {
       "text": "Single line of text",
@@ -152,7 +161,8 @@
     "save_picture": "Save picture",
     "choose_from_list": "Choose from list",
     "free": "Free",
-    "get": "Get"
+    "get": "Get",
+    "subscription_type": "Subscription type"
   },
   "app": {
     "dashboard": "Dashboard",

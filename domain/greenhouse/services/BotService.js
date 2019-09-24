@@ -45,6 +45,7 @@ const BotService = {
     const component = await ComponentService.findComponentById(componentParams.component);
     let config = new Config({
       component: component._id,
+      subscriptionType: componentParams.subscriptionType,
       values: componentParams.values
     });
     return config;

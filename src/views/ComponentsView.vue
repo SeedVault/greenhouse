@@ -71,7 +71,7 @@
                       <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.component.description") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'properties' }]">
-                      <a class="nav-link" @click="selectedTab='properties'">{{ $t("domain.component.properties") }} ({{ properties.length }})</a>
+                      <a class="nav-link" @click="selectedTab='properties'">{{ $t("domain.component.properties") }} ({{ propertiesCount }})</a>
                     </li>
                   </ul>
 
@@ -94,23 +94,77 @@
 
 
                   <div v-show="selectedTab === 'properties'">
-                    <div v-show="!showPropertyForm">
+                    <div v-show="!showPropertyForm && componentType !== 'service'">
                       <h2 class="view__subtitle">{{ $t("domain.component.properties") }}</h2>
                       <div class="no_properties" v-show="properties.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
                       <draggable v-model="properties" class="list-group" tag="ul" v-bind="dragOptions"
                         @start="drag = true" @end="drag = false"
-                        @change="reorderProperties" ghost-class="ghost" v-show="properties.length > 0">
+                        @change="reorderProperties('properties')" ghost-class="ghost" v-show="properties.length > 0">
                         <transition-group type="transition" :name="!drag ? 'flip-list' : null">
                           <li class="list-group-item" v-for="property in properties" :key="property._id">
                             <img style="margin-right: 10px;" :src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
-                            <a class="list-group-item-link" @click="modifyProperty(property)">{{ property.name }}</a>
-                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id)">
+                            <a class="list-group-item-link" @click="modifyProperty(property, 'properties')">{{ property.name }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id, 'properties')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
                           </li>
                         </transition-group>
                       </draggable>
-                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty()">+ {{ $t('properties.new_property') }}</button>
+                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty('properties')">+ {{ $t('properties.new_property') }}</button>
+                    </div>
+                    <div v-show="!showPropertyForm && componentType === 'service'">
+                      <h2 class="view__subtitle">{{ $t("domain.component.headers") }}</h2>
+                      <div class="no_properties" v-show="headers.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <draggable v-model="headers" class="list-group" tag="ul" v-bind="dragOptions"
+                        @start="drag = true" @end="drag = false"
+                        @change="reorderProperties('headers')" ghost-class="ghost" v-show="headers.length > 0">
+                        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                          <li class="list-group-item" v-for="property in headers" :key="property._id">
+                            <img style="margin-right: 10px;" :src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
+                            <a class="list-group-item-link" @click="modifyProperty(property, 'headers')">{{ property.name }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id, 'headers')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </transition-group>
+                      </draggable>
+                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty('headers')">+ {{ $t('properties.new_property') }}</button>
+                    </div>
+                    <div v-show="!showPropertyForm && componentType === 'service'">
+                      <h2 class="view__subtitle">{{ $t("domain.component.predefinedVars") }}</h2>
+                      <div class="no_properties" v-show="predefinedVars.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <draggable v-model="predefinedVars" class="list-group" tag="ul" v-bind="dragOptions"
+                        @start="drag = true" @end="drag = false"
+                        @change="reorderProperties('predefinedVars')" ghost-class="ghost" v-show="predefinedVars.length > 0">
+                        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                          <li class="list-group-item" v-for="property in predefinedVars" :key="property._id">
+                            <img style="margin-right: 10px;" :src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
+                            <a class="list-group-item-link" @click="modifyProperty(property, 'predefinedVars')">{{ property.name }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id, 'predefinedVars')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </transition-group>
+                      </draggable>
+                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty('predefinedVars')">+ {{ $t('properties.new_property') }}</button>
+                    </div>
+                    <div v-show="!showPropertyForm && componentType === 'service'">
+                      <h2 class="view__subtitle">{{ $t("domain.component.mappedVars") }}</h2>
+                      <div class="no_properties" v-show="mappedVars.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <draggable v-model="mappedVars" class="list-group" tag="ul" v-bind="dragOptions"
+                        @start="drag = true" @end="drag = false"
+                        @change="reorderProperties('mappedVars')" ghost-class="ghost" v-show="mappedVars.length > 0">
+                        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                          <li class="list-group-item" v-for="property in mappedVars" :key="property._id">
+                            <img style="margin-right: 10px;" :src="require('@/assets/icons/outline-icon-drag-24px.svg')" />
+                            <a class="list-group-item-link" @click="modifyProperty(property, 'mappedVars')">{{ property.name }}</a>
+                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteProperty(property._id, 'mappedVars')">
+                              <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
+                            </a>
+                          </li>
+                        </transition-group>
+                      </draggable>
+                      <button type="submit" class="btn btn-sm btn-primary mb-2 addNewButton smallButton" @click="addProperty('mappedVars')">+ {{ $t('properties.new_property') }}</button>
                     </div>
 
                     <div class="propertyForm" v-show="showPropertyForm">
@@ -135,26 +189,32 @@
                               :validationErrors="validationErrors"></input-text>
                           </div>
                           <div class="form-group col-md-12">
+                            <input-select id="valueType" v-model="propertyValueType" :options="propertyValueTypes"
+                              :label="$t('domain.property.value_type')"
+                              icon="outline-icon-widgets-24px.svg"
+                              :validationErrors="validationErrors"></input-select>
+                          </div>
+                          <div class="form-group col-md-12" v-show="propertyValueType !== 'fixed'">
                             <input-select id="inputType" v-model="propertyInputType" :options="propertyInputTypes"
                               :label="$t('domain.property.input_type')"
                               icon="outline-icon-widgets-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
-                          <div class="form-group col-md-12" v-show="propertyInputType === 'select'">
+                          <div class="form-group col-md-12" v-show="propertyValueType !== 'fixed' && propertyInputType === 'select'">
                             <input-text id="options" v-model="propertyOptions" :label="$t('domain.property.options')"
                               :placeholder="$t('domain.property.options_placeholder')" icon="outline-icon-list-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
-                          <div class="form-group col-md-12">
+                          <div class="form-group col-md-12" v-show="propertyValueType !== 'fixed'">
                             <input-select id="required" v-model="propertyRequired" :options="propertyRequiredOptions"
                               :label="$t('domain.property.required')"
                               icon="outline-icon-toggle-24px.svg"
                               :validationErrors="validationErrors"></input-select>
                           </div>
-                          <div class="form-group col-md-12">
-                            <input-text id="key" v-model="propertyKey"
-                              :label="$t('domain.property.key')"
-                              :placeholder="$t('domain.property.key_placeholder')"
+                          <div class="form-group col-md-12" v-show="propertyValueType === 'fixed'">
+                            <input-text id="value" v-model="propertyValue"
+                              :label="$t('domain.property.value')"
+                              :placeholder="$t('domain.property.value_placeholder')"
                               icon="outline-icon-label-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
@@ -220,17 +280,22 @@ export default {
       status: 'enabled',
       picture: '',
       properties: [],
+      headers: [],
+      predefinedVars: [],
+      mappedVars: [],
       username: '',
       updatedAt: '',
       validationErrors: [],
 
       showPropertyForm: false,
+      propertyGroup: '',
       propertyId: '',
       propertyName: '',
+      propertyValueType: 'fixed',
       propertyInputType: 'text',
       propertyOptions: '',
       propertyRequired: 'yes',
-      propertyKey: '',
+      propertyValue: '',
 
       drag: false,
     };
@@ -257,6 +322,9 @@ export default {
           this.status = result.data.status;
           this.picture = result.data.picture;
           this.properties = result.data.properties;
+          this.headers = result.data.headers;
+          this.predefinedVars = result.data.predefinedVars;
+          this.mappedVars = result.data.mappedVars;
           this.pictureUrl = result.data.pictureUrl;
           this.username = result.data.username;
           this.updatedAt = result.data.updatedAt;
@@ -319,26 +387,30 @@ export default {
           }
         });
     },
-    addProperty() {
+    addProperty(propertyGroup) {
       this.saving = false;
       this.saved = false;
+      this.propertyGroup = propertyGroup;
       this.propertyId = '';
       this.propertyName = '';
+      this.propertyValueType = 'fixed';
       this.propertyInputType = 'text';
       this.propertyOptions = '';
       this.propertyRequired = 'yes';
-      this.propertyKey = '';
+      this.propertyValue = '';
       this.showPropertyForm = true;
     },
-    modifyProperty(p) {
+    modifyProperty(p, propertyGroup) {
       this.saving = false;
       this.saved = false;
+      this.propertyGroup = propertyGroup;
       this.propertyId = p._id;
       this.propertyName = p.name;
+      this.propertyValueType = p.valueType;
       this.propertyInputType = p.inputType;
       this.propertyOptions = p.options;
       this.propertyRequired = p.required;
-      this.propertyKey = p.key;
+      this.propertyValue = p.value;
       this.showPropertyForm = true;
     },
     saveProperty() {
@@ -347,12 +419,14 @@ export default {
       this.saved = false;
       this.axios.post('/api/components/property/save', {
         id: this.$route.params.id,
+        propertyGroup: this.propertyGroup,
         propertyId: this.propertyId,
         propertyName: this.propertyName,
+        propertyValueType: this.propertyValueType,
         propertyInputType: this.propertyInputType,
         propertyOptions: this.propertyOptions,
         propertyRequired: this.propertyRequired,
-        propertyKey: this.propertyKey,
+        propertyValue: this.propertyValue,
       })
         .then((result) => {
           this.saving = false;
@@ -372,7 +446,7 @@ export default {
     cancelPropertyForm() {
       this.showPropertyForm = false;
     },
-    confirmDeleteProperty(propertyId) {
+    confirmDeleteProperty(propertyId, propertyGroup) {
       this.$bvModal.msgBoxConfirm(' ', {
         title: this.$i18n.t('properties.delete_this_property'),
         size: 'md',
@@ -386,18 +460,19 @@ export default {
       })
         .then((value) => {
           if (value === true) {
-            this.deleteProperty(propertyId);
+            this.deleteProperty(propertyId, propertyGroup);
           }
         })
         .catch((err) => {
           this.oops = true;
         });
     },
-    deleteProperty(propertyId) {
+    deleteProperty(propertyId, propertyGroup) {
       const { id } = this.$route.params;
       this.axios.post('/api/components/property/delete', {
         id,
         propertyId,
+        propertyGroup
       })
         .then((result) => {
           this.getData();
@@ -410,13 +485,34 @@ export default {
           }
         });
     },
-    reorderProperties() {
+    reorderProperties(propertyGroup) {
       const newOrder = [];
-      for (let i = 0; i < this.properties.length; i++) {
-        newOrder.push(this.properties[i]._id);
+      switch(propertyGroup) {
+        case 'properties':
+          for (let i = 0; i < this.properties.length; i++) {
+            newOrder.push(this.properties[i]._id);
+          }
+          break;
+        case 'headers':
+          for (let i = 0; i < this.headers.length; i++) {
+            newOrder.push(this.headers[i]._id);
+          }
+          break;
+        case 'predefinedVars':
+          for (let i = 0; i < this.predefinedVars.length; i++) {
+            newOrder.push(this.predefinedVars[i]._id);
+          }
+          break;
+        case 'mappedVars':
+          for (let i = 0; i < this.mappedVars.length; i++) {
+            newOrder.push(this.mappedVars[i]._id);
+          }
+          break;
       }
+
       const { id } = this.$route.params;
       this.axios.post('/api/components/property/reorder', {
+        propertyGroup,
         id,
         propertyIds: newOrder.join(','),
       })
@@ -433,7 +529,17 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allPropertyInputTypes']),
+    ...mapGetters(['allPropertyValueTypes', 'allPropertyInputTypes']),
+    propertyValueTypes() {
+      const inputTypeList = [];
+      for (let i = 0; i < this.allPropertyValueTypes.length; i++) {
+        inputTypeList.push({
+          value: this.allPropertyValueTypes[i],
+          text: this.$i18n.t(`domain.property_value_types.${this.allPropertyValueTypes[i]}`),
+        });
+      }
+      return inputTypeList;
+    },
     propertyInputTypes() {
       const inputTypeList = [];
       for (let i = 0; i < this.allPropertyInputTypes.length; i++) {
@@ -449,6 +555,13 @@ export default {
         { value: 'yes', text: this.$i18n.t('common.yes') },
         { value: 'no', text: this.$i18n.t('common.no') },
       ];
+    },
+    propertiesCount() {
+      if (this.componentType === 'service') {
+        return this.headers.length + this.predefinedVars.length + this.mappedVars.length;
+      } else {
+        return this.properties.length;
+      }
     },
     dragOptions() {
       return {

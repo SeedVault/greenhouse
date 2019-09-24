@@ -305,7 +305,22 @@
                     <h4 class="component-title">{{ componentName }}</h4>
                   </div>
                   <div class="col-md-9">
-                    <property-form :properties="properties" v-model="propertiesData" :propertiesData="propertiesData" :validationErrors="validationErrorsProperties"></property-form>
+                    <input-select v-model="subscriptionType" :options="pricingOptions" id="subscriptionType" name="subscriptionType"
+                        :label="$t('common.subscription_type')"
+                        icon="outline-icon-types-24px.svg"
+                        :validationErrors="validationErrorsProperties" class="mb-4"></input-select>
+                    <hr class="mt-4 mb-4" />
+                    <template v-if="componentType == 'service'">
+                      <h5 class="mb-4">{{ $t("domain.component.headers") }}</h5>
+                      <property-form :properties="headers" v-model="headersData" :propertiesData="headersData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <h5 class="mb-4 mt-4">{{ $t("domain.component.predefinedVars") }}</h5>
+                      <property-form :properties="predefinedVars" v-model="predefinedVarsData" :propertiesData="predefinedVarsData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <h5 class="mb-4 mt-4">{{ $t("domain.component.mappedVars") }}</h5>
+                      <property-form :properties="mappedVars" v-model="mappedVarsData" :propertiesData="mappedVarsData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                    </template>
+                    <template v-else>
+                      <property-form :properties="properties" v-model="propertiesData" :propertiesData="propertiesData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                    </template>
                     <div class="form-row">
                       <div class="form-group col-md-4 button-area">
                           <input type="submit" id="submitProperty" :value="$t('common.save')"
@@ -373,9 +388,19 @@ export default {
 
       showPropertiesForm: false,
       componentName: null,
+      componentPricingModel: 'paid',
+      componentPricePerMonth: 0,
+      componentPricePerUser: 0,
+      subscriptionType: '',
       componentId: null,
       properties: [],
       propertiesData: [],
+      headers: [],
+      headersData: [],
+      predefinedVars: [],
+      predefinedVarsData: [],
+      mappedVars: [],
+      mappedVarsData: [],
 
       cachedComponents: [],
 
@@ -543,6 +568,21 @@ export default {
       }
 
     },
+    findInputType(property) {
+      let sControl = '';
+      switch (property.inputType) {
+        case 'text':
+          sControl = 'PropertyInputText';
+          break;
+        case 'textarea':
+          sControl = 'PropertyInputTextarea';
+          break;
+        case 'select':
+          sControl = 'PropertyInputSelect';
+          break;
+      }
+      return sControl;
+    },
     selectComponent(componentId, cType, eMode) {
       this.validationErrorsProperties = [];
       this.editMode = eMode;
@@ -555,10 +595,29 @@ export default {
           this.showPropertiesForm = true;
           this.componentId = result.data._id;
           this.componentName = result.data.name;
+          this.componentType = result.data.componentType;
+          this.componentPricingModel = result.data.pricingModel;
+          this.componentPricePerMonth = result.data.pricePerMonth;
+          this.componentPricePerUse = result.data.pricePerUse;
           this.properties = result.data.properties;
-          const k = Object.keys(this.propertiesData);
+          let k = Object.keys(this.propertiesData);
           for (let j = 0; j < k.length; j++) {
             this.$delete(this.propertiesData, k[j]);
+          }
+          this.headers = result.data.headers;
+          k = Object.keys(this.headersData);
+          for (let j = 0; j < k.length; j++) {
+            this.$delete(this.headersData, k[j]);
+          }
+          this.predefinedVars = result.data.predefinedVars;
+          k = Object.keys(this.predefinedVarsData);
+          for (let j = 0; j < k.length; j++) {
+            this.$delete(this.predefinedVarsData, k[j]);
+          }
+          this.mappedVars = result.data.mappedVars;
+          k = Object.keys(this.mappedVarsData);
+          for (let j = 0; j < k.length; j++) {
+            this.$delete(this.mappedVarsData, k[j]);
           }
           // Load current data
           this.currentData = [];
@@ -566,12 +625,14 @@ export default {
             case 'botengine':
               if (this.botengine) {
                 this.currentData = this.botengine.values;
+                this.subscriptionType = this.botengine.subscriptionType;
               }
               break;
             case 'service':
               for (let i = 0; i < this.services.length; i++) {
                 if (this.services[i].component === componentId) {
                   this.currentData = Object.assign({}, this.services[i].values);
+                  this.subscriptionType = this.services[i].subscriptionType;
                   break;
                 }
               }
@@ -580,6 +641,7 @@ export default {
               for (let i = 0; i < this.channels.length; i++) {
                 if (this.channels[i].component === componentId) {
                   this.currentData = Object.assign({}, this.channels[i].values);
+                  this.subscriptionType = this.channels[i].subscriptionType;
                   break;
                 }
               }
@@ -588,9 +650,12 @@ export default {
           if (typeof this.currentData === 'undefined') {
             this.currentData = [];
           }
+          if (typeof this.subscriptionType === 'undefined') {
+            this.subscriptionType = '';
+          }
           const currentDataKeys = Object.keys(this.currentData);
           const currentDataValues = Object.values(this.currentData);
-          // Set values
+          // Set properties
           this.propertiesData = [];
           for (let i = 0; i < this.properties.length; i++) {
             const vKey = `_${this.properties[i]._id}`;
@@ -603,15 +668,52 @@ export default {
             }
             this.$set(this.propertiesData, vKey, v);
             this.properties[i].value = v;
-            if (this.properties[i].inputType === 'text') {
-              this.properties[i].inputType = 'PropertyInputText';
+            this.properties[i].inputType = this.findInputType(this.properties[i]);
+          }
+          // Set headers
+          this.headersData = [];
+          for (let i = 0; i < this.headers.length; i++) {
+            const vKey = `_${this.headers[i]._id}`;
+            let v = '';
+            for (let j = 0; j < currentDataKeys.length; j++) {
+              if (currentDataKeys[j] === vKey) {
+                v = currentDataValues[j];
+                break;
+              }
             }
-            if (this.properties[i].inputType === 'textarea') {
-              this.properties[i].inputType = 'PropertyInputTextarea';
+            this.$set(this.headersData, vKey, v);
+            this.headers[i].value = v;
+            this.headers[i].inputType = this.findInputType(this.headers[i]);
+          }
+          // Set predefinedVars
+          this.predefinedVarsData = [];
+          for (let i = 0; i < this.predefinedVars.length; i++) {
+            const vKey = `_${this.predefinedVars[i]._id}`;
+            let v = '';
+            for (let j = 0; j < currentDataKeys.length; j++) {
+              if (currentDataKeys[j] === vKey) {
+                v = currentDataValues[j];
+                break;
+              }
             }
-            if (this.properties[i].inputType === 'select') {
-              this.properties[i].inputType = 'PropertyInputSelect';
+            this.$set(this.predefinedVarsData, vKey, v);
+            this.predefinedVars[i].value = v;
+            this.predefinedVars[i].inputType = this.findInputType(this.predefinedVars[i]);
+          }
+          // Set mappedVars
+          this.mappedVarsData = [];
+          for (let i = 0; i < this.mappedVars.length; i++) {
+            const vKey = `_${this.mappedVars[i]._id}`;
+            let v = '';
+            for (let j = 0; j < currentDataKeys.length; j++) {
+              if (currentDataKeys[j] === vKey) {
+                v = currentDataValues[j];
+                break;
+              }
             }
+            this.$set(this.mappedVarsData, vKey, v);
+            this.mappedVars[i].value = v;
+            this.mappedVars[i].inputType = this.findInputType(this.mappedVars[i]);
           }
         })
         .catch((error) => {
@@ -622,18 +724,29 @@ export default {
     },
     savePropertiesForm() {
       this.validationErrorsProperties = [];
-      const k = Object.keys(this.propertiesData);
-      const v = Object.values(this.propertiesData);
       const c = {
         component: this.componentId,
+        subscriptionType: this.subscriptionType,
         values: {},
       };
+      let isValid = true;
+      // check subscription type
+      if (this.subscriptionType === '') {
+        this.validationErrorsProperties['subscriptionType'] = {
+          err: {
+            msg: 'validation.required',
+          },
+        };
+        isValid = false;
+      }
+      // check properties
+      let k = Object.keys(this.propertiesData);
+      let v = Object.values(this.propertiesData);
       for (let j = 0; j < k.length; j++) {
         c.values[k[j]] = v[j];
       }
-      let isValid = true;
       for (let i = 0; i < this.properties.length; i++) {
-        if (this.properties[i].required === 'yes' && v[i].trim() === '') {
+        if (this.properties[i].valueType === 'developer' && this.properties[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.properties[i]._id}`;
           this.validationErrorsProperties[id] = {
             err: {
@@ -643,6 +756,58 @@ export default {
           isValid = false;
         }
       }
+      // check headers
+      k = Object.keys(this.headersData);
+      v = Object.values(this.headersData);
+      for (let j = 0; j < k.length; j++) {
+        c.values[k[j]] = v[j];
+      }
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].valueType === 'developer' && this.headers[i].required === 'yes' && v[i].trim() === '') {
+          const id = `_${this.headers[i]._id}`;
+          this.validationErrorsProperties[id] = {
+            err: {
+              msg: 'validation.required',
+            },
+          };
+          isValid = false;
+        }
+      }
+      // check predefinedVars
+      k = Object.keys(this.predefinedVarsData);
+      v = Object.values(this.predefinedVarsData);
+      for (let j = 0; j < k.length; j++) {
+        c.values[k[j]] = v[j];
+      }
+      for (let i = 0; i < this.predefinedVars.length; i++) {
+        if (this.predefinedVars[i].valueType === 'developer' && this.predefinedVars[i].required === 'yes' && v[i].trim() === '') {
+          const id = `_${this.predefinedVars[i]._id}`;
+          this.validationErrorsProperties[id] = {
+            err: {
+              msg: 'validation.required',
+            },
+          };
+          isValid = false;
+        }
+      }
+      // check mappedVars
+      k = Object.keys(this.mappedVarsData);
+      v = Object.values(this.mappedVarsData);
+      for (let j = 0; j < k.length; j++) {
+        c.values[k[j]] = v[j];
+      }
+      for (let i = 0; i < this.mappedVars.length; i++) {
+        if (this.mappedVars[i].valueType === 'developer' && this.mappedVars[i].required === 'yes' && v[i].trim() === '') {
+          const id = `_${this.mappedVars[i]._id}`;
+          this.validationErrorsProperties[id] = {
+            err: {
+              msg: 'validation.required',
+            },
+          };
+          isValid = false;
+        }
+      }
+      // Show form
       if (isValid === false) {
         return;
       }
@@ -656,6 +821,7 @@ export default {
         case 'service':
           for (let i = 0; i < this.services.length; i++) {
             if (this.services[i].component === c.component) {
+              this.services[i].subscriptionType = c.subscriptionType;
               this.services[i].values = Object.assign({}, c.values);
               found = true;
               break;
@@ -668,6 +834,7 @@ export default {
         case 'channel':
           for (let i = 0; i < this.channels.length; i++) {
             if (this.channels[i].component === c.component) {
+              this.channels[i].subscriptionType = c.subscriptionType;
               this.channels[i].values = Object.assign({}, c.values);
               found = true;
               break;
@@ -764,6 +931,27 @@ export default {
         });
       }
       return pricingModelList;
+    },
+    pricingOptions() {
+      const pricingOptionsList = [];
+      if (this.componentPricingModel === 'free') {
+        pricingOptionsList.push({
+          value: 'free',
+          text: this.$i18n.t('domain.pricing_models.free')
+        });
+      } else {
+        pricingOptionsList.push({
+          value: 'month',
+          text: this.$i18n.t(`domain.component.price_per_month`) +
+          `(${this.componentPricePerMonth} SEED)`
+        });
+        pricingOptionsList.push({
+          value: 'use',
+          text: this.$i18n.t('domain.component.price_per_use') +
+          `(${this.componentPricePerUse} SEED)`
+        });
+      }
+      return pricingOptionsList;
     },
     isNew() {
       return (this.id === '');

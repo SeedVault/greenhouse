@@ -5,7 +5,18 @@ const PropertySchema = mongoose.Schema({
   name: {
     type: String,
     required: [true, 'validation.required'],
+    match: [/^[a-zA-Z_$][a-zA-Z_\-$0-9]*$/, 'validation.regex'],
     trim: true,
+  },
+  valueType: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['fixed', 'developer', 'publisher'],
+      message: 'validation.option'
+    },
+    trim: true,
+    default: 'fixed'
   },
   inputType: {
     type: String,
@@ -31,10 +42,8 @@ const PropertySchema = mongoose.Schema({
     trim: true,
     default: 'yes'
   },
-  key: {
+  value: {
     type: String,
-    required: [true, 'validation.required'],
-    match: [/^[a-zA-Z_$][a-zA-Z_$0-9]*$/, 'validation.regex'],
     trim: true
   },
 });
@@ -102,6 +111,7 @@ const ComponentSchema = mongoose.Schema({
     },
     trim: true,
     index: true,
+    default: 'free'
   },
   pricePerUse: {
     type: Number,
@@ -144,10 +154,14 @@ const ComponentSchema = mongoose.Schema({
   properties: {
     type: [ PropertySchema ],
   },
-  rhizomeTemplate: {
-    type: String,
-    trim: true,
-    default: '',
+  headers: {
+    type: [ PropertySchema ],
+  },
+  predefinedVars: {
+    type: [ PropertySchema ],
+  },
+  mappedVars: {
+    type: [ PropertySchema ],
   },
 }, {timestamps: true});
 

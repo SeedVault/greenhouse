@@ -7,6 +7,15 @@ const ConfigSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Components'
   },
+  subscriptionType: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['free', 'month', 'use'],
+      message: 'validation.option'
+    },
+    trim: true,
+  },
   values: {
     type: Map,
     of: String

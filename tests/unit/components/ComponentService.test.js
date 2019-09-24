@@ -30,7 +30,7 @@ async function addProperty(username, id, propertyName) {
     required: 'yes',
     key: propertyName.replace(/\s/g, ''),
   };
-  return componentService.addComponentProperty(username, id, newProperty);
+  return componentService.addComponentProperty(username, id, newProperty, 'properties');
 }
 
 describe('Components', () => {
@@ -202,10 +202,10 @@ describe('Properties', () => {
   it('should update a property of a component', async () => {
     let component = await createComponent('chatscript');
     const id = component._id;
-    component = await addProperty('johndoe', id, 'host');
+    component = await addProperty('johndoe', id, 'host', 'properties');
     const property = component.properties[0];
     property.name = 'port';
-    await componentService.updateComponentProperty('johndoe', id, property);
+    await componentService.updateComponentProperty('johndoe', id, property, 'properties');
     const savedComponent = await componentService.findComponentById(id);
     expect(savedComponent.properties[0].name).toBe('port');
   });
@@ -241,7 +241,7 @@ describe('Properties', () => {
     const id = component._id;
     component = await addProperty('johndoe', id, 'host');
     const property = component.properties[0];
-    await componentService.deleteComponentProperty('johndoe', id, property);
+    await componentService.deleteComponentProperty('johndoe', id, property, 'properties');
     const savedComponent = await componentService.findComponentById(id);
     expect(savedComponent.properties.length).toBe(0);
   });
@@ -273,7 +273,7 @@ describe('Properties', () => {
       component.properties[1]._id,
       component.properties[0]._id,
     ];
-    component = await componentService.reorderComponentProperties('johndoe', id, newOrder);
+    component = await componentService.reorderComponentProperties('johndoe', id, newOrder, 'properties');
     expect(component.properties.length).toBe(3);
     expect(component.properties[0].name).toBe('three');
     expect(component.properties[1].name).toBe('two');

@@ -46,7 +46,8 @@ const bots = {
     let v = Object.values(c);
     return {
       component: v[0],
-      values: v[1]
+      subscriptionType: v[1],
+      values: v[2]
     };
   },
 

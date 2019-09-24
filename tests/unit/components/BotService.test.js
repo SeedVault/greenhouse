@@ -27,13 +27,14 @@ async function createComponent(name, componentType) {
 
 async function addProperty(id, propertyName) {
   const newProperty = {
-    name: propertyName,
+    name: propertyName.replace(/\s/g, ''),
+    valueType: 'fixed',
     inputType: 'text',
     options: '',
     required: 'yes',
-    key: propertyName.replace(/\s/g, ''),
+    value: '',
   };
-  return componentService.addComponentProperty('johndoe', id, newProperty);
+  return componentService.addComponentProperty('johndoe', id, newProperty, 'properties');
 }
 
 async function createAllComponents() {
@@ -74,21 +75,25 @@ async function createBot(name, components) {
     'johndoe',
     {
       component: components.chatscript._id,
+      subscriptionType: 'month',
       values: chatscriptValues,
     },
     [
       {
         component: components.accuWeather._id,
+        subscriptionType: 'month',
         values: accuWeatherValues,
       },
       {
         component: components.googleTranslate._id,
+        subscriptionType: 'month',
         values: googleTranslateValues,
       },
     ],
     [
       {
         component: components.telegram._id,
+        subscriptionType: 'month',
         values: telegramValues,
       },
     ],

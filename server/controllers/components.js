@@ -180,25 +180,28 @@ const components = {
     try {
       let id = req.body.id;
       let propertyId = req.body.propertyId;
+      let propertyGroup = req.body.propertyGroup;
       if (propertyId === '') {
         const p = {
           name: req.body.propertyName,
+          valueType: req.body.propertyValueType,
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
-          key: req.body.propertyKey,
+          value: req.body.propertyValue,
         };
-        await ComponentService.addComponentProperty(req.user.username, id, p);
+        await ComponentService.addComponentProperty(req.user.username, id, p, propertyGroup);
       } else {
         const p = {
           _id: propertyId,
           name: req.body.propertyName,
+          valueType: req.body.propertyValueType,
           inputType: req.body.propertyInputType,
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
-          key: req.body.propertyKey,
+          value: req.body.propertyValue,
         };
-        await ComponentService.updateComponentProperty(req.user.username, id, p);
+        await ComponentService.updateComponentProperty(req.user.username, id, p, propertyGroup);
       }
       res.status(200).json({saved: true});
     } catch (err) {
@@ -218,10 +221,11 @@ const components = {
     try {
       let id = req.body.id;
       let propertyId = req.body.propertyId;
+      let propertyGroup = req.body.propertyGroup;
       const p = {
         _id: propertyId
       }
-      await ComponentService.deleteComponentProperty(req.user.username, id, p);
+      await ComponentService.deleteComponentProperty(req.user.username, id, p, propertyGroup);
       res.status(200).json({deleted: true});
     } catch (err) {
       next(err);
@@ -236,7 +240,8 @@ const components = {
     try {
       let id = req.body.id;
       let propertyIds = req.body.propertyIds.split(',');
-      await ComponentService.reorderComponentProperties(req.user.username, id, propertyIds);
+      let propertyGroup = req.body.propertyGroup;
+      await ComponentService.reorderComponentProperties(req.user.username, id, propertyIds, propertyGroup);
       res.status(200).json({saved: true});
     } catch (err) {
       next(err);
