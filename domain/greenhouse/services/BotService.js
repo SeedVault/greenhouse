@@ -77,7 +77,7 @@ const BotService = {
     }
   },
 
-  createBot: async (category, name, description, features, pricingModel, pricePerUse,
+  createBot: async (category, botId, name, description, features, pricingModel, pricePerUse,
     pricePerMonth, status, username, botEngineParams, servicesParams, channelsParams) => {
     const botEngine = await BotService.createConfig(botEngineParams);
     let services = [];
@@ -90,6 +90,7 @@ const BotService = {
     }
     let bot = new Bot({
       category,
+      botId,
       name,
       description,
       features,

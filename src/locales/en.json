@@ -100,6 +100,8 @@
       "select": "List of options"
     },
     "bot": {
+      "bot_id": "Bot ID",
+      "bot_id_placeholder": "It must start with a letter or an underscore and can cointain letters, numbers, dashes and underscores",
       "name": "Name",
       "category": "Category",
       "name_placeholder": "Name of the bot",

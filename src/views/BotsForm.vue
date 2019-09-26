@@ -54,6 +54,14 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
+                      <input-text v-model="botId" id="botId" name="botId" :label="$t('domain.bot.bot_id')"
+                        :placeholder="$t('domain.bot.bot_id_placeholder')" icon="outline-icon-fingerprint-24px.svg"
+                        :validationErrors="validationErrors"></input-text>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
                       <input-text v-model="name" id="name" :label="$t('domain.bot.name')"
                         :placeholder="$t('domain.bot.name_placeholder')" icon="outline-bot-icon-24.svg"
                         :validationErrors="validationErrors"></input-text>
@@ -361,6 +369,7 @@ export default {
       saving: false,
       saved: false,
       category: 'general',
+      botId: '',
       name: '',
       description: '',
       features: '',
@@ -423,6 +432,7 @@ export default {
       this.axios.get(`/api/bots/${this.id}`)
         .then((result) => {
           const ids = [];
+          this.botId = result.data.botId;
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
@@ -477,6 +487,7 @@ export default {
       }
       this.axios.post('/api/bots/save', {
         id: this.id,
+        botId: this.botId,
         category: this.category,
         name: this.name,
         description: this.description,

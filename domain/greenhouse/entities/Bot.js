@@ -52,6 +52,15 @@ const BotSubscriptionSchema = mongoose.Schema({
 }, {timestamps: true});
 
 const BotSchema = mongoose.Schema({
+  botId: {
+    type: String,
+    required: [true, 'validation.required'],
+    match: [/^[a-zA-Z_$][a-zA-Z_\-$0-9]*$/, 'validation.regex'],
+    // match: [/^[^a-zA-Z_$]|[^\\w$]/, 'validation.regex'],
+    index: true,
+    unique: true,
+    trim: true
+  },
   category: {
     type: String,
     required: [true, 'validation.required'],

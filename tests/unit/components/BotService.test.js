@@ -55,6 +55,7 @@ async function createAllComponents() {
 }
 
 async function createBot(name, components) {
+  const noSpaces = name.replace(/\s/g, '');
   const chatscriptValues = new Map();
   chatscriptValues.set(`_${components.chatscript.properties[0]._id}`, 'myId');
   chatscriptValues.set(`_${components.chatscript.properties[1]._id}`, 'http://127.0.0.1');
@@ -66,6 +67,7 @@ async function createBot(name, components) {
   telegramValues.set(`_${components.telegram.properties[0]._id}`, 'telegram3itqF3eoXaY');
   const bot = await botService.createBot(
     'general',
+    noSpaces,
     name,
     'This is my bot',
     'Features of my bot',

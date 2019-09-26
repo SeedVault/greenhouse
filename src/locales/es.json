@@ -100,6 +100,8 @@
       "select": "Lista de opciones"
     },
     "bot": {
+      "bot_id": "Bot ID",
+      "bot_id_placeholder": "Debe comenzar con una letra o guión bajo y puede contener letras, números, guiones y guiones bajos",
       "name": "Nombre",
       "category": "Categoría",
       "name_placeholder": "Nombre del bot",

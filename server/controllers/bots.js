@@ -70,6 +70,7 @@ const bots = {
       if (req.body.id === '') {
         const result = await BotService.createBot(
           req.body.category,
+          req.body.botId,
           req.body.name,
           req.body.description,
           req.body.features,
@@ -86,6 +87,7 @@ const bots = {
       } else {
         let bot = await BotService.findBotById(id);
         bot.category = req.body.category;
+        bot.botId = req.body.botId;
         bot.name = req.body.name;
         bot.description = req.body.description;
         bot.features = req.body.features;
