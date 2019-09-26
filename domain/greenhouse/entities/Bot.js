@@ -83,7 +83,7 @@ const BotSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     enum:  {
-      values: ['free', 'paid'],
+      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
       message: 'validation.option'
     },
     trim: true,

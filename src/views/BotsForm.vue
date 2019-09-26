@@ -84,12 +84,12 @@
                         :validationErrors="validationErrors"></input-select>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='paid'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
+                      <input-text v-show="pricingModel==='pay_per_use' || pricingModel==='pay_per_use_or_month'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
                         :placeholder="$t('domain.bot.price_per_use')" icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='paid'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
+                      <input-text v-show="pricingModel==='pay_per_month' || pricingModel==='pay_per_use_or_month'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
                         :placeholder="$t('domain.bot.price_per_month')" icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
