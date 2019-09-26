@@ -36,10 +36,12 @@
                   {{ $t('common.free') }}
                   </strong></p>
                 </div>
-                <div v-else>
+                <div v-if="pricingModel === 'pay_per_use' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_use") }}: <strong>
                     {{ pricePerUse }} SEED
                   </strong></p>
+                </div>
+                <div v-if="pricingModel === 'pay_per_month' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_month") }}: <strong>
                     {{ pricePerMonth }} SEED
                   </strong></p>

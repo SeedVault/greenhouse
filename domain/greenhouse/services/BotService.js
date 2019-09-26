@@ -1,6 +1,6 @@
 const ValidationError = require('mongoose/lib/error/validation');
 const { Component, Property } = require('../entities/Component');
-const { Bot, Config } = require('../entities/Bot');
+const { Bot, BotSubscription, Config } = require('../entities/Bot');
 const { ComponentService, ComponentNotFoundError,
   ForbiddenComponentError, PropertyNotFoundError } = require ('./ComponentService');
 
@@ -35,6 +35,23 @@ class ChannelRequiredError extends ValidationError {
     this.errors['_'] = { message: 'domain.bot.validation.channel_required' };
   }
 }
+
+class BotSubscriptionNotFoundError extends ValidationError {
+  constructor(message) {
+    super(message);
+    this.name = 'BotSubscriptionNotFoundError';
+    this.errors['_'] = { message: 'domain.bot.validation.bot_subscription_not_found' };
+  }
+}
+
+class ForbiddenBotSubscriptionError extends ValidationError {
+  constructor(message) {
+    super(message);
+    this.name = 'ForbiddenBotSubscriptionError';
+    this.errors['_'] = { message: 'domain.bot.validation.forbidden_bot_subscription' };
+  }
+}
+
 
 const BotService = {
 
@@ -149,6 +166,61 @@ const BotService = {
     return await Bot.deleteOne({_id: id});
   },
 
+  subscribe: async (username, botId, subscriptionType) => {
+    const bot = await BotService.findBotById(botId);
+    let subscription = new BotSubscription({
+      username,
+      bot,
+      subscriptionType,
+    });
+    return await subscription.save();
+  },
+
+  findMyBotSubscriptionById: async (username, id) => {
+    let subscription = await BotSubscription.findById(id).exec();
+    if (!subscription) {
+      throw new BotSubscriptionNotFoundError();
+    }
+    if (subscription.username === username) {
+      return subscription;
+    } else {
+      throw new ForbiddenBotSubscriptionError('');
+    }
+  },
+
+  unsubscribe: async (username, botSubscriptionId) => {
+    await BotService.findMyBotSubscriptionById(username, botSubscriptionId);
+    return await BotSubscription.deleteOne({_id: botSubscriptionId});
+  },
+
+  findPaginatedBotSubscriptions: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+    let query = {}
+    let sorting = {}
+    if (username !== '' ) {
+      query['username'] = username;
+    }
+    if (search !== '') {
+      query['$and'] = [{ $or: [{name: { $regex:  `.*${search}.*`, $options: 'i' }}, {description: { $regex:  `.*${search}.*`, $options: 'i' }}] }];
+    }
+    if (status !== '' ) {
+      query['status'] = status;
+    }
+    if (sortBy !== '' ) {
+      sorting[sortBy] = sortType;
+    }
+    const results = await BotSubscription.find(query)
+      .sort(sorting)
+      .skip((resultsPerPage * currentPage) - resultsPerPage)
+      .limit(resultsPerPage);
+    const resultsCount = await BotSubscription.countDocuments(query);
+    const pagesCount = Math.ceil(resultsCount / resultsPerPage);
+    return {
+      results,
+      resultsCount,
+      currentPage,
+      pagesCount,
+    }
+  },
 }
 
 module.exports = {
@@ -156,5 +228,7 @@ module.exports = {
   ForbiddenBotError,
   BotEngineRequiredError,
   ChannelRequiredError,
+  BotSubscriptionNotFoundError,
+  ForbiddenBotSubscriptionError,
   BotService,
 }

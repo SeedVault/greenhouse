@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
+const { Dotfunc } = require('./Dotbot');
 
 const PropertySchema = mongoose.Schema({
   name: {
@@ -106,7 +107,7 @@ const ComponentSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     enum:  {
-      values: ['free', 'paid'],
+      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
       message: 'validation.option'
     },
     trim: true,
@@ -176,6 +177,26 @@ ComponentSchema.virtual('pictureUrl').get(function () {
   } else {
     return `/uploads/${this.picture}`;
   }
+});
+
+ComponentSchema.post('save', async function(doc) {
+  let dotfunc = await Dotfunc.findOne({componentId: doc._id}).exec();
+  if (!dotfunc) {
+    dotfunc = new Dotfunc({ componentId: doc._id });
+  }
+  dotfunc.name = doc.name;
+  dotfunc.category = doc.category;
+  dotfunc.function_name = doc.functionName;
+  dotfunc.cost = doc.pricePerUse;
+  dotfunc.headers = [];
+  dotfunc.predefined_vars = [];
+  for (let i = 0; i < doc.headers.length; i++) {
+    dotfunc.headers.set(doc.headers[i].name, doc.headers[i].value);
+  }
+  for (let i = 0; i < doc.predefinedVars.length; i++) {
+    dotfunc.predefined_vars.set(doc.predefinedVars[i].name, doc.predefinedVars[i].value);
+  }
+  await dotfunc.save();
 });
 
 module.exports = {

@@ -57,7 +57,9 @@
     },
     "pricing_models": {
       "free": "Gratis",
-      "paid": "Pago"
+      "pay_per_use": "Pago por uso",
+      "pay_per_month": "Pago mensual",
+      "pay_per_use_or_month": "Pago por uso o mensual"
     },
     "component_categories": {
       "general": "General",
@@ -118,7 +120,9 @@
         "bot_not_found": "Bot no hallado.",
         "forbidden_bot": "No tienes acceso a este bot.",
         "bot_engine_required": "Debes seleccionar un Bot engine.",
-        "channel_required": "Debes seleccionar al menos un canal."
+        "channel_required": "Debes seleccionar al menos un canal.",
+        "bot_subscription_not_found": "Suscripción a bot no hallada.",
+        "forbidden_bot_subscription": "No tienes acceso a esta suscripción a bot."
       }
     },
     "bot_categories": {

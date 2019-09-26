@@ -44,6 +44,7 @@
     "saslprep": "^1.0.3",
     "seed-theme": "file:../seed-theme",
     "seedtoken-api-client": "file:../seedtoken-api-client",
+    "uuid4": "^1.1.4",
     "vue": "^2.6.10",
     "vue-chartjs": "^3.4.2",
     "vue-i18n": "^8.14.1",

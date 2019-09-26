@@ -3,7 +3,8 @@ import {
 } from '../../../domain/greenhouse/services/ComponentService';
 import {
   BotService as botService, BotNotFoundError, ForbiddenBotError,
-  BotEngineRequiredError, ChannelRequiredError,
+  BotEngineRequiredError, ChannelRequiredError, BotSubscriptionNotFoundError,
+  ForbiddenBotSubscriptionError
 } from '../../../domain/greenhouse/services/BotService';
 
 async function createComponent(name, componentType) {
@@ -239,6 +240,51 @@ describe('Bots', () => {
       await botService.deleteBotById('notmine', id);
     } catch (err) {
       expect(err).toBeInstanceOf(ForbiddenBotError);
+    }
+  });
+});
+
+describe('Bot subscription', () => {
+  it('should be able to subscribe to a bot', async () => {
+    const components = await createAllComponents();
+    const bot = await createBot('my bot', components);
+    const subscription = await botService.subscribe('johndoe', bot._id, 'free');
+    expect(subscription).toHaveProperty('_id');
+    expect(subscription.username).toBe('johndoe');
+  });
+
+  it('should throw a "bot subscription not found" error when passed a wrong bot subscription id', async () => {
+    try {
+      await botService.findMyBotSubscriptionById();
+    } catch (err) {
+      expect(err).toBeInstanceOf(BotSubscriptionNotFoundError);
+    }
+  });
+
+  it('should be able to unsubscribe from a bot', async () => {
+    const components = await createAllComponents();
+    const bot = await createBot('my bot', components);
+    const subscription = await botService.subscribe('johndoe', bot._id, 'free');
+    expect(subscription).toHaveProperty('_id');
+    const id = subscription._id;
+    const value = await botService.unsubscribe('johndoe', id);
+    expect(value.deletedCount).toBe(1);
+    try {
+      await botService.unsubscribe('johndoe', id);
+    } catch (err) {
+      expect(err).toBeInstanceOf(BotSubscriptionNotFoundError);
+    }
+  });
+
+  it('should throw a "forbidden bot subscription" error when trying to unsubscribe from a bot that doesn\'t belong to me', async () => {
+    const components = await createAllComponents();
+    const bot = await createBot('my bot', components);
+    const subscription = await botService.subscribe('johndoe', bot._id, 'free');
+    expect(subscription).toHaveProperty('_id');
+    try {
+      await botService.unsubscribe('notmine', subscription);
+    } catch (err) {
+      expect(err).toBeInstanceOf(ForbiddenBotSubscriptionError);
     }
   });
 });

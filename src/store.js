@@ -18,7 +18,7 @@ export default new Vuex.Store({
     allPropertyInputTypes: ['select', 'text', 'textarea'],
     allBotCategories: ['general', 'weather'],
     allBotStatuses: ['enabled', 'disabled'],
-    allPricingModels: ['free', 'paid'],
+    allPricingModels: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
     menu: [
       {
         text: 'app.dashboard',

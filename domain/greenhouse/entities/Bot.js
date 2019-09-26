@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
+var uuid4 = require('uuid4');
 const { Component } = require('./Component');
 
 const ConfigSchema = mongoose.Schema({
@@ -21,6 +22,34 @@ const ConfigSchema = mongoose.Schema({
     of: String
   }
 });
+
+const BotSubscriptionSchema = mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
+  },
+  bot: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Bots',
+    required: [true, 'validation.required'],
+  },
+  subscriptionType: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['free', 'month', 'use'],
+      message: 'validation.option'
+    },
+    trim: true,
+  },
+  token: {
+    type: String,
+    required: [true, 'validation.required'],
+    default: uuid4(),
+    trim: true,
+  }
+}, {timestamps: true});
 
 const BotSchema = mongoose.Schema({
   category: {
@@ -125,5 +154,6 @@ BotSchema.virtual('pictureUrl').get(function () {
 
 module.exports = {
   Config: mongoose.model('Config', ConfigSchema),
+  BotSubscription: mongoose.model('BotSubscriptions', BotSubscriptionSchema),
   Bot: mongoose.model('Bots', BotSchema)
 }
