@@ -98,6 +98,11 @@ const router = new Router({
             path: 'bots',
             name: 'marketplaceBotsList',
             component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsList.vue'),
+          },
+          {
+            path: 'bots/:id',
+            name: 'marketplaceBotsView',
+            component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsView.vue'),
           }],
         },
         {

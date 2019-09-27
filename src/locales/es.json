@@ -236,6 +236,9 @@
     "list_of_channel": "Canales",
     "there_are_no_bot_engines_selected": "No hay bot engines seleccionados",
     "there_are_no_services_selected": "No hay servicios seleccionados",
-    "there_are_no_channels_selected": "No hay canales seleccionados"
+    "there_are_no_channels_selected": "No hay canales seleccionados",
+    "configure": "Configurar",
+    "subscribe": "Suscribir",
+    "unsubscribe": "Desuscribir"
   }
 }

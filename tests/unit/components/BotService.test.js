@@ -255,6 +255,23 @@ describe('Bot subscription', () => {
     expect(subscription.username).toBe('johndoe');
   });
 
+  it('should be able to retrieve a subscription by username and bot id', async () => {
+    const components = await createAllComponents();
+    const bot = await createBot('my bot', components);
+    await botService.subscribe('johndoe', bot._id, 'free');
+    const savedSubscription = await botService.findSubscriptionByUserAndBot('johndoe', bot._id);
+    expect(savedSubscription).toHaveProperty('_id');
+    expect(savedSubscription.username).toBe('johndoe');
+  });
+
+  it('should throw a "bot subscription not found" error when passed a wrong bot or username', async () => {
+    try {
+      await botService.findSubscriptionByUserAndBot('none', '5d8e657a7ecd975e9f577b85');
+    } catch (err) {
+      expect(err).toBeInstanceOf(BotSubscriptionNotFoundError);
+    }
+  });
+
   it('should throw a "bot subscription not found" error when passed a wrong bot subscription id', async () => {
     try {
       await botService.findMyBotSubscriptionById();

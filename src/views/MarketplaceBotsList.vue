@@ -147,7 +147,7 @@ export default {
       this.getData();
     },
     viewBot(id) {
-      this.$router.push({ name: 'botsView', params: { id } });
+      this.$router.push({ name: 'marketplaceBotsView', params: { id } });
     },
   },
 };

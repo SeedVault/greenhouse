@@ -1,4 +1,4 @@
-const { BotService } = require('../../domain/greenhouse/services/BotService');
+const { BotService, BotSubscriptionNotFoundError } = require('../../domain/greenhouse/services/BotService');
 const ValidationError = require('mongoose/lib/error/validation');
 const fs = require('fs');
 const {resolve} = require("path");
@@ -172,6 +172,37 @@ const bots = {
     } catch (err) {
       next(err);
     }
+  },
+
+   // GET - /api/markteplace/bots/:id
+   marketplaceView: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    let data = {
+      subscribed: false
+    };
+    try {
+      data.bot = await BotService.findBotById(req.params.id);
+      data.subscription = {};
+    } catch (err) {
+      next(err);
+    }
+
+    // find subscription
+    try {
+      data.subscription = await BotService.findSubscriptionByUserAndBot(req.user.username, req.params.id);
+      data.subscribed = true;
+    } catch (err) {
+      if (err instanceof BotSubscriptionNotFoundError) {
+        // there is no subscription yet
+      } else {
+        // next(err);
+        return res.status(500).json(err);
+      }
+    }
+
+    res.json(data);
   },
 }
 

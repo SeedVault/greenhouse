@@ -177,6 +177,15 @@ const BotService = {
     return await subscription.save();
   },
 
+  findSubscriptionByUserAndBot: async (username, botId) => {
+    let subscription = await BotSubscription.findOne({username: username, 'bot': botId}).exec();
+    if (!subscription) {
+      throw new BotSubscriptionNotFoundError();
+    }
+    return subscription;
+  },
+
+
   findMyBotSubscriptionById: async (username, id) => {
     let subscription = await BotSubscription.findById(id).exec();
     if (!subscription) {
