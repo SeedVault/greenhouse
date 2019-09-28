@@ -191,5 +191,6 @@ module.exports = function(app) {
   app.post('/api/bots/delete', bots.delete);
   app.post('/api/bots/:id/change-picture', upload.single('pictureFile'), bots.changePicture);
   app.get('/api/bots/:id', bots.view);
+  app.get('/api/markteplace/bots', bots.marketplaceList);
   app.get('/api/markteplace/bots/:id', bots.marketplaceView);
 }

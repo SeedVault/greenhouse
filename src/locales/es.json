@@ -239,6 +239,8 @@
     "there_are_no_channels_selected": "No hay canales seleccionados",
     "configure": "Configurar",
     "subscribe": "Suscribir",
-    "unsubscribe": "Desuscribir"
+    "unsubscribe": "Desuscribir",
+    "test_bot": "Testear bot",
+    "view_code": "Ver código"
   }
 }

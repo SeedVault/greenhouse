@@ -114,7 +114,7 @@ const DotbotSchema = mongoose.Schema({
     type: Map,
     of: String
   },
-  rempote_apis: {
+  remote_apis: {
     type: Map,
     of: String
   }

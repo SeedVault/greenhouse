@@ -110,7 +110,7 @@ export default {
     getData() {
       this.fetching = true;
       this.bots = [];
-      this.axios.get('/api/bots', {
+      this.axios.get('/api/markteplace/bots', {
         params: {
           page: this.page,
           search: this.$parent.$parent.search,

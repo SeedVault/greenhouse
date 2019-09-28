@@ -174,6 +174,43 @@ const bots = {
     }
   },
 
+  // GET - /api/markteplace/bots/:id
+  marketplaceList: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      const resultsPerPage = 10;
+      const page = req.query.page || 1;
+      const search = req.query.search || '';
+      let status = req.query.status || '';
+      if (status !== 'enabled' && status !== 'disabled') {
+        status = '';
+      }
+      let sortBy = req.query.sortBy || '';
+      if (sortBy !== 'name' && sortBy !== 'updatedAt') {
+        sortBy = '';
+      }
+      let sortType = req.query.sortType || 'asc';
+      if (sortType !== 'asc' && sortType !== 'desc') {
+        sortType = 'asc';
+      }
+      const data = await BotService.findPaginatedBots(
+        resultsPerPage,
+        page,
+        '',
+        search,
+        status,
+        sortBy,
+        sortType,
+      );
+      res.json(data);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+
    // GET - /api/markteplace/bots/:id
    marketplaceView: async (req, res, next) => {
     if (!req.user) {
