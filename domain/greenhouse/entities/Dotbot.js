@@ -54,13 +54,33 @@ const DotfuncSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true,
   }, */
-  cost: {
+  pricingModel: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
+      message: 'validation.option'
+    },
+    trim: true,
+    index: true,
+    default: 'free'
+  },
+  perUseCost: {
     type: Number,
     min: [0, 'validation.option'],
     max: [9999, 'validation.option'],
     required: [true, 'validation.required'],
     default: 0,
-  }
+    index: true
+  },
+  monthlyCost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+    index: true
+  },
 });
 
 
@@ -121,6 +141,6 @@ const DotbotSchema = mongoose.Schema({
 });
 
 module.exports = {
-  Dotfunc: rhizomeDb.model('Dotfuncs', DotfuncSchema),
-  Dotbot: rhizomeDb.model('Dotbots', DotbotSchema)
+  Dotfunc: rhizomeDb.model('greenhouse_services', DotfuncSchema),
+  Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema)
 }

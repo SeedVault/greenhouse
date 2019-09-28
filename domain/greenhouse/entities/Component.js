@@ -196,6 +196,9 @@ ComponentSchema.post('save', async function(doc) {
   for (let i = 0; i < doc.predefinedVars.length; i++) {
     dotfunc.predefined_vars.set(doc.predefinedVars[i].name, doc.predefinedVars[i].value);
   }
+  dotfunc.pricingModel = doc.pricingModel;
+  dotfunc.perUseCost = doc.pricePerUse;
+  dotfunc.monthlyCost = doc.pricePerMonth;
   await dotfunc.save();
 });
 
