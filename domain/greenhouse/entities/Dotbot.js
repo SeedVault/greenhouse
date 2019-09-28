@@ -1,5 +1,11 @@
 var mongoose = require('mongoose');
 
+let rhizomeDbName = process.env.RHIZOME_DATABASE;
+if (process.env.NODE_ENV === 'testing') {
+  rhizomeDbName = process.env.RHIZOME_TEST_DATABASE;
+}
+const rhizomeDb = mongoose.connection.useDb(rhizomeDbName);
+
 const DotfuncSchema = mongoose.Schema({
   componentId: {
     type: String,
@@ -115,6 +121,6 @@ const DotbotSchema = mongoose.Schema({
 });
 
 module.exports = {
-  Dotfunc: mongoose.model('Dotfuncs', DotfuncSchema),
-  Dotbot: mongoose.model('Dotbots', DotbotSchema)
+  Dotfunc: rhizomeDb.model('Dotfuncs', DotfuncSchema),
+  Dotbot: rhizomeDb.model('Dotbots', DotbotSchema)
 }
