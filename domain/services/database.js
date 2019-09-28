@@ -1,6 +1,7 @@
 const credentials = `${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}`;
-const server   = `${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
-const mongoUri = `mongodb://${credentials}@${server}`;
+const ssl         = (process.env.MONGO_SSL === 'yes'? '?ssl=true': '');
+const server      = `${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`;
+const mongoUri    = `mongodb://${credentials}@${server}${ssl}`;
 let database = process.env.GREENHOUSE_DATABASE;
 if (process.env.NODE_ENV === 'testing') {
   database = process.env.GREENHOUSE_TEST_DATABASE;
