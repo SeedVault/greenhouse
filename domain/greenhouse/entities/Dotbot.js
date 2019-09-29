@@ -84,12 +84,54 @@ const DotfuncSchema = mongoose.Schema({
 });
 
 
-const DotbotSchema = mongoose.Schema({
-  botId: {
+const DotbotPublisherSchema = mongoose.Schema({
+  bot: {
     type: String,
     required: [true, 'validation.required'],
     index: true,
-    unique: true,
+    trim: true
+  },
+  username: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  subscriptionType: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true,
+  },
+  token: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+});
+
+
+const RemoteApiSchema = mongoose.Schema({
+  id: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  status: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  mapped_vars: {
+    type: Map,
+    of: String
+  },
+});
+
+
+const DotbotSchema = mongoose.Schema({
+  id: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
     trim: true
   },
   name: {
@@ -113,12 +155,28 @@ const DotbotSchema = mongoose.Schema({
     trim: true,
     default: 'enabled'
   },
-  volley_cost: {
+/*  volley_cost: {
     type: Number,
     min: [0, 'validation.option'],
     max: [9999, 'validation.option'],
     required: [true, 'validation.required'],
     default: 0,
+  }, */
+  perUseCost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+    index: true
+  },
+  monthlyCost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+    index: true
   },
   subscriptionType: {
     type: String,
@@ -132,15 +190,16 @@ const DotbotSchema = mongoose.Schema({
   },
   channels: {
     type: Map,
-    of: String
+    of: { type: Map, of: String },
   },
   remote_apis: {
-    type: Map,
-    of: String
+    type: [ RemoteApiSchema ],
   }
 });
 
 module.exports = {
+  RemoteApi: rhizomeDb.model('greenhouse_remote_api', RemoteApiSchema),
   Dotfunc: rhizomeDb.model('greenhouse_services', DotfuncSchema),
-  Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema)
+  DotbotPublisher: rhizomeDb.model('greenhouse_bot_publisher', DotbotPublisherSchema),
+  Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema),
 }

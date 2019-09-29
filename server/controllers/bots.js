@@ -241,6 +241,36 @@ const bots = {
 
     res.json(data);
   },
+
+
+  // POST - /api/subscriptions/bots/:id/subscribe
+  subscribe: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let botId = req.params.id;
+      const subscriptionType = req.body.subscriptionType;
+      const subscription = await BotService.subscribe(req.user.username, botId, subscriptionType);
+      res.status(200).json({saved: true, subscriptionId: subscription.id});
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
+
+  // POST - /api/subscriptions/bots/:id/unsubscribe
+  unsubscribe: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let botId = req.params.id;
+      await BotService.unsubscribe(req.user.username, botId);
+      res.status(200).json({unsubscribed: true});
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  },
 }
 
 module.exports = bots;

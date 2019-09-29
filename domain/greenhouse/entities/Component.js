@@ -179,6 +179,38 @@ ComponentSchema.virtual('pictureUrl').get(function () {
   }
 });
 
+ComponentSchema.methods.hasInputsFor = function(valueType, group) {
+  if (group === 'properties' || group === '') {
+    for (let i = 0; i < this.properties.length; i++) {
+      if (this.properties[i].valueType === valueType) {
+        return true;
+      }
+    }
+  }
+  if (group === 'headers' || group === '') {
+    for (let i = 0; i < this.headers.length; i++) {
+      if (this.headers[i].valueType === valueType) {
+        return true;
+      }
+    }
+  }
+  if (group === 'predefinedVars' || group === '') {
+    for (let i = 0; i < this.predefinedVars.length; i++) {
+      if (this.predefinedVars[i].valueType === valueType) {
+        return true;
+      }
+    }
+  }
+  if (group === 'mappedVars' || group === '') {
+    for (let i = 0; i < this.mappedVars.length; i++) {
+      if (this.mappedVars[i].valueType === valueType) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
 ComponentSchema.post('save', async function(doc) {
   let dotfunc = await Dotfunc.findOne({componentId: doc._id}).exec();
   if (!dotfunc) {

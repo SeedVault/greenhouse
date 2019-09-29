@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-md-2">
                   <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="subscribe()" v-show="!subscribed">{{ $t('bots.subscribe') }}</button>
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="editBot()" v-show="subscribed">{{ $t('bots.configure') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="subscribe()" v-show="subscribed">{{ $t('bots.configure') }}</button>
                   <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="testBot()" v-show="subscribed">{{ $t('bots.test_bot') }}</button>
                   <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="viewCode()" v-show="subscribed">{{ $t('bots.view_code') }}</button>
                   <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmUnsubscribe()" v-show="subscribed">{{ $t('bots.unsubscribe') }}</button>
@@ -188,11 +188,11 @@ export default {
     confirmUnsubscribe() {
       const { id } = this.$route.params;
       this.$bvModal.msgBoxConfirm(' ', {
-        title: this.$i18n.t('bots.delete_this_bot'),
+        title: this.$i18n.t('bots.unsubscribe_from_this_bot'),
         size: 'md',
         buttonSize: 'md',
         okVariant: 'danger',
-        okTitle: this.$i18n.t('common.delete'),
+        okTitle: this.$i18n.t('bots.unsubscribe'),
         cancelTitle: this.$i18n.t('common.no'),
         footerClass: 'p-2',
         hideHeaderClose: true,
@@ -200,25 +200,23 @@ export default {
       })
         .then((value) => {
           if (value === true) {
-            this.deleteBot();
+            this.unsubscribe();
           }
         })
         .catch((err) => {
           this.oops = true;
         });
     },
-    deleteBot() {
+    unsubscribe() {
       this.validationErrors = [];
       this.deleting = true;
       this.deleted = false;
       const { id } = this.$route.params;
-      this.axios.post('/api/bots/delete', {
-        id,
-      })
+      this.axios.post(`/api/subscriptions/bots/${id}/unsubscribe`, {})
         .then((result) => {
           this.deleting = false;
           this.deleted = true;
-          this.$router.push({ name: 'botsList' });
+          this.$router.push({ name: 'marketplaceBotsList' });
         })
         .catch((error) => {
           this.deleting = false;

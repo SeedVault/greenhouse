@@ -44,15 +44,6 @@ class BotSubscriptionNotFoundError extends ValidationError {
   }
 }
 
-class ForbiddenBotSubscriptionError extends ValidationError {
-  constructor(message) {
-    super(message);
-    this.name = 'ForbiddenBotSubscriptionError';
-    this.errors['_'] = { message: 'domain.bot.validation.forbidden_bot_subscription' };
-  }
-}
-
-
 const BotService = {
 
   createConfig: async (componentParams) => {
@@ -167,13 +158,25 @@ const BotService = {
     return await Bot.deleteOne({_id: id});
   },
 
-  subscribe: async (username, botId, subscriptionType) => {
+  subscribe: async (username, botId, subscriptionType, values) => {
     const bot = await BotService.findBotById(botId);
-    let subscription = new BotSubscription({
-      username,
-      bot,
-      subscriptionType,
-    });
+    let subscription = new BotSubscription({});
+    try {
+      subscription = await BotService.findSubscriptionByUserAndBot(username, botId);
+      subscription.subscriptionType = subscriptionType;
+      subscription.values = values;
+    } catch (err) {
+      if (err instanceof BotSubscriptionNotFoundError) {
+        subscription = new BotSubscription({
+          username,
+          bot,
+          subscriptionType,
+          values,
+        });
+      } else {
+        throw err;
+      }
+    }
     return await subscription.save();
   },
 
@@ -185,22 +188,12 @@ const BotService = {
     return subscription;
   },
 
-
-  findMyBotSubscriptionById: async (username, id) => {
-    let subscription = await BotSubscription.findById(id).exec();
+  unsubscribe: async (username, botId) => {
+    let subscription = await BotSubscription.findOne({username: username, 'bot': botId}).exec();
     if (!subscription) {
       throw new BotSubscriptionNotFoundError();
     }
-    if (subscription.username === username) {
-      return subscription;
-    } else {
-      throw new ForbiddenBotSubscriptionError('');
-    }
-  },
-
-  unsubscribe: async (username, botSubscriptionId) => {
-    await BotService.findMyBotSubscriptionById(username, botSubscriptionId);
-    return await BotSubscription.deleteOne({_id: botSubscriptionId});
+    return await BotSubscription.deleteOne({_id: subscription._id});
   },
 
   findPaginatedBotSubscriptions: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
@@ -239,6 +232,5 @@ module.exports = {
   BotEngineRequiredError,
   ChannelRequiredError,
   BotSubscriptionNotFoundError,
-  ForbiddenBotSubscriptionError,
   BotService,
 }

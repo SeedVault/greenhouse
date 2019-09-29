@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var uuid4 = require('uuid4');
 const { Component } = require('./Component');
+const { Dotbot, DotbotPublisher, RemoteApi } = require('./Dotbot');
 
 const ConfigSchema = mongoose.Schema({
   component: {
@@ -48,8 +49,124 @@ const BotSubscriptionSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     default: uuid4(),
     trim: true,
+  },
+  values: {
+    type: Map,
+    of: String
   }
 }, {timestamps: true});
+
+BotSubscriptionSchema.post('save', async function(doc) {
+  // Update greenhouse_bot_publisher
+  let dotsub = await DotbotPublisher.findOne({_id: doc._id}).exec();
+  if (!dotsub) {
+    dotsub = new DotbotPublisher({ _id: doc._id });
+  }
+  dotsub.bot = doc.bot._id;
+  dotsub.username = doc.username;
+  dotsub.subscriptionType = doc.subscriptionType;
+  dotsub.token = doc.token;
+  await dotsub.save();
+
+  // Update greenhouse_dotbot
+  let dotbot = await Dotbot.findOne({_id: doc._id}).exec();
+  if (!dotbot) {
+    dotbot = new Dotbot({ _id: doc._id });
+  }
+  dotbot.id = doc.bot.botId;
+  dotbot.name = doc.bot.name;
+  dotbot.ownerId = doc.bot.username;
+  dotbot.description = doc.bot.description;
+  dotbot.status = doc.bot.status;
+  dotbot.subscriptionType = doc.subscriptionType;
+  dotbot.perUseCost = doc.bot.pricePerUse;
+  dotbot.monthlyCost = doc.bot.pricePerMonth;
+
+  // chatbot engine
+  dotbot.chatbotEngine = [];
+  let component = await Component.findById(doc.bot.botEngine.component);
+  for (let i = 0; i < component.properties.length; i++) {
+    let propertyId = `_${component.properties[i]._id}`;
+    let value = '';
+    switch (component.properties[i].valueType) {
+      case 'fixed':
+        value = component.properties[i].value;
+        break;
+      case 'developer':
+        if (doc.bot.botEngine.values.has()) {
+          value = doc.bot.botEngine.values.get(propertyId);
+        }
+        break;
+      case 'publisher':
+        if (doc.values.has()) {
+          value = doc.values.get(propertyId);
+        }
+        break;
+    }
+    dotbot.chatbotEngine.set(component.properties[i].name, value);
+  }
+
+  // channels
+  dotbot.channels = [];
+  for (let j = 0; j < doc.bot.channels.length; j++) {
+    let component = await Component.findById(doc.bot.channels[j].component);
+    let props = new Map();
+    for (let i = 0; i < component.properties.length; i++) {
+      let propertyId = `_${component.properties[i]._id}`;
+      let value = '';
+      switch (component.properties[i].valueType) {
+        case 'fixed':
+          value = component.properties[i].value;
+          break;
+        case 'developer':
+          if (doc.bot.channels[j].values.has()) {
+            value = doc.bot.channels[j].values.get(propertyId);
+          }
+          break;
+        case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break;
+      }
+      props.set(component.properties[i].name, value);
+    }
+    dotbot.channels.set(component.key, props);
+  }
+
+  // remote apis
+  dotbot.remote_apis = [];
+  for (let j = 0; j < doc.bot.services.length; j++) {
+    let component = await Component.findById(doc.bot.services[j].component);
+    let ra = new RemoteApi({});
+    ra.id = component._id;
+    ra.status = component.status;
+    ra.mapped_vars = new Map();
+    for (let i = 0; i < component.mappedVars.length; i++) {
+      let propertyId = `_${component.mappedVars[i]._id}`;
+      let value = '';
+      switch (component.mappedVars[i].valueType) {
+        case 'fixed':
+          value = component.mappedVars[i].value;
+          break;
+        case 'developer':
+          if (doc.bot.services[j].values.has()) {
+            value = doc.bot.services[j].values.get(propertyId);
+          }
+          break;
+        case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break;
+      }
+      ra.mapped_vars.set(component.mappedVars[i].name, value);
+    }
+    dotbot.remote_apis.push(ra);
+  }
+
+  await dotbot.save();
+});
 
 const BotSchema = mongoose.Schema({
   botId: {

@@ -193,4 +193,6 @@ module.exports = function(app) {
   app.get('/api/bots/:id', bots.view);
   app.get('/api/markteplace/bots', bots.marketplaceList);
   app.get('/api/markteplace/bots/:id', bots.marketplaceView);
+  app.post('/api/subscriptions/bots/:id/subscribe', bots.subscribe);
+  app.post('/api/subscriptions/bots/:id/unsubscribe', bots.unsubscribe);
 }
