@@ -6,7 +6,7 @@ if (process.env.NODE_ENV === 'testing') {
 }
 const rhizomeDb = mongoose.connection.useDb(rhizomeDbName);
 
-const DotfuncSchema = mongoose.Schema({
+const DotServiceSchema = mongoose.Schema({
   componentId: {
     type: String,
     required: [true, 'validation.required'],
@@ -14,9 +14,15 @@ const DotfuncSchema = mongoose.Schema({
     unique: true,
     trim: true
   },
-  name: {
+  title: {
     type: String,
     required: [true, 'validation.required'],
+    trim: true
+  },
+  serviceId: {
+    type: String,
+    required: [true, 'validation.required'],
+    unique: true,
     trim: true
   },
   category: {
@@ -49,11 +55,10 @@ const DotfuncSchema = mongoose.Schema({
     type: Map,
     of: String
   },
-  /* subscriptionType: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-  }, */
+  mapped_vars: {
+    type: Map,
+    of: String
+  },
   pricingModel: {
     type: String,
     required: [true, 'validation.required'],
@@ -85,7 +90,7 @@ const DotfuncSchema = mongoose.Schema({
 
 
 const DotbotPublisherSchema = mongoose.Schema({
-  bot: {
+  botId: {
     type: String,
     required: [true, 'validation.required'],
     index: true,
@@ -136,13 +141,20 @@ const ServicePropSchema = mongoose.Schema({
 
 
 const DotbotSchema = mongoose.Schema({
-  id: {
+  botId: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
+    unique: true,
+    trim: true
+  },
+  name: {
     type: String,
     required: [true, 'validation.required'],
     index: true,
     trim: true
   },
-  name: {
+  title: {
     type: String,
     required: [true, 'validation.required'],
     trim: true
@@ -163,13 +175,17 @@ const DotbotSchema = mongoose.Schema({
     trim: true,
     default: 'enabled'
   },
-/*  volley_cost: {
-    type: Number,
-    min: [0, 'validation.option'],
-    max: [9999, 'validation.option'],
+  pricingModel: {
+    type: String,
     required: [true, 'validation.required'],
-    default: 0,
-  }, */
+    enum:  {
+      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
+      message: 'validation.option'
+    },
+    trim: true,
+    index: true,
+    default: 'free'
+  },
   perUseCost: {
     type: Number,
     min: [0, 'validation.option'],
@@ -186,12 +202,6 @@ const DotbotSchema = mongoose.Schema({
     default: 0,
     index: true
   },
-  subscriptionType: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-    default: 'per_use'
-  },
   chatbotEngine: {
     type: Map,
     of: String
@@ -207,7 +217,7 @@ const DotbotSchema = mongoose.Schema({
 
 module.exports = {
   ServiceProp: rhizomeDb.model('greenhouse_remote_api', ServicePropSchema),
-  Dotfunc: rhizomeDb.model('greenhouse_services', DotfuncSchema),
+  DotService: rhizomeDb.model('greenhouse_services', DotServiceSchema),
   DotbotPublisher: rhizomeDb.model('greenhouse_bot_publisher', DotbotPublisherSchema),
   Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema),
 }

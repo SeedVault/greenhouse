@@ -107,6 +107,12 @@ const router = new Router({
           meta: { authenticated: true }
         },
         {
+          path: 'marketplace/bots/:id/code',
+          name: 'marketplaceBotsCode',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsCode.vue'),
+          meta: { authenticated: true }
+        },
+        {
           path: 'marketplace/bots/:id/configure',
           name: 'marketplaceBotsForm',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsForm.vue'),

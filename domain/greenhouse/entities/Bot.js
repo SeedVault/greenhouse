@@ -56,159 +56,15 @@ const BotSubscriptionSchema = mongoose.Schema({
   }
 }, {timestamps: true});
 
+
 BotSubscriptionSchema.post('save', async function(doc) {
   // Update greenhouse_bot_publisher
-  let dotsub = await DotbotPublisher.findOne({_id: doc._id}).exec();
-  if (!dotsub) {
-    dotsub = new DotbotPublisher({ _id: doc._id });
-  }
-  dotsub.bot = doc.bot._id;
-  dotsub.username = doc.username;
+  await DotbotPublisher.deleteOne({botId: doc.bot._id, username: doc.username});
+  dotsub = new DotbotPublisher({botId: doc.bot._id, username: doc.username});
   dotsub.subscriptionType = doc.subscriptionType;
   dotsub.token = doc.token;
+  // dotsub.values = doc.values;
   await dotsub.save();
-
-  // Update greenhouse_dotbot
-  let dotbot = await Dotbot.findOne({_id: doc._id}).exec();
-  if (!dotbot) {
-    dotbot = new Dotbot({ _id: doc._id });
-  }
-  dotbot.id = doc.bot.botId;
-  dotbot.name = doc.bot.name;
-  dotbot.ownerId = doc.bot.username;
-  dotbot.description = doc.bot.description;
-  dotbot.status = doc.bot.status;
-  dotbot.subscriptionType = doc.subscriptionType;
-  dotbot.perUseCost = doc.bot.pricePerUse;
-  dotbot.monthlyCost = doc.bot.pricePerMonth;
-
-  // chatbot engine
-  dotbot.chatbotEngine = [];
-  let bot = await mongoose.model('Bots', BotSchema).findById(doc.bot);
-  let component = await Component.findById(bot.botEngine.component);
-  for (let i = 0; i < component.properties.length; i++) {
-    let propertyId = `_${component.properties[i]._id}`;
-    let value = '';
-    switch (component.properties[i].valueType) {
-      case 'fixed':
-        value = component.properties[i].value;
-        break;
-      case 'developer':
-        if (bot.botEngine.values.has()) {
-          value = bot.botEngine.values.get(propertyId);
-        }
-        break;
-      case 'publisher':
-        if (doc.values.has()) {
-          value = doc.values.get(propertyId);
-        }
-        break;
-    }
-    dotbot.chatbotEngine.set(component.properties[i].name, value);
-  }
-
-  // channels
-  dotbot.channels = [];
-  for (let j = 0; j < bot.channels.length; j++) {
-    let component = await Component.findById(bot.channels[j].component);
-    let props = new Map();
-    for (let i = 0; i < component.properties.length; i++) {
-      let propertyId = `_${component.properties[i]._id}`;
-      let value = '';
-      switch (component.properties[i].valueType) {
-        case 'fixed':
-          value = component.properties[i].value;
-          break;
-        case 'developer':
-          if (bot.channels[j].values.has()) {
-            value = bot.channels[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
-          }
-          break;
-      }
-      props.set(component.properties[i].name, value);
-    }
-    dotbot.channels.set(component.key, props);
-  }
-
-  // remote apis
-  dotbot.remote_apis = [];
-  for (let j = 0; j < bot.services.length; j++) {
-    let component = await Component.findById(bot.services[j].component);
-    let ra = new ServiceProp({});
-    ra.id = component._id;
-    ra.status = component.status;
-    ra.headers = new Map();
-    for (let i = 0; i < component.headers.length; i++) {
-      let propertyId = `_${component.headers[i]._id}`;
-      let value = '';
-      switch (component.headers[i].valueType) {
-        case 'fixed':
-          value = component.headers[i].value;
-          break;
-        case 'developer':
-          if (bot.services[j].values.has()) {
-            value = bot.services[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
-          }
-          break;
-      }
-      ra.headers.set(component.headers[i].name, value);
-    }
-    ra.mapped_vars = new Map();
-    for (let i = 0; i < component.mappedVars.length; i++) {
-      let propertyId = `_${component.mappedVars[i]._id}`;
-      let value = '';
-      switch (component.mappedVars[i].valueType) {
-        case 'fixed':
-          value = component.mappedVars[i].value;
-          break;
-        case 'developer':
-          if (bot.services[j].values.has()) {
-            value = bot.services[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
-          }
-          break;
-      }
-      ra.mapped_vars.set(component.mappedVars[i].name, value);
-    }
-    ra.predefined_vars = new Map();
-    for (let i = 0; i < component.predefinedVars.length; i++) {
-      let propertyId = `_${component.predefinedVars[i]._id}`;
-      let value = '';
-      switch (component.predefinedVars[i].valueType) {
-        case 'fixed':
-          value = component.predefinedVars[i].value;
-          break;
-        case 'developer':
-          if (bot.services[j].values.has()) {
-            value = bot.services[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
-          }
-          break;
-      }
-      ra.predefined_vars.set(component.predefinedVars[i].name, value);
-    }
-    dotbot.remote_apis.push(ra);
-  }
-
-  await dotbot.save();
 });
 
 const BotSchema = mongoose.Schema({
@@ -320,6 +176,148 @@ BotSchema.virtual('pictureUrl').get(function () {
     return `/uploads/${this.picture}`;
   }
 });
+
+BotSchema.post('save', async function(doc) {
+
+  // Update greenhouse_dotbot
+  await Dotbot.deleteOne({botId: doc._id});
+  let dotbot = new Dotbot({ botId: doc._id });
+  dotbot.name = doc.botId;
+  dotbot.title = doc.name;
+  dotbot.ownerId = doc.username;
+  dotbot.description = doc.description;
+  dotbot.status = doc.status;
+  dotbot.pricingModel = doc.pricingModel;
+  dotbot.perUseCost = doc.pricePerUse;
+  dotbot.monthlyCost = doc.pricePerMonth;
+
+  // chatbot engine
+  dotbot.chatbotEngine = [];
+  let component = await Component.findById(doc.botEngine.component);
+  for (let i = 0; i < component.properties.length; i++) {
+    let propertyId = `_${component.properties[i]._id}`;
+    let value = '';
+    switch (component.properties[i].valueType) {
+      case 'fixed':
+        value = component.properties[i].value;
+        break;
+      case 'developer':
+        if (doc.botEngine.values.has(propertyId)) {
+          value = doc.botEngine.values.get(propertyId);
+        }
+        break;
+      /*case 'publisher':
+        if (doc.values.has()) {
+          value = doc.values.get(propertyId);
+        }
+        break; */
+    }
+    dotbot.chatbotEngine.set(component.properties[i].name, value);
+  }
+
+  // channels
+  dotbot.channels = [];
+  for (let j = 0; j < doc.channels.length; j++) {
+    let component = await Component.findById(doc.channels[j].component);
+    let props = new Map();
+    for (let i = 0; i < component.properties.length; i++) {
+      let propertyId = `_${component.properties[i]._id}`;
+      let value = '';
+      switch (component.properties[i].valueType) {
+        case 'fixed':
+          value = component.properties[i].value;
+          break;
+        case 'developer':
+          if (doc.channels[j].values.has(propertyId)) {
+            value = doc.channels[j].values.get(propertyId);
+          }
+          break;
+        /* case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break; */
+      }
+      props.set(component.properties[i].name, value);
+    }
+    dotbot.channels.set(component.key, props);
+  }
+
+  // remote apis
+  dotbot.remote_apis = [];
+  for (let j = 0; j < doc.services.length; j++) {
+    let component = await Component.findById(doc.services[j].component);
+    let ra = new ServiceProp({});
+    ra.id = component._id;
+    ra.status = component.status;
+    ra.headers = new Map();
+    for (let i = 0; i < component.headers.length; i++) {
+      let propertyId = `_${component.headers[i]._id}`;
+      let value = '';
+      switch (component.headers[i].valueType) {
+        case 'fixed':
+          value = component.headers[i].value;
+          break;
+        case 'developer':
+          if (doc.services[j].values.has(propertyId)) {
+            value = doc.services[j].values.get(propertyId);
+          }
+          break;
+        /*case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break;*/
+      }
+      ra.headers.set(component.headers[i].name, value);
+    }
+    ra.mapped_vars = new Map();
+    for (let i = 0; i < component.mappedVars.length; i++) {
+      let propertyId = `_${component.mappedVars[i]._id}`;
+      let value = '';
+      switch (component.mappedVars[i].valueType) {
+        case 'fixed':
+          value = component.mappedVars[i].value;
+          break;
+        case 'developer':
+          if (doc.services[j].values.has(propertyId)) {
+            value = doc.services[j].values.get(propertyId);
+          }
+          break;
+        /* case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break; */
+      }
+      ra.mapped_vars.set(component.mappedVars[i].name, value);
+    }
+    ra.predefined_vars = new Map();
+    for (let i = 0; i < component.predefinedVars.length; i++) {
+      let propertyId = `_${component.predefinedVars[i]._id}`;
+      let value = '';
+      switch (component.predefinedVars[i].valueType) {
+        case 'fixed':
+          value = component.predefinedVars[i].value;
+          break;
+        case 'developer':
+          if (doc.services[j].values.has(propertyId)) {
+            value = doc.services[j].values.get(propertyId);
+          }
+          break;
+        /* case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break; */
+      }
+      ra.predefined_vars.set(component.predefinedVars[i].name, value);
+    }
+    dotbot.remote_apis.push(ra);
+  }
+  await dotbot.save();
+});
+
 
 module.exports = {
   Config: mongoose.model('Config', ConfigSchema),

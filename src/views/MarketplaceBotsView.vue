@@ -183,7 +183,7 @@ export default {
     },
     viewCode() {
       const { id } = this.$route.params;
-      /// this.$router.push({ name: 'botsForm', params: { id } });
+      this.$router.push({ name: 'marketplaceBotsCode', params: { id } });
     },
     confirmUnsubscribe() {
       const { id } = this.$route.params;

@@ -242,6 +242,7 @@
     "unsubscribe": "Desuscribir",
     "test_bot": "Testear bot",
     "view_code": "Ver código",
-    "unsubscribe_from_this_bot": "¿Cancelar suscripción a este bot?"
+    "unsubscribe_from_this_bot": "¿Cancelar suscripción a este bot?",
+    "copy_html_code": "Copia y pega este código HTML en tu página web"
   }
 }

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-const { Dotfunc } = require('./Dotbot');
+const { DotService } = require('./Dotbot');
 
 const PropertySchema = mongoose.Schema({
   name: {
@@ -212,26 +212,29 @@ ComponentSchema.methods.hasInputsFor = function(valueType, group) {
 };
 
 ComponentSchema.post('save', async function(doc) {
-  let dotfunc = await Dotfunc.findOne({componentId: doc._id}).exec();
-  if (!dotfunc) {
-    dotfunc = new Dotfunc({ componentId: doc._id });
-  }
-  dotfunc.name = doc.name;
-  dotfunc.category = doc.category;
-  dotfunc.function_name = doc.functionName;
-  dotfunc.cost = doc.pricePerUse;
-  dotfunc.headers = [];
-  dotfunc.predefined_vars = [];
+  await DotService.deleteOne({componentId: doc._id});
+  let dotservice = new DotService({ componentId: doc._id });
+  dotservice.title = doc.name;
+  dotservice.serviceId = doc.key;
+  dotservice.category = doc.category;
+  dotservice.function_name = doc.functionName;
+  dotservice.cost = doc.pricePerUse;
+  dotservice.headers = new Map();
+  dotservice.predefined_vars = new Map();
+  dotservice.mapped_vars = new Map();
   for (let i = 0; i < doc.headers.length; i++) {
-    dotfunc.headers.set(doc.headers[i].name, doc.headers[i].value);
+    dotservice.headers.set(doc.headers[i].name, doc.headers[i].value);
   }
   for (let i = 0; i < doc.predefinedVars.length; i++) {
-    dotfunc.predefined_vars.set(doc.predefinedVars[i].name, doc.predefinedVars[i].value);
+    dotservice.predefined_vars.set(doc.predefinedVars[i].name, doc.predefinedVars[i].value);
   }
-  dotfunc.pricingModel = doc.pricingModel;
-  dotfunc.perUseCost = doc.pricePerUse;
-  dotfunc.monthlyCost = doc.pricePerMonth;
-  await dotfunc.save();
+  for (let i = 0; i < doc.mappedVars.length; i++) {
+    dotservice.mapped_vars.set(doc.mappedVars[i].name, doc.mappedVars[i].value);
+  }
+  dotservice.pricingModel = doc.pricingModel;
+  dotservice.perUseCost = doc.pricePerUse;
+  dotservice.monthlyCost = doc.pricePerMonth;
+  await dotservice.save();
 });
 
 module.exports = {
