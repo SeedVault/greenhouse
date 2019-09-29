@@ -84,7 +84,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
 
   // chatbot engine
   dotbot.chatbotEngine = [];
-  let component = await Component.findById(doc.bot.botEngine.component);
+  let bot = await mongoose.model('Bots', BotSchema).findById(doc.bot);
+  let component = await Component.findById(bot.botEngine.component);
   for (let i = 0; i < component.properties.length; i++) {
     let propertyId = `_${component.properties[i]._id}`;
     let value = '';
@@ -93,8 +94,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
         value = component.properties[i].value;
         break;
       case 'developer':
-        if (doc.bot.botEngine.values.has()) {
-          value = doc.bot.botEngine.values.get(propertyId);
+        if (bot.botEngine.values.has()) {
+          value = bot.botEngine.values.get(propertyId);
         }
         break;
       case 'publisher':
@@ -108,8 +109,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
 
   // channels
   dotbot.channels = [];
-  for (let j = 0; j < doc.bot.channels.length; j++) {
-    let component = await Component.findById(doc.bot.channels[j].component);
+  for (let j = 0; j < bot.channels.length; j++) {
+    let component = await Component.findById(bot.channels[j].component);
     let props = new Map();
     for (let i = 0; i < component.properties.length; i++) {
       let propertyId = `_${component.properties[i]._id}`;
@@ -119,8 +120,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
           value = component.properties[i].value;
           break;
         case 'developer':
-          if (doc.bot.channels[j].values.has()) {
-            value = doc.bot.channels[j].values.get(propertyId);
+          if (bot.channels[j].values.has()) {
+            value = bot.channels[j].values.get(propertyId);
           }
           break;
         case 'publisher':
@@ -136,8 +137,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
 
   // remote apis
   dotbot.remote_apis = [];
-  for (let j = 0; j < doc.bot.services.length; j++) {
-    let component = await Component.findById(doc.bot.services[j].component);
+  for (let j = 0; j < bot.services.length; j++) {
+    let component = await Component.findById(bot.services[j].component);
     let ra = new ServiceProp({});
     ra.id = component._id;
     ra.status = component.status;
@@ -150,8 +151,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
           value = component.headers[i].value;
           break;
         case 'developer':
-          if (doc.bot.services[j].values.has()) {
-            value = doc.bot.services[j].values.get(propertyId);
+          if (bot.services[j].values.has()) {
+            value = bot.services[j].values.get(propertyId);
           }
           break;
         case 'publisher':
@@ -171,8 +172,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
           value = component.mappedVars[i].value;
           break;
         case 'developer':
-          if (doc.bot.services[j].values.has()) {
-            value = doc.bot.services[j].values.get(propertyId);
+          if (bot.services[j].values.has()) {
+            value = bot.services[j].values.get(propertyId);
           }
           break;
         case 'publisher':
@@ -192,8 +193,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
           value = component.predefinedVars[i].value;
           break;
         case 'developer':
-          if (doc.bot.services[j].values.has()) {
-            value = doc.bot.services[j].values.get(propertyId);
+          if (bot.services[j].values.has()) {
+            value = bot.services[j].values.get(propertyId);
           }
           break;
         case 'publisher':

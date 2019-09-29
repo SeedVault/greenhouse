@@ -22,7 +22,7 @@
             </div>
 
 
-            <div class="row row-form" v-show="!saving && !saved && showSubscriptionForm ">
+            <div class="row row-form" v-show="!saving && !saved">
               <div class="col-md-3">
                 <h4 class="bot-title">{{ name }}</h4>
               </div>
@@ -114,7 +114,6 @@ export default {
 
       cachedComponents: [],
 
-      showSubscriptionForm: false,
     };
   },
   created() {
@@ -154,7 +153,6 @@ export default {
             delete (this.channels[i]._id);
           }
           this.getCachedComponents(ids);
-          this.showSubscriptionForm = true;
           if (this.subscribed === true) {
             this.subscriptionType = result.data.subscription.subscriptionType;
           } else {
@@ -187,7 +185,7 @@ export default {
       return componentId;
     },
     cachedComponentPictureUrl(componentId) {
-      console.log(this.cachedComponents.has(componentId));
+      // console.log(this.cachedComponents.has(componentId));
       if (this.cachedComponents.has(componentId)) {
         return this.cachedComponents.get(componentId).pictureUrl;
       }
@@ -208,6 +206,7 @@ export default {
           this.$router.push({ name: 'marketplaceBotsView', params: { botId } });
         })
         .catch((error) => {
+          console.log(error);
           this.saving = false;
           if (error.response.status === 422) {
             this.validationErrors = this.normalizeErrors(error.response);
@@ -241,8 +240,6 @@ export default {
           });
         }
       }
-      console.log(this.subscriptionType);
-      console.log(pricingOptionsList);
       return pricingOptionsList;
     },
   },

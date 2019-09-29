@@ -251,9 +251,10 @@ const bots = {
     try {
       let botId = req.params.id;
       const subscriptionType = req.body.subscriptionType;
-      const subscription = await BotService.subscribe(req.user.username, botId, subscriptionType);
+      const subscription = await BotService.subscribe(req.user.username, botId, subscriptionType, []);
       res.status(200).json({saved: true, subscriptionId: subscription.id});
     } catch (err) {
+      console.log(err);
       return res.status(500).json(err);
     }
   },
