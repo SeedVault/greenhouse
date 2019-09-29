@@ -109,7 +109,7 @@ const DotbotPublisherSchema = mongoose.Schema({
 });
 
 
-const RemoteApiSchema = mongoose.Schema({
+const ServicePropSchema = mongoose.Schema({
   id: {
     type: String,
     required: [true, 'validation.required'],
@@ -119,6 +119,14 @@ const RemoteApiSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     trim: true
+  },
+  headers: {
+    type: Map,
+    of: String
+  },
+  predefined_vars: {
+    type: Map,
+    of: String
   },
   mapped_vars: {
     type: Map,
@@ -193,12 +201,12 @@ const DotbotSchema = mongoose.Schema({
     of: { type: Map, of: String },
   },
   remote_apis: {
-    type: [ RemoteApiSchema ],
+    type: [ ServicePropSchema ],
   }
 });
 
 module.exports = {
-  RemoteApi: rhizomeDb.model('greenhouse_remote_api', RemoteApiSchema),
+  ServiceProp: rhizomeDb.model('greenhouse_remote_api', ServicePropSchema),
   Dotfunc: rhizomeDb.model('greenhouse_services', DotfuncSchema),
   DotbotPublisher: rhizomeDb.model('greenhouse_bot_publisher', DotbotPublisherSchema),
   Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema),

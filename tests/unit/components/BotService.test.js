@@ -37,6 +37,30 @@ async function addProperty(id, propertyName) {
   return componentService.addComponentProperty('johndoe', id, newProperty, 'properties');
 }
 
+async function addHeader(id, propertyName) {
+  const newProperty = {
+    name: propertyName.replace(/\s/g, ''),
+    valueType: 'fixed',
+    inputType: 'text',
+    options: '',
+    required: 'yes',
+    value: 'test',
+  };
+  return componentService.addComponentProperty('johndoe', id, newProperty, 'headers');
+}
+
+async function addPredefinedVar(id, propertyName) {
+  const newProperty = {
+    name: propertyName.replace(/\s/g, ''),
+    valueType: 'fixed',
+    inputType: 'text',
+    options: '',
+    required: 'yes',
+    value: 'test',
+  };
+  return componentService.addComponentProperty('johndoe', id, newProperty, 'predefinedVars');
+}
+
 async function addMappedVar(id, propertyName) {
   const newProperty = {
     name: propertyName.replace(/\s/g, ''),
@@ -49,6 +73,7 @@ async function addMappedVar(id, propertyName) {
   return componentService.addComponentProperty('johndoe', id, newProperty, 'mappedVars');
 }
 
+
 async function createAllComponents() {
   const allComponents = [];
   // if (typeof allComponents.chatscript === 'undefined') {
@@ -58,6 +83,8 @@ async function createAllComponents() {
   allComponents.chatscript = await addProperty(allComponents.chatscript._id, 'Port');
   allComponents.accuWeather = await createComponent('AccuWeather', 'service');
   allComponents.accuWeather = await addProperty(allComponents.accuWeather._id, 'API Key');
+  allComponents.accuWeather = await addHeader(allComponents.accuWeather._id, 'head');
+  allComponents.accuWeather = await addPredefinedVar(allComponents.accuWeather._id, 'p');
   allComponents.accuWeather = await addMappedVar(allComponents.accuWeather._id, 'q');
   allComponents.googleTranslate = await createComponent('Google Translate', 'service');
   allComponents.telegram = await createComponent('Telegram', 'channel');

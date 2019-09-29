@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var uuid4 = require('uuid4');
 const { Component } = require('./Component');
-const { Dotbot, DotbotPublisher, RemoteApi } = require('./Dotbot');
+const { Dotbot, DotbotPublisher, ServiceProp } = require('./Dotbot');
 
 const ConfigSchema = mongoose.Schema({
   component: {
@@ -138,9 +138,30 @@ BotSubscriptionSchema.post('save', async function(doc) {
   dotbot.remote_apis = [];
   for (let j = 0; j < doc.bot.services.length; j++) {
     let component = await Component.findById(doc.bot.services[j].component);
-    let ra = new RemoteApi({});
+    let ra = new ServiceProp({});
     ra.id = component._id;
     ra.status = component.status;
+    ra.headers = new Map();
+    for (let i = 0; i < component.headers.length; i++) {
+      let propertyId = `_${component.headers[i]._id}`;
+      let value = '';
+      switch (component.headers[i].valueType) {
+        case 'fixed':
+          value = component.headers[i].value;
+          break;
+        case 'developer':
+          if (doc.bot.services[j].values.has()) {
+            value = doc.bot.services[j].values.get(propertyId);
+          }
+          break;
+        case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break;
+      }
+      ra.headers.set(component.headers[i].name, value);
+    }
     ra.mapped_vars = new Map();
     for (let i = 0; i < component.mappedVars.length; i++) {
       let propertyId = `_${component.mappedVars[i]._id}`;
@@ -161,6 +182,27 @@ BotSubscriptionSchema.post('save', async function(doc) {
           break;
       }
       ra.mapped_vars.set(component.mappedVars[i].name, value);
+    }
+    ra.predefined_vars = new Map();
+    for (let i = 0; i < component.predefinedVars.length; i++) {
+      let propertyId = `_${component.predefinedVars[i]._id}`;
+      let value = '';
+      switch (component.predefinedVars[i].valueType) {
+        case 'fixed':
+          value = component.predefinedVars[i].value;
+          break;
+        case 'developer':
+          if (doc.bot.services[j].values.has()) {
+            value = doc.bot.services[j].values.get(propertyId);
+          }
+          break;
+        case 'publisher':
+          if (doc.values.has()) {
+            value = doc.values.get(propertyId);
+          }
+          break;
+      }
+      ra.predefined_vars.set(component.predefinedVars[i].name, value);
     }
     dotbot.remote_apis.push(ra);
   }
