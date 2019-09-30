@@ -22,7 +22,7 @@ const WalletService = {
     let balance = await st.getBalance(profile.walletAddress);
     let createdAtDate = new Date(profile.createdAt);
     let createdAtUnixEpoch = createdAtDate.getTime()/1000|0;
-    let latestTransactions = await st.getLastNTransactions(profile.walletAddress, 5, 10, 20, createdAtUnixEpoch);
+    let latestTransactions = await st.getLastNTransactions(profile.walletAddress, 5, 100, 20, createdAtUnixEpoch);
     // retrieve profiles
     let addresses = [];
     let transactions = [];
