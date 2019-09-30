@@ -12,6 +12,21 @@
               <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
             </router-link>
 
+            <span id="hadron-container"
+    data-bot-first-message="Hi"
+    data-bot-size-class="tall"
+    data-bot-placeholder=""
+    data-bot-talks-first="true"
+    data-bot-subtitle=""
+    data-bot-voice-recognition-visible="false"
+    data-bot-title="SEED Bot"
+    data-bot-external-css="https://hadron.botanic.io/sprout/sequoia_b.css"
+    data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
+    data-bot-load-font="Montserrat:300,400,600"
+    data-bot-bbot-uri="https://rhizome.botanic.io/"
+    data-bot-publisher-token="a5e83f01-14a9-4d8f-bc75-27cf0da3d9ef"
+></span>
+
             <div class="row row-form">
               <div class="col-md-3">
                 <h4 class="bot-title">{{ name }}</h4>

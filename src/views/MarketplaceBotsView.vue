@@ -18,6 +18,22 @@
               </div>
             </div>
 
+            <template v-show="token !== ''">
+              <span id="hadron-container"
+                data-bot-first-message="Hi"
+                data-bot-size-class="tall"
+                data-bot-placeholder=""
+                data-bot-talks-first="true"
+                data-bot-subtitle=""
+                data-bot-voice-recognition-visible="false"
+                data-bot-title="SEED Bot"
+                data-bot-external-css="https://hadron.botanic.io/sprout/sequoia_b.css"
+                data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
+                data-bot-load-font="Montserrat:300,400,600"
+                data-bot-bbot-uri="https://rhizome.botanic.io/"
+                :data-bot-publisher-token="token"
+              ></span>
+            </template>
 
             <div class="row row-form view" v-show="!deleting && !deleted">
               <div class="col-md-3">
@@ -137,6 +153,7 @@ export default {
       picture: '',
       username: '',
       updatedAt: '',
+      token: '',
       botengine: {},
       services: [],
       channels: [],
@@ -145,7 +162,24 @@ export default {
   created() {
     this.getData();
   },
+  beforeDestroy() {
+    this.removeHadron();
+  },
   methods: {
+    removeHadron() {
+      const scripts = document.getElementsByTagName('script');
+      for (let i = 0; i < scripts.length; i++) {
+        if (scripts[i].src === 'https://hadron.botanic.io/launcher.bundle.js') {
+          scripts[i].parentElement.removeChild(scripts[i]);
+        }
+      }
+    },
+    injectHadron() {
+      const script = document.createElement('script');
+      script.onload = () => { }
+      script.src = 'https://hadron.botanic.io/launcher.bundle.js';
+      document.head.appendChild(script);
+    },
     getData() {
       this.loading = true;
       this.axios.get(`/api/markteplace/bots/${this.$route.params.id}`)
@@ -167,6 +201,10 @@ export default {
           this.botengine = result.data.bot.botEngine;
           this.services = result.data.bot.services;
           this.channels = result.data.bot.channels;
+          this.token = '';
+          if (result.data.subscribed) {
+            this.token = result.data.subscription.token;
+          }
         })
         .catch((error) => {
           this.loading = false;
@@ -179,6 +217,8 @@ export default {
     },
     testBot() {
       const { id } = this.$route.params;
+      this.removeHadron();
+      this.injectHadron();
       // this.$router.push({ name: 'botsForm', params: { id } });
     },
     viewCode() {
