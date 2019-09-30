@@ -36,11 +36,6 @@ export default new Vuex.Store({
         target: 'botsList',
       },
       {
-        text: 'app.my_subscriptions',
-        icon: 'outline-icon-subscriptions-24px.svg',
-        target: 'subscriptionsList',
-      },
-      {
         text: 'app.privacy',
         icon: 'outline-security-24px@2x.svg',
         target: 'privacy',

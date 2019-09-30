@@ -119,12 +119,6 @@ const router = new Router({
           meta: { authenticated: true }
         },
         {
-          path: 'subscriptionsList',
-          name: 'subscriptionsList',
-          component: () => import(/* webpackChunkName: "greenhouse" */ './views/SubscriptionsList.vue'),
-          meta: { authenticated: true },
-        },
-        {
           path: 'privacy',
           name: 'privacy',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/Privacy.vue'),
