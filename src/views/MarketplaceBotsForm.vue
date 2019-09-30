@@ -32,19 +32,21 @@
 
                 <form @submit.prevent="save">
 
-                  <h5 style="color: red">Value: {{ subscriptionType }}</h5>
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-select v-model="subscriptionType" :options="pricingOptions" id="subscriptionType" name="subscriptionType"
-                        :label="$t('domain.component.pricing_model')"
-                        :placeholder="$t('domain.component.name_placeholder')"
-                        icon="outline-icon-types-24px.svg"
-                        :validationErrors="validationErrors"></input-select>
+                      <label :for="subscriptionType">{{ $t('domain.component.pricing_model') }}</label>
+                      <select v-model="subscriptionType" class="input-with-icon form-control" id="subscriptionType" name="subscriptionType">
+                        <option v-for="option in pricingOptions" :key="option.value" v-bind:value="option.value">
+                          {{ option.text }}
+                        </option>
+                      </select>
+                      <icon-inside-input icon="outline-icon-types-24px.svg"></icon-inside-input>
                     </div>
                   </div>
 
                   <hr />
-                  <div class="form-row">
+
+                  <!-- <div class="form-row">
                     <div class="form-group col-md-6">
                       <a name="botengine"></a>
                       <label><h5>{{ $t('domain.bot.bot_engine') }}</h5></label>
@@ -60,7 +62,7 @@
                         <div class="no-component-selected">{{ $t('bots.there_are_no_bot_engines_selected') }}</div>
                       </template>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="form-row">
                     <div class="form-group col-md-4 button-area">
@@ -83,8 +85,6 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import { mapGetters } from 'vuex';
-import { scrypt } from 'crypto';
 
 export default {
   name: 'MarketplaceBotsForm',
@@ -110,6 +110,7 @@ export default {
       services: [],
       channels: [],
 
+      pricingOptions: [],
       validationErrors: [],
 
       cachedComponents: [],
@@ -122,61 +123,64 @@ export default {
     this.getData();
   },
   methods: {
-    getData() {
+    async getData() {
       this.loading = true;
-      this.axios.get(`/api/markteplace/bots/${this.id}`)
-        .then((result) => {
-          const ids = [];
-          this.loading = false;
-          this.name          = result.data.bot.name;
-          this.pricingModel  = result.data.bot.pricingModel;
-          this.pricePerUse   = result.data.bot.pricePerUse;
-          this.pricePerMonth = result.data.bot.pricePerMonth;
-          this.subscribed = result.data.subscribed;
-          if (this.subscribed === true) {
-            this.subscriptionType = result.data.subscription.subscriptionType;
-          } else {
-            // this.subscriptionType = this.pricingOptions[0].value;
-            this.subscriptionType = '';
+      let result = [];
+      try {
+        result[0] = await this.axios.get(`/api/markteplace/bots/${this.id}`);
+        const ids = [];
+        this.name          = result[0].data.bot.name;
+        this.pricingModel  = result[0].data.bot.pricingModel;
+        this.pricePerUse   = result[0].data.bot.pricePerUse;
+        this.pricePerMonth = result[0].data.bot.pricePerMonth;
+        this.pricingOptions = [];
+        if (this.pricingModel === 'free') {
+          this.pricingOptions.push({
+            value: 'free',
+            text: this.$i18n.t('domain.pricing_models.free')
+          });
+        } else {
+          if (this.pricingModel === 'pay_per_use' || this.pricingModel === 'pay_per_use_or_month') {
+            this.pricingOptions.push({
+              value: 'month',
+              text: this.$i18n.t(`domain.component.price_per_month`) +
+              `(${this.pricePerMonth} SEED)`
+            });
           }
-          this.botengine = result.data.bot.botEngine;
-          ids.push(this.botengine.component);
-          delete (this.botengine._id);
-          this.services = result.data.bot.services;
-          for (let i = 0; i < this.services.length; i++) {
-            ids.push(this.services[i].component);
-            delete (this.services[i]._id);
+          if (this.pricingModel === 'pay_per_month' || this.pricingModel === 'pay_per_use_or_month') {
+            this.pricingOptions.push({
+              value: 'use',
+              text: this.$i18n.t('domain.component.price_per_use') +
+              `(${this.pricePerUse} SEED)`
+            });
           }
-          this.channels = result.data.bot.channels;
-          for (let i = 0; i < this.channels.length; i++) {
-            ids.push(this.channels[i].component);
-            delete (this.channels[i]._id);
-          }
-          this.getCachedComponents(ids);
-          if (this.subscribed === true) {
-            this.subscriptionType = result.data.subscription.subscriptionType;
-          } else {
-            this.subscriptionType = this.pricingOptions[0].value;
-            // this.subscriptionType = '';
-          }
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.oops = true;
-        });
-    },
-    getCachedComponents(ids) {
-      this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } })
-        .then((results) => {
-          for (let i = 0; i < results.data.length; i++) {
-            this.cachedComponents.set(results.data[i]._id, results.data[i]);
-          }
-          this.loading = false;
-        })
-        .catch((error) => {
-          this.loading = false;
-          this.oops = true;
-        });
+        }
+        this.subscribed = result[0].data.subscribed;
+        if (this.subscribed === true) {
+          this.subscriptionType = result[0].data.subscription.subscriptionType;
+        }
+        this.botengine = result[0].data.bot.botEngine;
+        ids.push(this.botengine.component);
+        delete (this.botengine._id);
+        this.services = result[0].data.bot.services;
+        for (let i = 0; i < this.services.length; i++) {
+          ids.push(this.services[i].component);
+          delete (this.services[i]._id);
+        }
+        this.channels = result[0].data.bot.channels;
+        for (let i = 0; i < this.channels.length; i++) {
+          ids.push(this.channels[i].component);
+          delete (this.channels[i]._id);
+        }
+        result[1] = await this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } });
+        for (let i = 0; i < result[1].data.length; i++) {
+          this.cachedComponents.set(result[1].data[i]._id, result[1].data[i]);
+        }
+        this.loading = false;
+      } catch (err) {
+        this.loading = false;
+        this.oops = true;
+      }
     },
     cachedComponentName(componentId) {
       if (this.cachedComponents.has(componentId)) {
@@ -185,7 +189,6 @@ export default {
       return componentId;
     },
     cachedComponentPictureUrl(componentId) {
-      // console.log(this.cachedComponents.has(componentId));
       if (this.cachedComponents.has(componentId)) {
         return this.cachedComponents.get(componentId).pictureUrl;
       }
@@ -216,33 +219,6 @@ export default {
         });
     },
   },
-  computed: {
-    pricingOptions() {
-      const pricingOptionsList = [{value: '', text: 'select'}];
-      if (this.pricingModel === 'free') {
-        pricingOptionsList.push({
-          value: 'free',
-          text: this.$i18n.t('domain.pricing_models.free')
-        });
-      } else {
-        if (this.pricingModel === 'pay_per_use' || this.pricingModel === 'pay_per_use_or_month') {
-          pricingOptionsList.push({
-            value: 'month',
-            text: this.$i18n.t(`domain.component.price_per_month`) +
-            `(${this.pricePerMonth} SEED)`
-          });
-        }
-        if (this.pricingModel === 'pay_per_month' || this.pricingModel === 'pay_per_use_or_month') {
-          pricingOptionsList.push({
-            value: 'use',
-            text: this.$i18n.t('domain.component.price_per_use') +
-            `(${this.pricePerUse} SEED)`
-          });
-        }
-      }
-      return pricingOptionsList;
-    },
-  },
 }
 </script>
 
@@ -262,4 +238,46 @@ h4.bot-title {
   font-weight: 500;
   line-height: 2;
 }
+
+.no-component-selected {
+  padding: 2rem 0;
+  color: #495057;
+}
+
+.list-group {
+  margin-top: 1rem;
+  min-height: 20px;
+}
+
+.list-group-item i {
+  cursor: pointer;
+}
+
+a.list-group-item-link {
+  color: #6b4c9f;
+  cursor: pointer;
+  font-size: 1rem;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
+
+a.list-group-item-delete {
+  float: right;
+  color: #6b4c9f;
+  cursor: pointer;
+  &:hover {
+    color: #6b4c9f;
+    text-decoration: underline;
+  }
+}
+
+.component-logo-small {
+  margin-right: 15px;
+  vertical-align: middle;
+  width: 26px;
+  border-radius: 5px;
+}
+
 </style>

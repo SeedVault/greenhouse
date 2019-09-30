@@ -313,10 +313,19 @@
                     <h4 class="component-title">{{ componentName }}</h4>
                   </div>
                   <div class="col-md-9">
-                    <input-select v-model="subscriptionType" :options="pricingOptions" id="subscriptionType" name="subscriptionType"
+                    <div class="form-group">
+                      <label :for="subscriptionType">{{ $t('domain.component.pricing_model') }}</label>
+                      <select v-model="subscriptionType" class="input-with-icon form-control" id="subscriptionType" name="subscriptionType">
+                        <option v-for="option in pricingOptions" :key="option.value" v-bind:value="option.value">
+                          {{ option.text }}
+                        </option>
+                      </select>
+                      <icon-inside-input icon="outline-icon-types-24px.svg"></icon-inside-input>
+                    </div>
+                    <!-- <input-select v-model="subscriptionType" :options="pricingOptions" id="subscriptionType" name="subscriptionType"
                         :label="$t('common.subscription_type')"
                         icon="outline-icon-types-24px.svg"
-                        :validationErrors="validationErrorsProperties" class="mb-4"></input-select>
+                        :validationErrors="validationErrorsProperties" class="mb-4"></input-select> -->
                     <hr class="mt-4 mb-4" />
                     <template v-if="componentType == 'service'">
                       <h5 class="mb-4">{{ $t("domain.component.headers") }}</h5>
