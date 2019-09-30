@@ -158,6 +158,8 @@ export default {
         this.subscribed = result[0].data.subscribed;
         if (this.subscribed === true) {
           this.subscriptionType = result[0].data.subscription.subscriptionType;
+        } else {
+          this.subscriptionType = this.pricingOptions[0].value;
         }
         this.botengine = result[0].data.bot.botEngine;
         ids.push(this.botengine.component);
