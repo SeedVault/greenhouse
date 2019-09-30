@@ -11,9 +11,8 @@
     <div class="list" v-show="!fetching">
       <div class="row">
         <div class="col-6">
-          <a @click="setStatus('')" v-bind:class="{'list__filter': true, 'active': status === '' }" href="#">{{ $t('domain.bot_statuses.all') }}</a>
-          <a @click="setStatus('enabled')" v-bind:class="{'list__filter': true, 'active': status === 'enabled' }" href="#">{{ $t('domain.bot_statuses.enabled') }}</a>
-          <a @click="setStatus('disabled')" v-bind:class="{'list__filter': true, 'active': status === 'disabled' }" href="#">{{ $t('domain.bot_statuses.disabled') }}</a>
+          <a @click="setSubscription('')" v-bind:class="{'list__filter': true, 'active': subscription === '' }" href="#">{{ $t('domain.bot_statuses.all') }}</a>
+          <a @click="setSubscription('mine')" v-bind:class="{'list__filter': true, 'active': subscription === 'mine' }" href="#">{{ $t('bots.my_subscriptions') }}</a>
         </div>
         <div class="col-6 list__sorting">
           {{ $t('common.sort_by') }}:
@@ -94,7 +93,7 @@ export default {
       pagesCount: 0,
       resultsCount: 0,
       page: 1,
-      status: '',
+      subscription: '',
       sortBy: 'name',
       sortType: 'asc',
     };
@@ -114,7 +113,7 @@ export default {
         params: {
           page: this.page,
           search: this.$parent.$parent.search,
-          status: this.status,
+          subscription: this.subscription,
           sortBy: this.sortBy,
           sortType: this.sortType,
         },
@@ -130,8 +129,8 @@ export default {
           this.oops = true;
         });
     },
-    setStatus(column) {
-      this.status = column;
+    setSubscription(column) {
+      this.subscription = column;
       this.doSearch();
     },
     setSortBy(column) {

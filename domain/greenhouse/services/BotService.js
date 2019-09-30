@@ -3,6 +3,7 @@ const { Component, Property } = require('../entities/Component');
 const { Bot, BotSubscription, Config } = require('../entities/Bot');
 const { ComponentService, ComponentNotFoundError,
   ForbiddenComponentError, PropertyNotFoundError } = require ('./ComponentService');
+const ObjectId = require('mongodb').ObjectID;
 
 class BotNotFoundError extends ValidationError {
   constructor(message) {
@@ -196,9 +197,20 @@ const BotService = {
     return await BotSubscription.deleteOne({_id: subscription._id});
   },
 
-  findPaginatedBotSubscriptions: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+  findSubscriptionByUser: async (username) => {
+    const subscriptions = await BotSubscription.find({username: username}).exec();
+    return subscriptions;
+  },
+
+  findPaginatedBotSubscriptions: async (currentUsername, resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+    const subscriptions = await BotService.findSubscriptionByUser(currentUsername);
+    const ids = [];
+    for (let i = 0; i < subscriptions.length; i++) {
+      ids.push(ObjectId(subscriptions[i].bot));
+    }
     let query = {}
     let sorting = {}
+    query['_id'] = { $in: ids };
     if (username !== '' ) {
       query['username'] = username;
     }
@@ -211,11 +223,11 @@ const BotService = {
     if (sortBy !== '' ) {
       sorting[sortBy] = sortType;
     }
-    const results = await BotSubscription.find(query)
+    const results = await Bot.find(query)
       .sort(sorting)
       .skip((resultsPerPage * currentPage) - resultsPerPage)
       .limit(resultsPerPage);
-    const resultsCount = await BotSubscription.countDocuments(query);
+    const resultsCount = await Bot.countDocuments(query);
     const pagesCount = Math.ceil(resultsCount / resultsPerPage);
     return {
       results,

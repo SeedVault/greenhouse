@@ -173,7 +173,6 @@
   "app": {
     "dashboard": "Inicio",
     "my_products": "Mis productos",
-    "my_subscriptions": "Mis suscripciones",
     "receive": "Recibir",
     "privacy": "Mis Datos",
     "marketplace": "Marketplace",
@@ -243,6 +242,7 @@
     "test_bot": "Testear bot",
     "view_code": "Ver código",
     "unsubscribe_from_this_bot": "¿Cancelar suscripción a este bot?",
-    "copy_html_code": "Copia y pega este código HTML en tu página web"
+    "copy_html_code": "Copia y pega este código HTML en tu página web",
+    "my_subscriptions": "Mis suscripciones"
   }
 }

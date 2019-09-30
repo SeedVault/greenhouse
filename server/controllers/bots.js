@@ -183,10 +183,8 @@ const bots = {
       const resultsPerPage = 10;
       const page = req.query.page || 1;
       const search = req.query.search || '';
-      let status = req.query.status || '';
-      if (status !== 'enabled' && status !== 'disabled') {
-        status = '';
-      }
+      const subscription = req.query.subscription || '';
+      let status = 'enabled';
       let sortBy = req.query.sortBy || '';
       if (sortBy !== 'name' && sortBy !== 'updatedAt') {
         sortBy = '';
@@ -195,15 +193,29 @@ const bots = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
-      const data = await BotService.findPaginatedBots(
-        resultsPerPage,
-        page,
-        '',
-        search,
-        status,
-        sortBy,
-        sortType,
-      );
+      let data = '';
+      if (subscription === 'mine') {
+        data = await BotService.findPaginatedBotSubscriptions(
+          req.user.username,
+          resultsPerPage,
+          page,
+          '',
+          search,
+          status,
+          sortBy,
+          sortType,
+        );
+      } else {
+        data = await BotService.findPaginatedBots(
+          resultsPerPage,
+          page,
+          '',
+          search,
+          status,
+          sortBy,
+          sortType,
+        );
+      }
       res.json(data);
     } catch (err) {
       next(err);
@@ -254,7 +266,6 @@ const bots = {
       const subscription = await BotService.subscribe(req.user.username, botId, subscriptionType, []);
       res.status(200).json({saved: true, subscriptionId: subscription.id});
     } catch (err) {
-      console.log(err);
       return res.status(500).json(err);
     }
   },

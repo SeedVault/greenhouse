@@ -326,16 +326,14 @@ describe('Bot subscription', () => {
     }
   });
 
-  /*it('should throw a "forbidden bot subscription" error when trying to unsubscribe from a bot that doesn\'t belong to me', async () => {
+  it('should be able to list subscriptions of a user', async () => {
     const components = await createAllComponents();
-    const bot = await createBot('my bot', components);
-    const subscription = await botService.subscribe('johndoe', bot._id, 'free');
-    expect(subscription).toHaveProperty('_id');
-    try {
-      await botService.unsubscribe('notmine', bot._id);
-    } catch (err) {
-      expect(err).toBeInstanceOf(ForbiddenBotUnsubscriptionError);
-    }
-  }); */
-
+    const botOne = await createBot('bot one', components);
+    const botTwo = await createBot('bot two', components);
+    await createBot('bot three', components);
+    await botService.subscribe('johndoe', botOne._id, 'free');
+    await botService.subscribe('johndoe', botTwo._id, 'free');
+    const rows = await botService.findPaginatedBotSubscriptions(3, 1, 'johndoe', '', '', 'name', 'asc');
+    expect(rows.results.length).toBe(2);
+  });
 });
