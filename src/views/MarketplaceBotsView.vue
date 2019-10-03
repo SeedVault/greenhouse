@@ -195,6 +195,8 @@ export default {
         script.onload = () => { }
         script.src = 'https://hadron.botanic.io/launcher.bundle.js';
         document.head.appendChild(script);
+      } else {
+        window.inToggle = new HadronLauncher("inToggle", "#hadron-container");
       }
     },
     getData() {
