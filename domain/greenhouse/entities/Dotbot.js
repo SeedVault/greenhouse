@@ -257,7 +257,7 @@ const DotbotSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     enum:  {
-      values: ['free', 'perUse', 'perMonth'],
+      values: ['free', 'perUse', 'perMonth', 'perUse_perMonth'],
       message: 'validation.option'
     },
     trim: true,
