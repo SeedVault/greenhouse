@@ -187,51 +187,6 @@ BotSchema.virtual('pictureUrl').get(function () {
   }
 });
 
-/*BotSchema.virtual('componentsPublisher').get(async function () {
-  let a = await ['5d788c7151b5e638e5edaa4e'];
-  return a;
-
-  let list = [];
-  let component = await Component.findById(this.botEngine.component);
-  for (let i = 0; i < component.properties.length; i++) {
-    if (component.properties[i].valueType == 'publisher') {
-      list.push(component._id);
-    }
-  }
-  for (let i = 0; i < this.channels.length; i++) {
-    component = await Component.findById(this.channels[i].component);
-    for (let j = 0; j < component.properties.length; j++) {
-      if (component.properties[j].valueType == 'publisher') {
-        list.push(component._id);
-        break;
-      }
-    }
-  }
-  for (let i = 0; i < this.services.length; i++) {
-    component = await Component.findById(this.services[i].component);
-    for (let j = 0; j < component.headers.length; j++) {
-      if (component.headers[j].valueType == 'publisher') {
-        list.push(component._id);
-        break;
-      }
-    }
-    for (let j = 0; j < component.predefinedVars.length; j++) {
-      if (component.predefinedVars[j].valueType == 'publisher') {
-        console.log('FOUND!!!!');
-        list.push(component._id);
-        break;
-      }
-    }
-    for (let j = 0; j < component.mappedVars.length; j++) {
-      if (component.mappedVars[j].valueType == 'publisher') {
-        list.push(component._id);
-        break;
-      }
-    }
-  }
-  console.log(list);
-  return list.join(',');
-}); */
 
 BotSchema.post('save', async function(doc) {
   await Dotbot.deleteOne({botId: doc._id});

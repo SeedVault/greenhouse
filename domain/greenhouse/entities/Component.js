@@ -201,37 +201,29 @@ ComponentSchema.virtual('pictureUrl').get(function () {
   }
 });
 
-/* ComponentSchema.methods.hasInputsFor = function(valueType, group) {
-   if (group === 'properties' || group === '') {
-    for (let i = 0; i < this.properties.length; i++) {
-      if (this.properties[i].valueType === valueType) {
-        return true;
-      }
+ComponentSchema.virtual('hasPublisherProps').get(function () {
+  for (let i = 0; i < this.properties.length; i++) {
+    if (this.properties[i].valueType == 'publisher') {
+      return true;
     }
   }
-  if (group === 'headers' || group === '') {
-    for (let i = 0; i < this.headers.length; i++) {
-      if (this.headers[i].valueType === valueType) {
-        return true;
-      }
+  for (let i = 0; i < this.headers.length; i++) {
+    if (this.headers[i].valueType == 'publisher') {
+      return true;
     }
   }
-  if (group === 'predefinedVars' || group === '') {
-    for (let i = 0; i < this.predefinedVars.length; i++) {
-      if (this.predefinedVars[i].valueType === valueType) {
-        return true;
-      }
+  for (let i = 0; i < this.predefinedVars.length; i++) {
+    if (this.predefinedVars[i].valueType == 'publisher') {
+      return true;
     }
   }
-  if (group === 'mappedVars' || group === '') {
-    for (let i = 0; i < this.mappedVars.length; i++) {
-      if (this.mappedVars[i].valueType === valueType) {
-        return true;
-      }
+  for (let i = 0; i < this.mappedVars.length; i++) {
+    if (this.mappedVars[i].valueType == 'publisher') {
+      return true;
     }
   }
   return false;
-}; */
+});
 
 /* ComponentSchema.post('save', async function(doc) {
   return;

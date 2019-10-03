@@ -50,34 +50,35 @@
 
                   <hr />
 
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <a name="components"></a>
-                      <label><h5>{{ $t('products.components') }}</h5></label>
-                      <ul class="list-group">
-                        <template v-if="botengine.component">
-                          <li class="list-group-item">
-                            <a style="cursor: pointer" @click="selectComponent(botengine.component, 'botengine', true)"><img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" /></a>
-                            <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine', true)">{{ cachedComponentName(botengine.component) }}</a>
-                          </li>
+                  <template v-if="visibleComponents.length > 0">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <a name="components"></a>
+                        <label><h5>{{ $t('products.components') }}</h5></label>
+                        <ul class="list-group">
+                          <template v-if="visibleComponents.includes(botengine.component)">
+                            <li class="list-group-item">
+                              <a style="cursor: pointer" @click="selectComponent(botengine.component, 'botengine', true)"><img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" /></a>
+                              <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine', true)">{{ cachedComponentName(botengine.component) }}</a>
+                            </li>
+                          </template>
+                          <template v-if="services.length > 0">
+                            <li v-for="service in services" class="list-group-item" v-if="visibleComponents.includes(service.component)">
+                              <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
+                              <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
+                            </li>
+                          </template>
+                          <template v-if="channels.length > 0">
+                            <li v-for="channel in channels" class="list-group-item" v-if="visibleComponents.includes(channel.component)">
+                              <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
+                              <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
+                            </li>
                         </template>
-                        <template v-if="services.length > 0">
-                          <li v-for="service in services" class="list-group-item">
-                            <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
-                          </li>
-                        </template>
-                        <template v-if="channels.length > 0">
-                          <li v-for="channel in channels" class="list-group-item">
-                            <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
-                          </li>
-                      </template>
-                      </ul>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
-
-                  <hr />
+                    <hr />
+                  </template>
 
                   <div class="form-row">
                     <div class="form-group col-md-4 button-area">
@@ -199,6 +200,7 @@ export default {
       mappedVarsData: [],
 
       cachedComponents: [],
+      visibleComponents: [],
 
       editMode: false,
     };
@@ -212,6 +214,7 @@ export default {
     async getData() {
       this.loading = true;
       let result = [];
+      this.visibleComponents = [];
       try {
         result[0] = await this.axios.get(`/api/markteplace/bots/${this.id}`);
         const ids = [];
@@ -264,8 +267,12 @@ export default {
           delete (this.channels[i]._id);
         }
         result[1] = await this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } });
+
         for (let i = 0; i < result[1].data.length; i++) {
           this.cachedComponents.set(result[1].data[i]._id, result[1].data[i]);
+          if (result[1].data[i].hasPublisherProps) {
+            this.visibleComponents.push(result[1].data[i]._id);
+          }
         }
         this.loading = false;
       } catch (err) {
