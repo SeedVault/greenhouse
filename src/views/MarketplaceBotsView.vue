@@ -178,19 +178,24 @@ export default {
     this.removeHadron();
   },
   methods: {
-    removeHadron() {
-      const scripts = document.getElementsByTagName('script');
-      for (let i = 0; i < scripts.length; i++) {
-        if (scripts[i].src === 'https://hadron.botanic.io/launcher.bundle.js') {
-          scripts[i].parentElement.removeChild(scripts[i]);
+    async removeHadron() {
+      if (typeof window.inToggle !== 'undefined') {
+        await window.inToggle.unloadHadron();
+        const scripts = document.getElementsByTagName('script');
+        for (let i = 0; i < scripts.length; i++) {
+          if (scripts[i].src === 'https://hadron.botanic.io/launcher.bundle.js') {
+            scripts[i].parentElement.removeChild(scripts[i]);
+          }
         }
       }
     },
     injectHadron() {
-      const script = document.createElement('script');
-      script.onload = () => { }
-      script.src = 'https://hadron.botanic.io/launcher.bundle.js';
-      document.head.appendChild(script);
+      if (typeof window.inToggle == 'undefined') {
+        const script = document.createElement('script');
+        script.onload = () => { }
+        script.src = 'https://hadron.botanic.io/launcher.bundle.js';
+        document.head.appendChild(script);
+      }
     },
     getData() {
       this.loading = true;
