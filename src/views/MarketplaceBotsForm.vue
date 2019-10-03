@@ -63,13 +63,13 @@
                             </li>
                           </template>
                           <template v-if="services.length > 0">
-                            <li v-for="service in services" class="list-group-item" v-if="visibleComponents.includes(service.component)">
+                            <li v-for="service in services" :key="service._id" class="list-group-item" v-if="visibleComponents.includes(service.component)">
                               <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
                               <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
                             </li>
                           </template>
                           <template v-if="channels.length > 0">
-                            <li v-for="channel in channels" class="list-group-item" v-if="visibleComponents.includes(channel.component)">
+                            <li v-for="channel in channels" :key="channel._id" class="list-group-item" v-if="visibleComponents.includes(channel.component)">
                               <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
                               <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
                             </li>
