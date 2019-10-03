@@ -7,7 +7,71 @@ if (process.env.NODE_ENV === 'testing') {
 const rhizomeDb = mongoose.connection.useDb(rhizomeDbName);
 
 const DotServiceSchema = mongoose.Schema({
-  componentId: {
+  ownerName: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  name: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  title: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  category: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  url: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  method: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  timeout: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  function_name: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  subscriptionType: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  cost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+    index: true
+  },
+  headers: {
+    type: Map,
+    of: String
+  },
+  predefined_vars: {
+    type: Map,
+    of: String
+  },
+  mapped_vars: {
+    type: [String]
+  }
+  /* componentId: {
     type: String,
     required: [true, 'validation.required'],
     index: true,
@@ -85,32 +149,7 @@ const DotServiceSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     default: 0,
     index: true
-  },
-});
-
-
-const DotbotPublisherSchema = mongoose.Schema({
-  botId: {
-    type: String,
-    required: [true, 'validation.required'],
-    index: true,
-    trim: true
-  },
-  username: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true
-  },
-  subscriptionType: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-  },
-  token: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true
-  },
+  }, */
 });
 
 
@@ -140,6 +179,42 @@ const ServicePropSchema = mongoose.Schema({
 });
 
 
+const DotbotPublisherSchema = mongoose.Schema({
+  botId: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
+    trim: true
+  },
+  token: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  publisherName: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  subscriptionType: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true,
+  },
+  updatedAt: {
+    type: Date,
+    required: [true, 'validation.required'],
+  },
+  channels: {
+    type: Map,
+    of: { type: Map, of: String },
+  },
+  services: {
+    type: [ DotServiceSchema ],
+  }
+});
+
+
 const DotbotSchema = mongoose.Schema({
   botId: {
     type: String,
@@ -147,6 +222,11 @@ const DotbotSchema = mongoose.Schema({
     index: true,
     unique: true,
     trim: true
+  },
+  ownerName: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true,
   },
   name: {
     type: String,
@@ -159,6 +239,52 @@ const DotbotSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  description: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  chatbotEngine: {
+    type: Map,
+    of: String
+  },
+  pricingModel: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['free', 'perUse', 'perMonth'],
+      message: 'validation.option'
+    },
+    trim: true,
+    default: 'free'
+  },
+  perUseCost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+  },
+  perMonthCost: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 0,
+  },
+  updatedAt: {
+    type: Date,
+    required: [true, 'validation.required'],
+  }
+  /*botId: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
+    unique: true,
+    trim: true
+  },
+
+
   ownerId: {
     type: String,
     required: [true, 'validation.required'],
@@ -212,12 +338,12 @@ const DotbotSchema = mongoose.Schema({
   },
   remote_apis: {
     type: [ ServicePropSchema ],
-  }
+  } */
 });
 
 module.exports = {
   ServiceProp: rhizomeDb.model('greenhouse_remote_api', ServicePropSchema),
   DotService: rhizomeDb.model('greenhouse_services', DotServiceSchema),
-  DotbotPublisher: rhizomeDb.model('greenhouse_bot_publisher', DotbotPublisherSchema),
+  DotbotPublisher: rhizomeDb.model('greenhouse_publisher_bot', DotbotPublisherSchema),
   Dotbot: rhizomeDb.model('greenhouse_dotbot', DotbotSchema),
 }

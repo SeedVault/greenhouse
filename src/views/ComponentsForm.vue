@@ -68,8 +68,30 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
+                      <input-textarea v-model="license" id="license" :label="$t('domain.component.license')" :rows="5"
+                        :placeholder="$t('domain.component.license_placeholder')" icon="outline-icon-description-24px.svg"
+                        :validationErrors="validationErrors"></input-textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
                       <input-text v-model="url" id="url" :label="$t('domain.component.url')"
                         :placeholder="$t('domain.component.url_placeholder')" icon="outline-icon-url-24px.svg"
+                        :validationErrors="validationErrors"></input-text>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-4">
+                      <input-select v-model="httpMethod" :options="httpMethods" id="httpMethod"
+                        :label="$t('domain.component.http_method')"
+                        icon="outline-icon-list-24px.svg"
+                        :validationErrors="validationErrors"></input-select>
+                    </div>
+                    <div class="form-group col-md-4">
+                      <input-text v-model="timeout" id="timeout" :label="$t('domain.component.timeout')"
+                        :placeholder="$t('domain.component.timeout')" icon="outline-history-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
@@ -155,9 +177,12 @@ export default {
       category: 'general',
       name: '',
       description: '',
+      license: '',
       key: '',
       functionName: '',
       url: '',
+      httpMethod: 'GET',
+      timeout: '30',
       pricingModel: 'free',
       pricePerUse: '',
       pricePerMonth: '',
@@ -184,9 +209,12 @@ export default {
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
+          this.license = result.data.license;
           this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
+          this.httpMethod = result.data.httpMethod;
+          this.timeout = result.data.timeout;
           this.pricingModel = result.data.pricingModel;
           this.pricePerUse = result.data.pricePerUse;
           this.pricePerMonth = result.data.pricePerMonth;
@@ -214,9 +242,12 @@ export default {
         category: this.category,
         name: this.name,
         description: this.description,
+        license: this.license,
         key: this.key,
         functionName: this.functionName,
         url: this.url,
+        httpMethod: this.httpMethod,
+        timeout: this.timeout,
         pricingModel: this.pricingModel,
         pricePerUse: this.pricePerUse,
         pricePerMonth: this.pricePerMonth,
@@ -239,7 +270,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['allComponentTypes', 'allComponentCategories', 'allComponentStatuses', 'allPricingModels']),
+    ...mapGetters(['allComponentTypes', 'allComponentCategories', 'allComponentStatuses', 'allPricingModels', 'allHttpMethods']),
     componentTypes() {
       const componentTypeList = [];
       for (let i = 0; i < this.allComponentTypes.length; i++) {
@@ -279,6 +310,16 @@ export default {
         });
       }
       return pricingModelList;
+    },
+    httpMethods() {
+      const httpMethodsList = [];
+      for (let i = 0; i < this.allHttpMethods.length; i++) {
+        httpMethodsList.push({
+          value: this.allHttpMethods[i],
+          text: this.allHttpMethods[i],
+        });
+      }
+      return httpMethodsList;
     },
     isNew() {
       return (this.id === '');

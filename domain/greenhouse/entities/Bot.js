@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
 var uuid4 = require('uuid4');
 const { Component } = require('./Component');
-const { Dotbot, DotbotPublisher, ServiceProp } = require('./Dotbot');
+const { Dotbot, DotbotPublisher, DotService, ServiceProp } = require('./Dotbot');
 
 const ConfigSchema = mongoose.Schema({
   component: {
@@ -17,6 +17,17 @@ const ConfigSchema = mongoose.Schema({
       message: 'validation.option'
     },
     trim: true,
+  },
+  values: {
+    type: Map,
+    of: String
+  }
+});
+
+const BotSubscriptionConfigSchema = mongoose.Schema({
+  component: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Components'
   },
   values: {
     type: Map,
@@ -50,22 +61,16 @@ const BotSubscriptionSchema = mongoose.Schema({
     default: uuid4(),
     trim: true,
   },
-  values: {
-    type: Map,
-    of: String
+  botEngine: {
+    type: BotSubscriptionConfigSchema,
+  },
+  services: {
+    type: [ BotSubscriptionConfigSchema ],
+  },
+  channels: {
+    type: [ BotSubscriptionConfigSchema ],
   }
 }, {timestamps: true});
-
-
-BotSubscriptionSchema.post('save', async function(doc) {
-  // Update greenhouse_bot_publisher
-  await DotbotPublisher.deleteOne({botId: doc.bot._id, username: doc.username});
-  dotsub = new DotbotPublisher({botId: doc.bot._id, username: doc.username});
-  dotsub.subscriptionType = doc.subscriptionType;
-  dotsub.token = doc.token;
-  // dotsub.values = doc.values;
-  await dotsub.save();
-});
 
 const BotSchema = mongoose.Schema({
   botId: {
@@ -100,6 +105,11 @@ const BotSchema = mongoose.Schema({
     trim: true
   },
   features: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
+  license: {
     type: String,
     required: [true, 'validation.required'],
     trim: true
@@ -178,19 +188,12 @@ BotSchema.virtual('pictureUrl').get(function () {
 });
 
 BotSchema.post('save', async function(doc) {
-
-  // Update greenhouse_dotbot
   await Dotbot.deleteOne({botId: doc._id});
   let dotbot = new Dotbot({ botId: doc._id });
+  dotbot.ownerName = doc.username;
   dotbot.name = doc.botId;
   dotbot.title = doc.name;
-  dotbot.ownerId = doc.username;
   dotbot.description = doc.description;
-  dotbot.status = doc.status;
-  dotbot.pricingModel = doc.pricingModel;
-  dotbot.perUseCost = doc.pricePerUse;
-  dotbot.monthlyCost = doc.pricePerMonth;
-
   // chatbot engine
   dotbot.chatbotEngine = [];
   let component = await Component.findById(doc.botEngine.component);
@@ -207,18 +210,56 @@ BotSchema.post('save', async function(doc) {
         }
         break;
       /*case 'publisher':
-        if (doc.values.has()) {
+        if (doc.values.has(propertyId)) {
           value = doc.values.get(propertyId);
         }
         break; */
     }
     dotbot.chatbotEngine.set(component.properties[i].name, value);
   }
+  switch (doc.pricingModel) {
+    case 'free':
+      dotbot.pricingModel = 'free';
+      break;
+    case 'pay_per_use':
+      dotbot.pricingModel = 'perUse';
+      break;
+    case 'pay_per_month':
+      dotbot.pricingModel = 'perMonth';
+      break;
+    case 'pay_per_use_or_month':
+      dotbot.pricingModel = 'perUse_perMonth';
+      break;
+  }
+  dotbot.perUseCost = doc.pricePerUse;
+  dotbot.perMonthCost = doc.pricePerMonth;
+  dotbot.updatedAt = doc.updatedAt;
+  await dotbot.save();
+});
 
+BotSubscriptionSchema.post('save', async function(doc) {
+  await DotbotPublisher.deleteOne({botId: doc.bot._id, publisherName: doc.username});
+  let dotsub = new DotbotPublisher({botId: doc.bot._id, publisherName: doc.username});
+  let botModel = mongoose.model('Bots', BotSchema);
+  const bot = await botModel.findById(doc.bot);
+  dotsub.token = doc.token;
+  dotsub.botname = bot.botId;
+  switch (doc.subscriptionType) {
+    case 'free':
+      dotsub.subscriptionType = 'free';
+      break;
+    case 'use':
+      dotsub.subscriptionType = 'perUse';
+      break;
+    case 'month':
+      dotsub.subscriptionType = 'perMonth';
+      break;
+  }
+  dotsub.updatedAt = doc.updatedAt;
   // channels
-  dotbot.channels = [];
-  for (let j = 0; j < doc.channels.length; j++) {
-    let component = await Component.findById(doc.channels[j].component);
+  dotsub.channels = [];
+  for (let j = 0; j < bot.channels.length; j++) {
+    let component = await Component.findById(bot.channels[j].component);
     let props = new Map();
     for (let i = 0; i < component.properties.length; i++) {
       let propertyId = `_${component.properties[i]._id}`;
@@ -228,29 +269,49 @@ BotSchema.post('save', async function(doc) {
           value = component.properties[i].value;
           break;
         case 'developer':
-          if (doc.channels[j].values.has(propertyId)) {
-            value = doc.channels[j].values.get(propertyId);
+          if (bot.channels[j].values.has(propertyId)) {
+            value = bot.channels[j].values.get(propertyId);
           }
           break;
         /* case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
+          if (doc.channels.has(propertyId)) {
+            value = doc.channels.get(propertyId);
           }
           break; */
       }
       props.set(component.properties[i].name, value);
     }
-    dotbot.channels.set(component.key, props);
+    dotsub.channels.set(component.key, props);
   }
-
-  // remote apis
-  dotbot.remote_apis = [];
-  for (let j = 0; j < doc.services.length; j++) {
-    let component = await Component.findById(doc.services[j].component);
-    let ra = new ServiceProp({});
-    ra.id = component._id;
-    ra.status = component.status;
-    ra.headers = new Map();
+  // Services
+  dotsub.services = [];
+  for (let j = 0; j < bot.services.length; j++) {
+    let component = await Component.findById(bot.services[j].component);
+    let service = new DotService({});
+    service.ownerName = component.username;
+    service.name = component.key;
+    service.title = component.name;
+    service.category = component.category;
+    service.url = component.url;
+    service.method = component.httpMethod.toLowerCase();
+    service.timeout = component.timeout;
+    service.function_name = component.functionName;
+    switch (bot.services[j].subscriptionType) {
+      case 'free':
+        service.subscriptionType = 'free';
+        service.cost = 0;
+        break;
+      case 'use':
+        service.subscriptionType = 'perUse';
+        service.cost = component.pricePerUse;
+        break;
+      case 'month':
+        service.subscriptionType = 'perMonth';
+        service.cost = component.pricePerMonth;
+        break;
+    }
+    // Headers
+    service.headers = new Map();
     for (let i = 0; i < component.headers.length; i++) {
       let propertyId = `_${component.headers[i]._id}`;
       let value = '';
@@ -264,35 +325,26 @@ BotSchema.post('save', async function(doc) {
           }
           break;
         /*case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
-          }
-          break;*/
-      }
-      ra.headers.set(component.headers[i].name, value);
-    }
-    ra.mapped_vars = new Map();
-    for (let i = 0; i < component.mappedVars.length; i++) {
-      let propertyId = `_${component.mappedVars[i]._id}`;
-      let value = '';
-      switch (component.mappedVars[i].valueType) {
-        case 'fixed':
-          value = component.mappedVars[i].value;
-          break;
-        case 'developer':
-          if (doc.services[j].values.has(propertyId)) {
-            value = doc.services[j].values.get(propertyId);
-          }
-          break;
-        /* case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
+          if (doc.headers.has(propertyId)) {
+            value = doc.headers.get(propertyId);
           }
           break; */
+        case 'publisher':
+          for (let k = 0; k < doc.services.length; k++) {
+            if (component._id.toString() == doc.services[k].component.toString()) {
+              if (doc.services[k].values.has(propertyId)) {
+                value = doc.services[k].values.get(propertyId);
+              }
+              break;
+            }
+          }
+          break;
       }
-      ra.mapped_vars.set(component.mappedVars[i].name, value);
+      service.headers.set(component.headers[i].name, value);
     }
-    ra.predefined_vars = new Map();
+
+    // Predefined vars
+    service.predefined_vars = new Map();
     for (let i = 0; i < component.predefinedVars.length; i++) {
       let propertyId = `_${component.predefinedVars[i]._id}`;
       let value = '';
@@ -305,22 +357,58 @@ BotSchema.post('save', async function(doc) {
             value = doc.services[j].values.get(propertyId);
           }
           break;
-        /* case 'publisher':
-          if (doc.values.has()) {
-            value = doc.values.get(propertyId);
+        case 'publisher':
+          for (let k = 0; k < doc.services.length; k++) {
+            if (component._id.toString() == doc.services[k].component.toString()) {
+              if (doc.services[k].values.has(propertyId)) {
+                value = doc.services[k].values.get(propertyId);
+              }
+              break;
+            }
           }
-          break; */
+          break;
       }
-      ra.predefined_vars.set(component.predefinedVars[i].name, value);
+      service.predefined_vars.set(component.predefinedVars[i].name, value);
     }
-    dotbot.remote_apis.push(ra);
-  }
-  await dotbot.save();
-});
 
+    // Mapped vars
+    service.mapped_vars = [];
+    for (let i = 0; i < component.mappedVars.length; i++) {
+      // let value = '';
+      /*let propertyId = `_${component.mappedVars[i]._id}`;
+      let value = '';
+      switch (component.mappedVars[i].valueType) {
+        case 'fixed':
+          value = component.mappedVars[i].value;
+          break;
+        case 'developer':
+          if (doc.services[j].values.has(propertyId)) {
+            value = doc.services[j].values.get(propertyId);
+          }
+          break;
+        case 'publisher':
+          for (let k = 0; k < doc.services.length; k++) {
+            if (component._id.toString() == doc.services[k].component.toString()) {
+              if (doc.services[k].values.has(propertyId)) {
+                value = doc.services[k].values.get(propertyId);
+              }
+              break;
+            }
+          }
+          break;
+      }*/
+      // service.mapped_vars.set(component.mappedVars[i].name, value);
+      service.mapped_vars.push(component.mappedVars[i].name);
+    }
+    // Save service
+    dotsub.services.push(service);
+  }
+  await dotsub.save();
+});
 
 module.exports = {
   Config: mongoose.model('Config', ConfigSchema),
   BotSubscription: mongoose.model('BotSubscriptions', BotSubscriptionSchema),
-  Bot: mongoose.model('Bots', BotSchema)
+  Bot: mongoose.model('Bots', BotSchema),
+  BotSubscriptionConfig: mongoose.model('BotSubscriptionConfig', BotSubscriptionConfigSchema)
 }

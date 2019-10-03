@@ -93,6 +93,9 @@
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'features' }]">
                       <a class="nav-link" @click="selectedTab='features'">{{ $t("domain.bot.features") }}</a>
                     </li>
+                    <li v-bind:class="['nav-item', { 'active': selectedTab === 'license' }]">
+                      <a class="nav-link" @click="selectedTab='license'">{{ $t("domain.bot.license") }}</a>
+                    </li>
                   </ul>
 
                   <div v-show="selectedTab === 'description'">
@@ -107,6 +110,11 @@
                   <div v-show="selectedTab === 'features'">
                     <h2 class="view__subtitle"></h2>
                     <p class="nl2br">{{ features }}</p>
+                  </div>
+
+                  <div v-show="selectedTab === 'license'">
+                    <h2 class="view__subtitle"></h2>
+                    <p class="nl2br">{{ license }}</p>
                   </div>
 
                 </div>
@@ -145,6 +153,7 @@ export default {
       name: '',
       description: '',
       features: '',
+      license: '',
       pictureUrl: '',
       pricingModel: 'free',
       pricePerUse: '',
@@ -190,6 +199,7 @@ export default {
           this.name = result.data.bot.name;
           this.description = result.data.bot.description;
           this.features = result.data.bot.features;
+          this.license = result.data.bot.license;
           this.pricingModel = result.data.bot.pricingModel;
           this.pricePerUse = result.data.bot.pricePerUse;
           this.pricePerMonth = result.data.bot.pricePerMonth;

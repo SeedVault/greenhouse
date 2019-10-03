@@ -74,6 +74,7 @@ const bots = {
           req.body.name,
           req.body.description,
           req.body.features,
+          req.body.license,
           req.body.pricingModel,
           req.body.pricePerUse,
           req.body.pricePerMonth,
@@ -91,6 +92,7 @@ const bots = {
         bot.name = req.body.name;
         bot.description = req.body.description;
         bot.features = req.body.features;
+        bot.license = req.body.license;
         bot.pricingModel = req.body.pricingModel;
         bot.pricePerUse = req.body.pricePerUse;
         bot.pricePerMonth = req.body.pricePerMonth;
@@ -263,9 +265,26 @@ const bots = {
     try {
       let botId = req.params.id;
       const subscriptionType = req.body.subscriptionType;
-      const subscription = await BotService.subscribe(req.user.username, botId, subscriptionType, []);
+      let botengine = await bots.toComponentValues(req.body.botengine);
+      let services = [];
+      for (let i = 0; i < req.body.services.length; i++) {
+        services.push(await bots.toComponentValues(req.body.services[i]));
+      }
+      let channels = [];
+      for (let i = 0; i < req.body.channels.length; i++) {
+        channels.push(await bots.toComponentValues(req.body.channels[i]));
+      }
+      const subscription = await BotService.subscribe(
+        req.user.username,
+        botId,
+        subscriptionType,
+        botengine,
+        services,
+        channels
+      );
       res.status(200).json({saved: true, subscriptionId: subscription.id});
     } catch (err) {
+      console.log(err);
       return res.status(500).json(err);
     }
   },

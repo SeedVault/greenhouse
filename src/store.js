@@ -19,6 +19,7 @@ export default new Vuex.Store({
     allBotCategories: ['general', 'weather'],
     allBotStatuses: ['enabled', 'disabled'],
     allPricingModels: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
+    allHttpMethods: ['GET', 'POST'],
     menu: [
       {
         text: 'app.dashboard',
@@ -70,6 +71,7 @@ export default new Vuex.Store({
     allBotCategories: state => state.allBotCategories,
     allBotStatuses: state => state.allBotStatuses,
     allPricingModels: state => state.allPricingModels,
+    allHttpMethods: state => state.allHttpMethods,
   },
   mutations: {
     SET_LANG(state, params) {

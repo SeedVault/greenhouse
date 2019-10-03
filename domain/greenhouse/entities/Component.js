@@ -83,6 +83,11 @@ const ComponentSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  license: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
   key: {
     type: String,
     required: [true, 'validation.required'],
@@ -102,6 +107,23 @@ const ComponentSchema = mongoose.Schema({
     type: String,
     required: [true, 'validation.required'],
     trim: true
+  },
+  httpMethod: {
+    type: String,
+    required: [true, 'validation.required'],
+    enum:  {
+      values: ['GET', 'POST'],
+      message: 'validation.option'
+    },
+    trim: true,
+    default: 'GET'
+  },
+  timeout: {
+    type: Number,
+    min: [0, 'validation.option'],
+    max: [9999, 'validation.option'],
+    required: [true, 'validation.required'],
+    default: 30,
   },
   pricingModel: {
     type: String,
@@ -180,7 +202,7 @@ ComponentSchema.virtual('pictureUrl').get(function () {
 });
 
 ComponentSchema.methods.hasInputsFor = function(valueType, group) {
-  if (group === 'properties' || group === '') {
+  /* if (group === 'properties' || group === '') {
     for (let i = 0; i < this.properties.length; i++) {
       if (this.properties[i].valueType === valueType) {
         return true;
@@ -207,11 +229,12 @@ ComponentSchema.methods.hasInputsFor = function(valueType, group) {
         return true;
       }
     }
-  }
+  } */
   return false;
 };
 
 ComponentSchema.post('save', async function(doc) {
+  return;
   await DotService.deleteOne({componentId: doc._id});
   let dotservice = new DotService({ componentId: doc._id });
   dotservice.title = doc.name;

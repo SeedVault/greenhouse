@@ -14,9 +14,12 @@ async function createComponent(name, componentType) {
     'general',
     name,
     `Description of ${name}`,
+    'license here',
     `${fn}`,
     `${fn}Fn`,
     `https:/www.${noSpaces.toLowerCase()}.com`,
+    'GET',
+    30,
     'free',
     0,
     0,
@@ -110,6 +113,7 @@ async function createBot(name, components) {
     name,
     'This is my bot',
     'Features of my bot',
+    'license here',
     'free',
     0,
     0,
@@ -333,7 +337,7 @@ describe('Bot subscription', () => {
     await createBot('bot three', components);
     await botService.subscribe('johndoe', botOne._id, 'free');
     await botService.subscribe('johndoe', botTwo._id, 'free');
-    const rows = await botService.findPaginatedBotSubscriptions(3, 1, 'johndoe', '', '', 'name', 'asc');
-    expect(rows.results.length).toBe(2);
+    const rows = await botService.findPaginatedBotSubscriptions('johndoe', 3, 1, '', '', '', 'name', 'asc');
+    expect(rows.resultsCount).toBe(2);
   });
 });

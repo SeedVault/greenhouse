@@ -14,6 +14,12 @@
                         {{ $t('products.bots') }}
                       </router-link>
                     </li>
+                    <li class="nav-item">
+                      <router-link class="nav-link" :to="{ name: 'marketplaceComponentsList' }">
+                        <img :src="require('@/assets/icons/outline-component-24px.svg')" />
+                        {{ $t('products.components') }}
+                      </router-link>
+                    </li>
                   </ul>
                 </div>
                 <div class="col-12 col-sm-2 mb-2">

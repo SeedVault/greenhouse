@@ -60,9 +60,12 @@ const components = {
           req.body.category,
           req.body.name,
           req.body.description,
+          req.body.license,
           req.body.key,
           req.body.functionName,
           req.body.url,
+          req.body.httpMethod,
+          req.body.timeout,
           req.body.pricingModel,
           req.body.pricePerUse,
           req.body.pricePerMonth,
@@ -76,9 +79,12 @@ const components = {
         component.category = req.body.category;
         component.name = req.body.name;
         component.description = req.body.description;
+        component.license = req.body.license;
         component.key = req.body.key,
         component.functionName = req.body.functionName;
         component.url = req.body.url;
+        component.httpMethod = req.body.httpMethod;
+        component.timeout = req.body.timeout;
         component.pricingModel = req.body.pricingModel;
         component.pricePerUse = req.body.pricePerUse;
         component.pricePerMonth = req.body.pricePerMonth;

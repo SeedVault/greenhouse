@@ -69,7 +69,7 @@ const BotService = {
     }
   },
 
-  createBot: async (category, botId, name, description, features, pricingModel, pricePerUse,
+  createBot: async (category, botId, name, description, features, license, pricingModel, pricePerUse,
     pricePerMonth, status, username, botEngineParams, servicesParams, channelsParams) => {
     const botEngine = await BotService.createConfig(botEngineParams);
     let services = [];
@@ -86,6 +86,7 @@ const BotService = {
       name,
       description,
       features,
+      license,
       pricingModel,
       pricePerUse,
       pricePerMonth,
@@ -159,20 +160,56 @@ const BotService = {
     return await Bot.deleteOne({_id: id});
   },
 
-  subscribe: async (username, botId, subscriptionType, values) => {
+  createSubscriptionConfig: async (componentParams) => {
+    if (typeof componentParams == 'undefined') {
+      return {};
+    }
+    if (typeof componentParams.component == 'undefined') {
+      return {};
+    }
+    const component = await ComponentService.findComponentById(componentParams.component);
+    let config = new Config({
+      component: component._id,
+      values: componentParams.values
+    });
+    return config;
+  },
+
+  subscribe: async (username, botId, subscriptionType,
+    botEngineParams, servicesParams, channelsParams) => {
+      if (typeof servicesParams == 'undefined') {
+        servicesParams = [];
+      }
+      if (typeof channelsParams == 'undefined') {
+        channelsParams = [];
+      }
+      const botEngine = await BotService.createSubscriptionConfig(botEngineParams);
+      let services = [];
+      for (let i = 0; i < servicesParams.length; i++) {
+        services.push(await BotService.createSubscriptionConfig(servicesParams[i]));
+      }
+      let channels = [];
+      for (let i = 0; i < channelsParams.length; i++) {
+        channels.push(await BotService.createSubscriptionConfig(channelsParams[i]));
+      }
     const bot = await BotService.findBotById(botId);
     let subscription = new BotSubscription({});
     try {
       subscription = await BotService.findSubscriptionByUserAndBot(username, botId);
       subscription.subscriptionType = subscriptionType;
-      subscription.values = values;
+      subscription.botEngine = botEngine;
+      subscription.services = services;
+      subscription.channels = channels;
+
     } catch (err) {
       if (err instanceof BotSubscriptionNotFoundError) {
         subscription = new BotSubscription({
           username,
           bot,
           subscriptionType,
-          values,
+          botEngine,
+          services,
+          channels,
         });
       } else {
         throw err;

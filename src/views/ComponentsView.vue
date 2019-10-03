@@ -72,6 +72,9 @@
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'description' }]">
                       <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.component.description") }}</a>
                     </li>
+                    <li v-bind:class="['nav-item', { 'active': selectedTab === 'license' }]">
+                      <a class="nav-link" @click="selectedTab='license'">{{ $t("domain.component.license") }}</a>
+                    </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'properties' }]">
                       <a class="nav-link" @click="selectedTab='properties'">{{ $t("domain.component.properties") }} ({{ propertiesCount }})</a>
                     </li>
@@ -79,7 +82,7 @@
 
                   <div v-show="selectedTab === 'description'">
                     <h2 class="view__subtitle">{{ $t("domain.component.description") }}</h2>
-                    <p>{{ description }}</p>
+                    <p class="nl2br">{{ description }}</p>
 
                     <h2 class="view__subtitle">{{ $t("domain.component.url") }}</h2>
                     <p><a :href="url" target="_blank">{{ url }}</a></p>
@@ -92,6 +95,11 @@
 
                     <h2 class="view__subtitle">{{ $t("domain.component.status") }}</h2>
                     <p>{{ $t(`domain.component_statuses.${status}`) }}</p>
+                  </div>
+
+                  <div v-show="selectedTab === 'license'">
+                    <h2 class="view__subtitle"></h2>
+                    <p class="nl2br">{{ license }}</p>
                   </div>
 
 
@@ -272,9 +280,12 @@ export default {
       category: 'general',
       name: '',
       description: '',
+      license: '',
       key: '',
       functionName: '',
       url: '',
+      httpMethod: 'GET',
+      timeout: 30,
       pictureUrl: '',
       pricingModel: 'free',
       pricePerUse: '',
@@ -315,9 +326,12 @@ export default {
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
+          this.license = result.data.license;
           this.key = result.data.key;
           this.functionName = result.data.functionName;
           this.url = result.data.url;
+          this.httpMethod = result.data.httpMethod;
+          this.timeout = result.data.timeout;
           this.pricingModel = result.data.pricingModel;
           this.pricePerUse = result.data.pricePerUse;
           this.pricePerMonth = result.data.pricePerMonth;

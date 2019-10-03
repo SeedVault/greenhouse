@@ -85,6 +85,14 @@
                   </div>
 
                   <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <input-textarea v-model="license" id="license" :label="$t('domain.bot.license')" :rows="5"
+                        :placeholder="$t('domain.bot.license_placeholder')" icon="outline-icon-description-24px.svg"
+                        :validationErrors="validationErrors"></input-textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
                     <div class="form-group col-md-4">
                       <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
                         :label="$t('domain.bot.pricing_model')"
@@ -382,6 +390,7 @@ export default {
       name: '',
       description: '',
       features: '',
+      license: '',
       pricingModel: 'free',
       pricePerUse: '',
       pricePerMonth: '',
@@ -446,6 +455,7 @@ export default {
           this.name = result.data.name;
           this.description = result.data.description;
           this.features = result.data.features;
+          this.license = result.data.license;
           this.pricingModel = result.data.pricingModel;
           this.pricePerUse = result.data.pricePerUse;
           this.pricePerMonth = result.data.pricePerMonth;
@@ -501,6 +511,7 @@ export default {
         name: this.name,
         description: this.description,
         features: this.features,
+        license: this.license,
         pricingModel: this.pricingModel,
         pricePerUse: this.pricePerUse,
         pricePerMonth: this.pricePerMonth,
@@ -671,7 +682,10 @@ export default {
             this.currentData = [];
           }
           if (typeof this.subscriptionType === 'undefined') {
-            this.subscriptionType = '';
+            this.subscriptionType = this.pricingOptions[0].value;
+          }
+          if (this.subscriptionType === '') {
+            this.subscriptionType = this.pricingOptions[0].value;
           }
           const currentDataKeys = Object.keys(this.currentData);
           const currentDataValues = Object.values(this.currentData);
