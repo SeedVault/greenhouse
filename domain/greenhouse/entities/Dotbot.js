@@ -196,6 +196,11 @@ const DotbotPublisherSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  botName: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
   subscriptionType: {
     type: String,
     required: [true, 'validation.required'],

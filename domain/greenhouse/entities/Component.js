@@ -201,8 +201,8 @@ ComponentSchema.virtual('pictureUrl').get(function () {
   }
 });
 
-ComponentSchema.methods.hasInputsFor = function(valueType, group) {
-  /* if (group === 'properties' || group === '') {
+/* ComponentSchema.methods.hasInputsFor = function(valueType, group) {
+   if (group === 'properties' || group === '') {
     for (let i = 0; i < this.properties.length; i++) {
       if (this.properties[i].valueType === valueType) {
         return true;
@@ -229,11 +229,11 @@ ComponentSchema.methods.hasInputsFor = function(valueType, group) {
         return true;
       }
     }
-  } */
+  }
   return false;
-};
+}; */
 
-ComponentSchema.post('save', async function(doc) {
+/* ComponentSchema.post('save', async function(doc) {
   return;
   await DotService.deleteOne({componentId: doc._id});
   let dotservice = new DotService({ componentId: doc._id });
@@ -258,7 +258,7 @@ ComponentSchema.post('save', async function(doc) {
   dotservice.perUseCost = doc.pricePerUse;
   dotservice.monthlyCost = doc.pricePerMonth;
   await dotservice.save();
-});
+}); */
 
 module.exports = {
   PropertySchema,
