@@ -283,6 +283,10 @@ BotSchema.post('save', async function(doc) {
   await dotbot.save();
 });
 
+/* BotSubscriptionSchema.post('remove', async function(doc) {
+  await DotbotPublisher.deleteOne({botId: doc.bot._id, publisherName: doc.username});
+}); */
+
 BotSubscriptionSchema.post('save', async function(doc) {
   await DotbotPublisher.deleteOne({botId: doc.bot._id, publisherName: doc.username});
   let dotsub = new DotbotPublisher({botId: doc.bot._id, publisherName: doc.username});
@@ -331,123 +335,125 @@ BotSubscriptionSchema.post('save', async function(doc) {
   }
   // Services
   dotsub.services = [];
-  for (let j = 0; j < bot.services.length; j++) {
-    let component = await Component.findById(bot.services[j].component);
-    let service = new DotService({});
-    service.ownerName = component.username;
-    service.name = component.key;
-    service.title = component.name;
-    service.category = component.category;
-    service.url = component.url;
-    service.method = component.httpMethod.toLowerCase();
-    service.timeout = component.timeout;
-    service.function_name = component.functionName;
-    switch (bot.services[j].subscriptionType) {
-      case 'free':
-        service.subscriptionType = 'free';
-        service.cost = 0;
-        break;
-      case 'use':
-        service.subscriptionType = 'perUse';
-        service.cost = component.pricePerUse;
-        break;
-      case 'month':
-        service.subscriptionType = 'perMonth';
-        service.cost = component.pricePerMonth;
-        break;
-    }
-    // Headers
-    service.headers = new Map();
-    for (let i = 0; i < component.headers.length; i++) {
-      let propertyId = `_${component.headers[i]._id}`;
-      let value = '';
-      switch (component.headers[i].valueType) {
-        case 'fixed':
-          value = component.headers[i].value;
+  if (bot.services.length > 0) {
+    for (let j = 0; j < bot.services.length; j++) {
+      let component = await Component.findById(bot.services[j].component);
+      let service = new DotService({});
+      service.ownerName = component.username;
+      service.name = component.key;
+      service.title = component.name;
+      service.category = component.category;
+      service.url = component.url;
+      service.method = component.httpMethod.toLowerCase();
+      service.timeout = component.timeout;
+      service.function_name = component.functionName;
+      switch (bot.services[j].subscriptionType) {
+        case 'free':
+          service.subscriptionType = 'free';
+          service.cost = 0;
           break;
-        case 'developer':
-          if (doc.services[j].values.has(propertyId)) {
-            value = doc.services[j].values.get(propertyId);
-          }
+        case 'use':
+          service.subscriptionType = 'perUse';
+          service.cost = component.pricePerUse;
           break;
-        /*case 'publisher':
-          if (doc.headers.has(propertyId)) {
-            value = doc.headers.get(propertyId);
-          }
-          break; */
-        case 'publisher':
-          for (let k = 0; k < doc.services.length; k++) {
-            if (component._id.toString() == doc.services[k].component.toString()) {
-              if (doc.services[k].values.has(propertyId)) {
-                value = doc.services[k].values.get(propertyId);
-              }
-              break;
-            }
-          }
+        case 'month':
+          service.subscriptionType = 'perMonth';
+          service.cost = component.pricePerMonth;
           break;
       }
-      service.headers.set(component.headers[i].name, value);
-    }
-
-    // Predefined vars
-    service.predefined_vars = new Map();
-    for (let i = 0; i < component.predefinedVars.length; i++) {
-      let propertyId = `_${component.predefinedVars[i]._id}`;
-      let value = '';
-      switch (component.predefinedVars[i].valueType) {
-        case 'fixed':
-          value = component.predefinedVars[i].value;
-          break;
-        case 'developer':
-          if (doc.services[j].values.has(propertyId)) {
-            value = doc.services[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          for (let k = 0; k < doc.services.length; k++) {
-            if (component._id.toString() == doc.services[k].component.toString()) {
-              if (doc.services[k].values.has(propertyId)) {
-                value = doc.services[k].values.get(propertyId);
-              }
-              break;
+      // Headers
+      service.headers = new Map();
+      for (let i = 0; i < component.headers.length; i++) {
+        let propertyId = `_${component.headers[i]._id}`;
+        let value = '';
+        switch (component.headers[i].valueType) {
+          case 'fixed':
+            value = component.headers[i].value;
+            break;
+          case 'developer':
+            if (doc.services[j].values.has(propertyId)) {
+              value = doc.services[j].values.get(propertyId);
             }
-          }
-          break;
+            break;
+          /*case 'publisher':
+            if (doc.headers.has(propertyId)) {
+              value = doc.headers.get(propertyId);
+            }
+            break; */
+          case 'publisher':
+            for (let k = 0; k < doc.services.length; k++) {
+              if (component._id.toString() == doc.services[k].component.toString()) {
+                if (doc.services[k].values.has(propertyId)) {
+                  value = doc.services[k].values.get(propertyId);
+                }
+                break;
+              }
+            }
+            break;
+        }
+        service.headers.set(component.headers[i].name, value);
       }
-      service.predefined_vars.set(component.predefinedVars[i].name, value);
-    }
 
-    // Mapped vars
-    service.mapped_vars = [];
-    for (let i = 0; i < component.mappedVars.length; i++) {
-      // let value = '';
-      /*let propertyId = `_${component.mappedVars[i]._id}`;
-      let value = '';
-      switch (component.mappedVars[i].valueType) {
-        case 'fixed':
-          value = component.mappedVars[i].value;
-          break;
-        case 'developer':
-          if (doc.services[j].values.has(propertyId)) {
-            value = doc.services[j].values.get(propertyId);
-          }
-          break;
-        case 'publisher':
-          for (let k = 0; k < doc.services.length; k++) {
-            if (component._id.toString() == doc.services[k].component.toString()) {
-              if (doc.services[k].values.has(propertyId)) {
-                value = doc.services[k].values.get(propertyId);
-              }
-              break;
+      // Predefined vars
+      service.predefined_vars = new Map();
+      for (let i = 0; i < component.predefinedVars.length; i++) {
+        let propertyId = `_${component.predefinedVars[i]._id}`;
+        let value = '';
+        switch (component.predefinedVars[i].valueType) {
+          case 'fixed':
+            value = component.predefinedVars[i].value;
+            break;
+          case 'developer':
+            if (doc.services[j].values.has(propertyId)) {
+              value = doc.services[j].values.get(propertyId);
             }
-          }
-          break;
-      }*/
-      // service.mapped_vars.set(component.mappedVars[i].name, value);
-      service.mapped_vars.push(component.mappedVars[i].name);
+            break;
+          case 'publisher':
+            for (let k = 0; k < doc.services.length; k++) {
+              if (component._id.toString() == doc.services[k].component.toString()) {
+                if (doc.services[k].values.has(propertyId)) {
+                  value = doc.services[k].values.get(propertyId);
+                }
+                break;
+              }
+            }
+            break;
+        }
+        service.predefined_vars.set(component.predefinedVars[i].name, value);
+      }
+
+      // Mapped vars
+      service.mapped_vars = [];
+      for (let i = 0; i < component.mappedVars.length; i++) {
+        // let value = '';
+        /*let propertyId = `_${component.mappedVars[i]._id}`;
+        let value = '';
+        switch (component.mappedVars[i].valueType) {
+          case 'fixed':
+            value = component.mappedVars[i].value;
+            break;
+          case 'developer':
+            if (doc.services[j].values.has(propertyId)) {
+              value = doc.services[j].values.get(propertyId);
+            }
+            break;
+          case 'publisher':
+            for (let k = 0; k < doc.services.length; k++) {
+              if (component._id.toString() == doc.services[k].component.toString()) {
+                if (doc.services[k].values.has(propertyId)) {
+                  value = doc.services[k].values.get(propertyId);
+                }
+                break;
+              }
+            }
+            break;
+        }*/
+        // service.mapped_vars.set(component.mappedVars[i].name, value);
+        service.mapped_vars.push(component.mappedVars[i].name);
+      }
+      // Save service
+      dotsub.services.push(service);
     }
-    // Save service
-    dotsub.services.push(service);
   }
   await dotsub.save();
 });

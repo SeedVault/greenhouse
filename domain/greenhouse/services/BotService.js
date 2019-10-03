@@ -1,6 +1,7 @@
 const ValidationError = require('mongoose/lib/error/validation');
 const { Component, Property } = require('../entities/Component');
 const { Bot, BotSubscription, Config } = require('../entities/Bot');
+const { Dotbot, DotbotPublisher } = require('../entities/Dotbot');
 const { ComponentService, ComponentNotFoundError,
   ForbiddenComponentError, PropertyNotFoundError } = require ('./ComponentService');
 const ObjectId = require('mongodb').ObjectID;
@@ -97,7 +98,27 @@ const BotService = {
       channels
     });
     await BotService.checkComponents(bot);
-    return await bot.save();
+    const result = await bot.save();
+    if (typeof result.id !== 'undefined') {
+      let subscriptionType = '';
+      switch(pricingModel) {
+        case 'pay_per_use':
+          subscriptionType = 'use';
+          break;
+        case 'pay_per_month':
+          subscriptionType = 'month';
+          break;
+        case 'pay_per_use_or_month':
+          subscriptionType = 'use';
+          break;
+        default:
+          subscriptionType = 'free';
+          break;
+      }
+      const subscription = await BotService.subscribe(username, result._id, subscriptionType);
+      console.log(subscription);
+    }
+    return result;
   },
 
   updateBot: async (username, bot) => {
@@ -157,7 +178,11 @@ const BotService = {
 
   deleteBotById: async (username, id) => {
     await BotService.findMyBotById(username, id);
-    return await Bot.deleteOne({_id: id});
+    const result = await Bot.deleteOne({_id: id});
+    await BotSubscription.deleteMany({'bot': id}).exec();
+    await Dotbot.deleteOne({botId: id});
+    await DotbotPublisher.deleteMany({botId: id});
+    return result;
   },
 
   createSubscriptionConfig: async (componentParams) => {
@@ -231,7 +256,13 @@ const BotService = {
     if (!subscription) {
       throw new BotSubscriptionNotFoundError();
     }
-    return await BotSubscription.deleteOne({_id: subscription._id});
+    const result = await BotSubscription.deleteOne({_id: subscription._id});
+    try {
+      await DotbotPublisher.deleteOne({botId: botId, publisherName: username});
+    } catch (err) {
+      // do nothing
+    }
+    return result;
   },
 
   findSubscriptionByUser: async (username) => {
