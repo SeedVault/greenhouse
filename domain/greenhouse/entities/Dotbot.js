@@ -29,7 +29,7 @@ const DotServiceSchema = mongoose.Schema({
   },
   url: {
     type: String,
-    required: [true, 'validation.required'],
+    // required: [true, 'validation.required'],
     trim: true
   },
   method: {
