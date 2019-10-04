@@ -116,7 +116,6 @@ const BotService = {
           break;
       }
       const subscription = await BotService.subscribe(username, result._id, subscriptionType);
-      console.log(subscription);
     }
     return result;
   },

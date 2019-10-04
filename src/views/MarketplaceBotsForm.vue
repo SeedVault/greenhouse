@@ -311,7 +311,6 @@ export default {
           this.$router.push({ name: 'marketplaceBotsView', params: { botId } });
         })
         .catch((error) => {
-          console.log(error);
           this.saving = false;
           if (error.response.status === 422) {
             this.validationErrors = this.normalizeErrors(error.response);
@@ -492,7 +491,6 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
           this.fetching = false;
           this.showPropertiesForm = false;
           this.oops = true;

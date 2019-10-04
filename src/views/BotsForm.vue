@@ -527,7 +527,6 @@ export default {
           this.$router.push({ name: 'botsView', params: { id } });
         })
         .catch((error) => {
-          console.log(error);
           this.saving = false;
           if (error.response.status === 422) {
             this.validationErrors = this.normalizeErrors(error.response);

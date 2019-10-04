@@ -104,7 +104,6 @@ const bots = {
       }
       res.status(200).json({saved: true, id: id});
     } catch (err) {
-      console.log(err);
       if (err instanceof ValidationError) {
         res.status(422).json(err);
       } else {
@@ -285,7 +284,6 @@ const bots = {
       );
       res.status(200).json({saved: true, subscriptionId: subscription.id});
     } catch (err) {
-      console.log(err);
       return res.status(500).json(err);
     }
   },
