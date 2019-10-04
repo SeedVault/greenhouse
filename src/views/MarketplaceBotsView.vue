@@ -178,14 +178,14 @@ export default {
     this.removeHadron();
   },
   methods: {
-    async removeHadron() {
+    removeHadron() {
       if (typeof window.inToggle !== 'undefined') {
-        // await window.inToggle.unloadHadron();
         window.inToggle.hideHadron();
         /*const scripts = document.getElementsByTagName('script');
         for (let i = 0; i < scripts.length; i++) {
           if (scripts[i].src === 'https://hadron.botanic.io/launcher.bundle.js') {
             scripts[i].parentElement.removeChild(scripts[i]);
+            break;
           }
         }*/
       }
@@ -198,7 +198,6 @@ export default {
         document.head.appendChild(script);
       } else {
         window.inToggle.init();
-        // window.inToggle = new HadronLauncher("inToggle", "#hadron-container");
       }
     },
     getData() {

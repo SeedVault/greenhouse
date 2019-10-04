@@ -359,8 +359,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
             value = component.predefinedVars[i].value;
             break;
           case 'developer':
-            if (doc.services[j].values.has(propertyId)) {
-              value = doc.services[j].values.get(propertyId);
+            if (doc.bot.services[j].values.has(propertyId)) {
+              value = doc.bot.services[j].values.get(propertyId);
             }
             break;
           case 'publisher':
