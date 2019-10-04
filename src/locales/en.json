@@ -130,7 +130,8 @@
         "bot_engine_required": "You must select a bot engine.",
         "channel_required": "You must select at least one channel.",
         "bot_subscription_not_found": "Bot subscription not found",
-        "forbidden_bot_subscription": "Forbidden bot subscription."
+        "forbidden_bot_subscription": "Forbidden bot subscription.",
+        "unique_botId": "Bot ID already exist"
       }
     },
     "bot_categories": {
