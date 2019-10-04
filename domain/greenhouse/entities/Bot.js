@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-var uuid4 = require('uuid4');
 const { Component } = require('./Component');
 const { Dotbot, DotbotPublisher, DotService, ServiceProp } = require('./Dotbot');
 
@@ -58,7 +57,7 @@ const BotSubscriptionSchema = mongoose.Schema({
   token: {
     type: String,
     required: [true, 'validation.required'],
-    default: uuid4(),
+    default: '',
     trim: true,
   },
   botEngine: {

@@ -2,6 +2,7 @@ const ValidationError = require('mongoose/lib/error/validation');
 const { Component, Property } = require('../entities/Component');
 const { Bot, BotSubscription, Config } = require('../entities/Bot');
 const { Dotbot, DotbotPublisher } = require('../entities/Dotbot');
+const uuid4 = require('uuid4');
 const { ComponentService, ComponentNotFoundError,
   ForbiddenComponentError, PropertyNotFoundError } = require ('./ComponentService');
 const ObjectId = require('mongodb').ObjectID;
@@ -227,7 +228,9 @@ const BotService = {
 
     } catch (err) {
       if (err instanceof BotSubscriptionNotFoundError) {
+        const token = uuid4();
         subscription = new BotSubscription({
+          token,
           username,
           bot,
           subscriptionType,
