@@ -335,9 +335,9 @@ describe('Bot subscription', () => {
     const botOne = await createBot('bot one', components);
     const botTwo = await createBot('bot two', components);
     await createBot('bot three', components);
-    await botService.subscribe('johndoe', botOne._id, 'free');
-    await botService.subscribe('johndoe', botTwo._id, 'free');
-    const rows = await botService.findPaginatedBotSubscriptions('johndoe', 3, 1, '', '', '', 'name', 'asc');
+    await botService.subscribe('janedoe', botOne._id, 'free');
+    await botService.subscribe('janedoe', botTwo._id, 'free');
+    const rows = await botService.findPaginatedBotSubscriptions('janedoe', 3, 1, '', '', '', 'name', 'asc');
     expect(rows.resultsCount).toBe(2);
   });
 });

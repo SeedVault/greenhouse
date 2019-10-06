@@ -8,7 +8,7 @@
         <div class="card box">
           <div class="card-body">
 
-            <router-link class="nav-link back" :to="{ name: 'marketplaceBotsView', params: { id: this.id } }" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
+            <router-link class="nav-link back" :to="getBackUrl" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
               <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
             </router-link>
 
@@ -141,6 +141,7 @@ export default {
     StarRating,
     PropertyForm,
   },
+  props: ['context'],
   data() {
     return {
       id: '',
@@ -308,7 +309,14 @@ export default {
           // const { id } = result.data;
           this.saving = false;
           this.saved = true;
-          this.$router.push({ name: 'marketplaceBotsView', params: { botId } });
+          switch (this.context) {
+            case 'myProducts':
+              this.$router.push({ name: 'botsView', params: { id: this.id } });
+              break;
+            case 'marketplace':
+              this.$router.push({ name: 'marketplaceBotsView', params: { id: this.id } });
+              break;
+          }
         })
         .catch((error) => {
           this.saving = false;
@@ -655,6 +663,16 @@ export default {
     },
     componentTypeContext() {
       return `#${this.componentType}`;
+    },
+    getBackUrl() {
+      switch (this.context) {
+        case 'myProducts':
+          return { name: 'botsView', params: { id: this.id } }
+          break;
+        case 'marketplace':
+          return { name: 'marketplaceBotsView', params: { id: this.id } }
+          break;
+      }
     },
   },
 };

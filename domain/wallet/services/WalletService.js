@@ -1,9 +1,9 @@
 const { SeedTokenAPIClientEthereumETHPersonal } = require('seedtoken-api-client');
 const fetch = require('node-fetch');
-const Recipient = require('../validators/Recipient');
+const Transaction = require('../validators/Transaction');
 const ValidationError = require('mongoose/lib/error/validation');
 const ValidatorError = require('mongoose/lib/error/validation');
-const BigNumber = require('bignumber.js');
+// const BigNumber = require('bignumber.js');
 
 class WalletNotFoundError extends ValidationError {
   constructor(message) {
@@ -18,11 +18,11 @@ const WalletService = {
   getDashboardInfo: async(username) => {
     let profileData = await WalletService.findProfiles([username]);
     let profile = profileData[username];
-    const st = new SeedTokenAPIClientEthereumETHPersonal(process.env.PARITY_URL);
+    const st = SeedTokenAPIClientEthereumETHPersonal.getInstance(process.env.PARITY_URL);
     let balance = await st.getBalance(profile.walletAddress);
     let createdAtDate = new Date(profile.createdAt);
     let createdAtUnixEpoch = createdAtDate.getTime()/1000|0;
-    let latestTransactions = await st.getLastNTransactions(profile.walletAddress, 5, 1000, 20, createdAtUnixEpoch);
+    let latestTransactions = await st.getLastNTransactions(profile.walletAddress, 5, 100, 20, createdAtUnixEpoch);
     // retrieve profiles
     let addresses = [];
     let transactions = [];
@@ -71,7 +71,7 @@ const WalletService = {
   getWalletProfile: async(username) => {
     let profileData = await WalletService.findProfiles([username]);
     let profile = profileData[username];
-    const st = new SeedTokenAPIClientEthereumETHPersonal(process.env.PARITY_URL);
+    const st = SeedTokenAPIClientEthereumETHPersonal.getInstance(process.env.PARITY_URL);
     let balance = await st.getBalance(profile.walletAddress);
     var data = {
       profile,
@@ -99,11 +99,12 @@ const WalletService = {
   },
 
   send: async(username, to, amount, confirmed) => {
-    let recipient = new Recipient({
+    let transaction = new Transaction({
+      username,
       to,
       amount,
     });
-    await Recipient.check(recipient);
+    await Transaction.check(transaction);
     let profiles = await WalletService.findProfiles([username, to]);
     if (!profiles[username]) {
       throw new WalletNotFoundError();
@@ -120,26 +121,38 @@ const WalletService = {
       err.errors.to.message = 'domain.wallet.validation.self_transfer_error';
       throw err;
     }
-    const st = new SeedTokenAPIClientEthereumETHPersonal(process.env.PARITY_URL);
-    let balance = await st.getBalance(profiles[username].walletAddress);
+    const st = SeedTokenAPIClientEthereumETHPersonal.getInstance(process.env.PARITY_URL);
+    /* let balance = await st.getBalance(profiles[username].walletAddress);
     let usernameBalance = new BigNumber(balance);
     if (usernameBalance.isLessThan(amount)) {
       let err = new ValidationError(null);
       err.addError('amount', new ValidatorError());
       err.errors.amount.message = 'domain.wallet.validation.insufficient_funds';
       throw err;
-    }
+    } */
     if (!confirmed) {
       return {
         'toWalletAddress': profiles[to].walletAddress
       };
     } else {
-      let transactionId = await st.transfer(
-        profiles[username].walletAddress,
-        profiles[to].walletAddress,
-        amount,
-        process.env.PARITY_TEST_ADDRESS_PASSPHRASE
-      );
+      let transactionId = '';
+      try {
+        transactionId = await st.transfer(
+          profiles[username].walletAddress,
+          profiles[to].walletAddress,
+          amount,
+          process.env.PARITY_TEST_ADDRESS_PASSPHRASE
+        );
+      } catch (err) {
+        if (err.toString().includes('Insufficient funds')) {
+          let verr = new ValidationError(null);
+          verr.addError('amount', new ValidatorError());
+          verr.errors.amount.message = 'domain.wallet.validation.insufficient_funds';
+          throw verr;
+        } else {
+          throw err;
+        }
+      }
       return {
         'transactionId': transactionId
       };

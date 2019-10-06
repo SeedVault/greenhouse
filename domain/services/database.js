@@ -8,6 +8,7 @@ if (process.env.NODE_ENV === 'testing') {
 }
 
 let mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 
 module.exports = async () => {
 

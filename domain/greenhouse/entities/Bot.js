@@ -325,8 +325,8 @@ BotSubscriptionSchema.post('save', async function(doc) {
             value = component.headers[i].value;
             break;
           case 'developer':
-            if (doc.bot.services[j].values.has(propertyId)) {
-              value = doc.bot.services[j].values.get(propertyId);
+            if (bot.services[j].values.has(propertyId)) {
+              value = bot.services[j].values.get(propertyId);
             }
             break;
           /*case 'publisher':
@@ -358,9 +358,12 @@ BotSubscriptionSchema.post('save', async function(doc) {
             value = component.predefinedVars[i].value;
             break;
           case 'developer':
-            if (doc.bot.services[j].values.has(propertyId)) {
-              value = doc.bot.services[j].values.get(propertyId);
+            if (bot.services[j].values.has(propertyId)) {
+              value = bot.services[j].values.get(propertyId);
             }
+            /* if (doc.bot.services[j].values.has(propertyId)) {
+              value = doc.bot.services[j].values.get(propertyId);
+            } */
             break;
           case 'publisher':
             for (let k = 0; k < doc.services.length; k++) {

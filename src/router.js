@@ -78,6 +78,12 @@ const router = new Router({
           meta: { authenticated: true },
         },
         {
+          path: 'products/bots/:id/configure',
+          name: 'BotsConfigure',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsConfigure.vue'),
+          meta: { authenticated: true },
+        },
+        {
           path: 'products/bots/form/:id?',
           name: 'botsForm',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsForm.vue'),
@@ -87,6 +93,12 @@ const router = new Router({
           path: 'products/bots/:id',
           name: 'botsView',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsView.vue'),
+          meta: { authenticated: true },
+        },
+        {
+          path: 'products/bots/:id/code',
+          name: 'botsCode',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsCode.vue'),
           meta: { authenticated: true },
         },
         {
@@ -121,13 +133,13 @@ const router = new Router({
           path: 'marketplace/bots/:id/code',
           name: 'marketplaceBotsCode',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsCode.vue'),
-          meta: { authenticated: true }
+          meta: { authenticated: true },
         },
         {
           path: 'marketplace/bots/:id/configure',
-          name: 'marketplaceBotsForm',
-          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsForm.vue'),
-          meta: { authenticated: true }
+          name: 'marketplaceBotsConfigure',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsConfigure.vue'),
+          meta: { authenticated: true },
         },
         {
           path: 'privacy',

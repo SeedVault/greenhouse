@@ -1,6 +1,11 @@
 var mongoose = require('mongoose');
 
 const RecipientSchema = mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
   to: {
     type: String,
     required: [true, 'validation.required'],
