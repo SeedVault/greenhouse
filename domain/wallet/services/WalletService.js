@@ -21,6 +21,7 @@ const WalletService = {
     const st = SeedTokenAPIClientEthereumETHPersonal.getInstance(process.env.PARITY_URL);
     let balance = await st.getBalance(profile.walletAddress);
     let createdAtDate = new Date(profile.createdAt);
+    createdAtDate.setDate(createdAtDate.getDate() - 1);  // previous day
     let createdAtUnixEpoch = createdAtDate.getTime()/1000|0;
     let latestTransactions = await st.getLastNTransactions(profile.walletAddress, 5, process.env.WALLET_BUFFER_SIZE, process.env.WALLET_TIMEOUT, createdAtUnixEpoch);
     // retrieve profiles
