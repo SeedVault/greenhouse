@@ -112,9 +112,6 @@ export default {
     data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
     data-bot-load-font="Montserrat:300,400,600"
     data-bot-bbot-uri="https://rhizome.botanic.io/"
-    data-bot-close-button-action="unload"
-    data-bot-auto-opens="true"
-    data-bot-remembers-state="false"
     data-bot-publisher-token="${this.token}"
 ></span>
 <script type="text/javascript" src="https://hadron.botanic.io/launcher.bundle.js"><\/script>`;
