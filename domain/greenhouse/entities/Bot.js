@@ -282,6 +282,16 @@ BotSubscriptionSchema.post('save', async function(doc) {
             value = doc.channels.get(propertyId);
           }
           break; */
+        case 'publisher':
+          for (let k = 0; k < doc.channels.length; k++) {
+            if (component._id.toString() == doc.channels[k].component.toString()) {
+              if (doc.channels[k].values.has(propertyId)) {
+                value = doc.channels[k].values.get(propertyId);
+              }
+              break;
+            }
+          }
+          break;
       }
       props.set(component.properties[i].name, value);
     }
