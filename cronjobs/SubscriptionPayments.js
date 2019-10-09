@@ -42,7 +42,10 @@ async function main() {
         
    ])
 
-    bss.forEach(async (bs) => {                
+    let bs
+    for (let i = 0; i < bss.length; i++) {
+        bs = bss[i]
+
         //console.dir(bs, { depth: null });
         if (!bs.subscription_payments) {
             bs.subscription_payments = {}
@@ -83,7 +86,7 @@ async function main() {
         } catch(e) {
             console.log(e)
         }
-    })
+    }
 
 }
 main().then(() => {
