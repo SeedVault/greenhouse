@@ -1,4 +1,4 @@
-const { SeedTokenAPIClientEthereumETHPersonal } = require('seedtoken-api-client');
+const { SeedTokenAPIClientEthereumETHPersonal } = require('@seed-vault/seedtoken-api-client');
 const fetch = require('node-fetch');
 const Transaction = require('../validators/Transaction');
 const ValidationError = require('mongoose/lib/error/validation');
