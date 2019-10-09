@@ -180,6 +180,12 @@ const ServicePropSchema = mongoose.Schema({
 
 
 const DotbotPublisherSchema = mongoose.Schema({
+  subscriptionId: {
+    type: String,
+    required: [true, 'validation.required'],
+    index: true,
+    trim: true
+  },
   botId: {
     type: String,
     required: [true, 'validation.required'],
