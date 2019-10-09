@@ -232,16 +232,16 @@ export default {
         } else {
           if (this.pricingModel === 'pay_per_use' || this.pricingModel === 'pay_per_use_or_month') {
             this.pricingOptions.push({
-              value: 'month',
-              text: this.$i18n.t(`domain.component.price_per_month`) +
-              `(${this.pricePerMonth} SEED)`
+              value: 'use',
+              text: this.$i18n.t('domain.component.price_per_use') +
+              `(${this.pricePerUse} SEED)`
             });
           }
           if (this.pricingModel === 'pay_per_month' || this.pricingModel === 'pay_per_use_or_month') {
             this.pricingOptions.push({
-              value: 'use',
-              text: this.$i18n.t('domain.component.price_per_use') +
-              `(${this.pricePerUse} SEED)`
+              value: 'month',
+              text: this.$i18n.t(`domain.component.price_per_month`) +
+              `(${this.pricePerMonth} SEED)`
             });
           }
         }
@@ -295,6 +295,32 @@ export default {
         });
     },
     save() {
+      /* let pendingConfiguration = new Map();
+      for (const c of this.cachedComponents.values()) {
+        if (c.hasPublisherProps === true) {
+          for (let i = 0; i < this.servicesSubscription.length; i++) {
+            if (this.services[i].component === c._id) {
+              for (let j = 0; j < c.predefinedVars.length; j++) {
+                let p = c.predefinedVars[j];
+                if (p.valueType === 'publisher' && p.required === 'yes') {
+                  let k = Object.keys(this.servicesSubscription[i].values);
+                  let v = Object.values(this.servicesSubscription[i].values);
+                  for (let m = 0; m < k.length; m++) {
+                    if (k[m] === `_${p._id}`) {
+                      console.log('found:', k[m], v[m]);
+                      if (v[m] === '') {
+                        pendingConfiguration.set(c._id, c.title);
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      console.log(pendingConfiguration);
+      return; */
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
