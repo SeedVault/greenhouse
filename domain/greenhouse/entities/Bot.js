@@ -243,7 +243,7 @@ BotSchema.post('save', async function(doc) {
 
 BotSubscriptionSchema.post('save', async function(doc) {
   await DotbotPublisher.deleteOne({botId: doc.bot._id, publisherName: doc.username});
-  let dotsub = new DotbotPublisher({botId: doc.bot._id, publisherName: doc.username});
+  let dotsub = new DotbotPublisher({subscriptionId: doc._id, botId: doc.bot._id, publisherName: doc.username});
   let botModel = mongoose.model('Bots', BotSchema);
   const bot = await botModel.findById(doc.bot);
   dotsub.token = doc.token;

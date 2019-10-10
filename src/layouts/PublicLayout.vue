@@ -3,9 +3,16 @@
 
     <div class="container">
       <b-navbar toggleable="lg">
-        <router-link :class="navbar-brand" :to="{ name: 'home'}">
-          <img class="navbar-brand-img" src="/images/application_logo_greenhouse.svg"
-          alt="SEED Greenhouse" />
+        <router-link :class="navbar-brand" :to="{ name: 'home'}" style="height: 30px;">
+          <!-- <img class="navbar-brand-img" src="/images/application_logo_greenhouse.svg"
+          alt="SEED Greenhouse" /> -->
+          <div class="media" style="margin-top: 0px;margin-bottom: 40px;">
+            <img class="navbar-brand-img align-self-start mr-3" :src="logoImage" style="margin-left:5px;width:30px;height:30px" />
+            <div class="media-body">
+              <!-- <img class="" src="/images/logo_separator.png" style="floating:right;width: 1px; height:30px;margin-right: 5px;"/> -->
+              <img class="" :src="logoText" :style="logoTextStyle" />
+            </div>
+          </div>
         </router-link>
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
         <b-collapse id="nav-collapse" is-nav v-if="user">
@@ -55,7 +62,16 @@ export default {
     user() {
       return this.$store.getters.user;
     },
-  },
+    logoImage() {
+      return this.$store.getters.logoImage
+    },
+    logoText() {
+      return this.$store.getters.logoText
+    },
+    logoTextStyle() {
+      return `padding-left:5px;height:30px;width:${this.$store.getters.logoTextWidth};`;
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

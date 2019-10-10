@@ -4,7 +4,7 @@
       <div class="col-sm">
         <div class="card box">
           <div class="card-body">
-            <h4 class="card-title">{{ $t('app.privacy') }}</h4>
+            <h4 class="card-title">{{ $t('app.community') }}</h4>
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 
 export default {
-  name: 'Privacy',
+  name: 'Community',
   components: {
     AppLayout,
   },
