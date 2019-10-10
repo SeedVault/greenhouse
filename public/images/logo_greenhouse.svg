@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="6.0854168mm"
+   height="7.9375mm"
+   viewBox="0 0 6.0854168 7.9375"
+   version="1.1"
+   id="svg5145"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="logo_greenhouse.svg">
+  <defs
+     id="defs5139" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="-120.67517"
+     inkscape:cy="-31.39521"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1366"
+     inkscape:window-height="704"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5142">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-14.344196,-33.739583)">
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:#39b54a;stroke-width:0.26458332"
+       id="Combined-Shape"
+       d="m 16.896145,35.481961 v -0.387195 h -2.551949 v -0.967988 h 2.551949 v -0.387195 h 0.981519 v 0.387195 h 2.551949 v 0.967988 h -2.551949 v 0.387195 h 2.551949 v 0.967988 h -6.085417 v -0.967988 z" />
+    <path
+       inkscape:connector-curvature="0"
+       style="fill:#6b4c9f;stroke-width:0.26458332"
+       id="Shape"
+       d="m 20.429613,36.837144 c -0.05665,1.358158 -0.309133,2.438339 -0.757307,3.151722 -0.448341,0.713531 -1.211252,1.246761 -2.285401,1.688217 -1.074316,-0.441456 -1.837227,-0.974686 -2.285402,-1.688217 -0.448325,-0.713383 -0.700811,-1.793564 -0.757307,-3.151722 h 1.092189 c -0.02121,1.00995 0.127682,1.821599 0.446811,2.434651 0.319281,0.613199 0.821527,1.06041 1.503709,1.341632 0.682031,-0.281222 1.184428,-0.728433 1.503557,-1.341632 0.319129,-0.613052 0.468168,-1.424701 0.446811,-2.434651 z" />
+  </g>
+</svg>
