@@ -50,18 +50,20 @@ async function main() {
         if (!bs.subscription_payments) {
             bs.subscription_payments = {}
         }
+        
+        if (bs.username == bs.bot.username) {
+            //console.log('Subscriber and bot owner are the same user. No need to do payment.')
+            continue
+        }
+        if (bs.bot.pricePerMonth == 0) {
+            //console.log('Price per month is 0. No need to do payment.')
+            continue
+        }
+
         console.log('----------------------------------------------------------------------------------------------------------------------------')
         console.log('Token: ' + bs.token + ' - lastPayment: ' + bs.subscription_payments.lastPaymentDate)        
         console.log('Trying to make month payment from bot subscriber (' + bs.username + ') to bot owner (' + bs.bot.username + ') - ' + bs.bot.pricePerMonth + ' tokens...')
         
-        if (bs.username == bs.bot.username) {
-            console.log('Subscriber and bot owner are the same user. No need to do payment.')
-            return
-        }
-        if (bs.bot.pricePerMonth == 0) {
-            console.log('Price per month is 0. No need to do payment.')
-            return
-        }
 
         try {
             let tx = await WalletService.send(bs.username, bs.bot.username, bs.bot.pricePerMonth) //use await to avoid hammering the node            
