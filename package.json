@@ -11,7 +11,8 @@
     "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
     "prod": "NODE_ENV=production node -r dotenv/config ./server/bin/www.js",
     "prods": "NODE_ENV=production node -r dotenv/config ./server/bin/wwws.js",
-    "production": "NODE_ENV=production vue-cli-service serve --mode production"
+    "production": "NODE_ENV=production vue-cli-service serve --mode production",
+    "export": "NODE_ENV=production node -r dotenv/config ./scripts/ExportAll"
   },
   "repository": {
     "type": "git",
