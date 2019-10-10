@@ -40,9 +40,14 @@ export default new Vuex.Store({
         target: 'botsList',
       },
       {
-        text: 'app.privacy',
+        text: 'app.my_data',
         icon: 'outline-security-24px@2x.svg',
-        target: 'privacy',
+        target: 'myData',
+      },
+      {
+        text: 'app.community',
+        icon: 'icon-community-24px.svg',
+        target: 'community',
       },
     ],
     apps: [

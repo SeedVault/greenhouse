@@ -142,9 +142,15 @@ const router = new Router({
           meta: { authenticated: true },
         },
         {
-          path: 'privacy',
-          name: 'privacy',
-          component: () => import(/* webpackChunkName: "greenhouse" */ './views/Privacy.vue'),
+          path: 'my-data',
+          name: 'myData',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MyData.vue'),
+          meta: { authenticated: true },
+        },
+        {
+          path: 'community',
+          name: 'community',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/Community.vue'),
           meta: { authenticated: true },
         },
       ],
