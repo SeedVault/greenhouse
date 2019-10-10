@@ -15,7 +15,16 @@ async function main() {
   // Export greenhouse_publisher_bots
   const allBotSubscriptions = await BotSubscription.find().exec();
   const botSubscriptionsPromises = allBotSubscriptions.map(async (botSubscription) => {
-    await botSubscription.save();
+    try {
+      await botSubscription.save();
+    } catch (err) {
+      console.log('* Unable to export bot subcription');
+      console.log();
+      console.log('DATA:', botSubscription);
+      console.log();
+      console.log('ERROR:', err);
+      console.log('-------------------------------------------------------------');
+    }
   });
   await Promise.all(botSubscriptionsPromises);
 }
