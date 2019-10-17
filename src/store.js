@@ -3,6 +3,18 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
+var appAccountsUrl = 'https://127.0.0.1:9000';
+var appWalletUrl = 'https://127.0.0.1:9001';
+if (process.env.NODE_ENV === 'production') {
+  if (window.location.hostname === 'greenhouse-dev.seedtoken.io') {
+    appAccountsUrl = 'https://accounts.seedtoken.io';
+    appWalletUrl = 'https://wallet-dev.seedtoken.io';
+  } else {
+    appAccountsUrl = 'https://accounts2.seedtoken.io';
+    appWalletUrl = 'https://wallet.seedtoken.io';
+  }
+}
+
 // Data source:
 // https://github.com/stefangabos/world_countries/blob/master/data/en/countries.json
 export default new Vuex.Store({
@@ -54,12 +66,12 @@ export default new Vuex.Store({
       {
         text: 'apps.accounts',
         icon: 'outline-app-24px@2x.svg',
-        url: `${process.env.NODE_ENV === 'production' ? 'https://accounts.seedtoken.io' : 'https://127.0.0.1:9000'}/{{ locale }}/profile`,
+        url: `${appAccountsUrl}/{{ locale }}/profile`,
       },
       {
         text: 'apps.wallet',
         icon: 'outline-app-24px@2x.svg',
-        url: `${process.env.NODE_ENV === 'production' ? 'https://wallet-dev.seedtoken.io' : 'https://127.0.0.1:9001'}/{{ locale }}/dashboard`,
+        url: `${appWalletUrl}/{{ locale }}/dashboard`,
       },
     ],
   },
