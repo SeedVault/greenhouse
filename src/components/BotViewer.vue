@@ -27,7 +27,7 @@
                 data-bot-subtitle=""
                 data-bot-voice-recognition-visible="false"
                 data-bot-title="SEED Bot"
-                data-bot-external-css="https://hadron.botanic.io/sprout/sequoia_b.css"
+                data-bot-external-css="{{ getHadronUrl('/sprout/sequoia_b.css') }}"
                 data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
                 data-bot-load-font="Montserrat:300,400,600"
                 data-bot-bbot-uri="https://rhizome.botanic.io/"
@@ -184,23 +184,30 @@ export default {
     this.removeHadron();
   },
   methods: {
+    getHadronUrl(suffix) {
+      if (window.location.hostname === 'greenhouse.seedtoken.io') {
+        return  `https://hadron.seedtoken.io${suffix}`;
+      } else {
+        return `https://hadron.botanic.io${suffix}`;
+      }
+    },
+    getRhizomeUrl(suffix) {
+      if (window.location.hostname === 'greenhouse.seedtoken.io') {
+        return  `https://rhizome.seedtoken.io${suffix}`;
+      } else {
+        return `https://rhizome.botanic.io${suffix}`;
+      }
+    },
     removeHadron() {
       if (typeof window.inToggle !== 'undefined') {
         window.inToggle.hideHadron();
-        /*const scripts = document.getElementsByTagName('script');
-        for (let i = 0; i < scripts.length; i++) {
-          if (scripts[i].src === 'https://hadron.botanic.io/launcher.bundle.js') {
-            scripts[i].parentElement.removeChild(scripts[i]);
-            break;
-          }
-        }*/
       }
     },
     injectHadron() {
       if (typeof window.inToggle == 'undefined') {
         const script = document.createElement('script');
         script.onload = () => { }
-        script.src = 'https://hadron.botanic.io/launcher.bundle.js';
+        script.src = this.getHadronUrl('/launcher.bundle.js');
         document.head.appendChild(script);
       } else {
         window.inToggle.init();
