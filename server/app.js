@@ -10,6 +10,7 @@ let RedisStore = require('connect-redis')(session)
 let api = require('./controllers/api');
 let components = require('./controllers/components');
 let bots = require('./controllers/bots');
+let marketplace = require('./controllers/marketplace');
 var multer  = require('multer')
 var storage = multer.diskStorage({
   destination: 'public/uploads/',
@@ -191,8 +192,9 @@ module.exports = function(app) {
   app.post('/api/bots/delete', bots.delete);
   app.post('/api/bots/:id/change-picture', upload.single('pictureFile'), bots.changePicture);
   app.get('/api/bots/:id', bots.view);
-  app.get('/api/markteplace/bots', bots.marketplaceList);
-  app.get('/api/markteplace/bots/:id', bots.marketplaceView);
+  app.get('/api/markteplace/bots', marketplace.marketplaceBotsList);
+  app.get('/api/markteplace/bots/:id', marketplace.marketplaceBotsView);
+  app.get('/api/markteplace/components', marketplace.marketplaceComponentsList);
   app.post('/api/subscriptions/bots/:id/subscribe', bots.subscribe);
   app.post('/api/subscriptions/bots/:id/unsubscribe', bots.unsubscribe);
 }

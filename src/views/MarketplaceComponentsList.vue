@@ -107,7 +107,7 @@ export default {
     getData() {
       this.fetching = true;
       this.components = [];
-      this.axios.get('/api/components', {
+      this.axios.get('/api/markteplace/components', {
         params: {
           username: this.$store.getters.user.username,
           page: this.page,
