@@ -20,10 +20,10 @@
     data-bot-subtitle=""
     data-bot-voice-recognition-visible="false"
     data-bot-title="SEED Bot"
-    data-bot-external-css="https://hadron.botanic.io/sprout/sequoia_b.css"
-    data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
+    :data-bot-external-css="getHadronUrl('https://hadron.botanic.io/sprout/sequoia_b.css')"
+    :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
     data-bot-load-font="Montserrat:300,400,600"
-    data-bot-bbot-uri="https://rhizome.botanic.io/"
+    :data-bot-bbot-uri="getRhizomeUrl('/')"
     data-bot-publisher-token="a5e83f01-14a9-4d8f-bc75-27cf0da3d9ef"
 ></span>
 
@@ -73,6 +73,20 @@ export default {
     this.getData();
   },
   methods: {
+    getHadronUrl(suffix) {
+      if (window.location.hostname === 'greenhouse.seedtoken.io') {
+        return  `https://hadron.seedtoken.io${suffix}`;
+      } else {
+        return `https://hadron.botanic.io${suffix}`;
+      }
+    },
+    getRhizomeUrl(suffix) {
+      if (window.location.hostname === 'greenhouse.seedtoken.io') {
+        return  `https://rhizome.seedtoken.io${suffix}`;
+      } else {
+        return `https://rhizome.botanic.io${suffix}`;
+      }
+    },
     getData() {
       this.loading = true;
       this.axios.get(`/api/markteplace/bots/${this.id}`)
@@ -100,6 +114,10 @@ export default {
       }
     },
     snippet() {
+      const dataBotExternalCss = this.getHadronUrl('/sprout/sequoia_b.css');
+      const dataBotLauncherExternalCss = this.getHadronUrl('/sprout/sequoia-launcher_b.css');
+      const dataBotBbotUri = this.getRhizomeUrl('/');
+      const launcherBundleJs = this.getHadronUrl('/launcher.bundle.js');
       return `<span id="hadron-container"
     data-bot-first-message="Hi"
     data-bot-size-class="tall"
@@ -108,13 +126,13 @@ export default {
     data-bot-subtitle=""
     data-bot-voice-recognition-visible="false"
     data-bot-title="SEED Bot"
-    data-bot-external-css="https://hadron.botanic.io/sprout/sequoia_b.css"
-    data-bot-launcher-external-css="https://hadron.botanic.io/sprout/sequoia-launcher_b.css"
+    data-bot-external-css="${dataBotExternalCss}"
+    data-bot-launcher-external-css="${dataBotLauncherExternalCss}"
     data-bot-load-font="Montserrat:300,400,600"
-    data-bot-bbot-uri="https://rhizome.botanic.io/"
+    data-bot-bbot-uri="${dataBotBbotUri}"
     data-bot-publisher-token="${this.token}"
 ></span>
-<script type="text/javascript" src="https://hadron.botanic.io/launcher.bundle.js"><\/script>`;
+<script type="text/javascript" src="${launcherBundleJs}"><\/script>`;
     }
   }
 }
