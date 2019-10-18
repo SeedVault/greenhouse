@@ -185,7 +185,7 @@ export default {
   },
   methods: {
     getHadronUrl(suffix) {
-      return HADRON_URL + suffix      
+      return HADRON_URL + suffix
     },
     getRhizomeUrl(suffix) {
       return RHIZOME_URL + suffix
@@ -207,7 +207,7 @@ export default {
     },
     getData() {
       this.loading = true;
-      this.axios.get(`/api/markteplace/bots/${this.$route.params.id}`)
+      this.axios.get(`/api/marketplace/bots/${this.$route.params.id}`)
         .then((result) => {
           this.loading = false;
           this.subscribed = result.data.subscribed;

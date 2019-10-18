@@ -217,7 +217,7 @@ export default {
       let result = [];
       this.visibleComponents = [];
       try {
-        result[0] = await this.axios.get(`/api/markteplace/bots/${this.id}`);
+        result[0] = await this.axios.get(`/api/marketplace/bots/${this.id}`);
         const ids = [];
         this.name          = result[0].data.bot.name;
         this.pricingModel  = result[0].data.bot.pricingModel;

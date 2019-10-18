@@ -298,8 +298,11 @@ export default {
     },
     getBackUrl() {
       switch (this.context) {
-        case 'marketplace':
+        case 'components':
           return { name: 'marketplaceComponentsList' }
+          break;
+        case 'services':
+          return { name: 'marketplaceServicesList' }
           break;
       }
     },

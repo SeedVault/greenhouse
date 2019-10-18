@@ -6,7 +6,7 @@ const {resolve} = require("path");
 
 const marketplace = {
 
-  // GET - /api/markteplace/bots/:id
+  // GET - /api/marketplace/bots/:id
   marketplaceBotsList: async (req, res, next) => {
     if (!req.user) {
       return res.status(403).json('Forbidden');
@@ -55,7 +55,7 @@ const marketplace = {
   },
 
 
-  // GET - /api/markteplace/bots/:id
+  // GET - /api/marketplace/bots/:id
   marketplaceBotsView: async (req, res, next) => {
     if (!req.user) {
       return res.status(403).json('Forbidden');
@@ -86,9 +86,7 @@ const marketplace = {
     res.json(data);
   },
 
-
-  // GET - /marketplace/components/list
-  marketplaceComponentsList: async (req, res, next) => {
+  getComponentList: async (req, res, next, componentType) => {
     if (!req.user) {
       return res.status(403).json('Forbidden');
     }
@@ -97,10 +95,10 @@ const marketplace = {
       const page = req.query.page || 1;
       const search = req.query.search || '';
       let username = '';
-      let componentType = req.query.componentType || '';
+      /* let componentType = req.query.componentType || '';
       if (componentType !== 'botengine' && componentType !== 'service' && componentType !== 'channel') {
         componentType = '';
-      }
+      } */
       let status = 'enabled';
       let sortBy = req.query.sortBy || '';
       if (sortBy !== 'name' && sortBy !== 'updatedAt') {
@@ -110,6 +108,7 @@ const marketplace = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
+      // 'botengine', 'service', 'channel'
       const data = await ComponentService.findPaginatedComponents(
         resultsPerPage,
         page,
@@ -120,12 +119,21 @@ const marketplace = {
         sortBy,
         sortType,
       );
-      res.json(data);
+      return res.json(data);
     } catch (err) {
       next(err);
     }
   },
 
+  // GET - /marketplace/services/list
+  marketplaceServicesList: async (req, res, next) => {
+    return marketplace.getComponentList(req, res, next, 'channel');
+  },
+
+  // GET - /marketplace/components/list
+  marketplaceComponentsList: async (req, res, next) => {
+    return marketplace.getComponentList(req, res, next, ['botengine', 'service']);
+  },
 }
 
 module.exports = marketplace;

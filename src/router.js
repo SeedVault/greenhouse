@@ -102,20 +102,10 @@ const router = new Router({
           meta: { authenticated: true },
         },
         {
-          path: 'marketplace',
-          name: 'marketplace',
-          component: () => import(/* webpackChunkName: "greenhouse" */ './views/Marketplace.vue'),
+          path: 'marketplace/bots',
+          name: 'marketplaceBotsList',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsList.vue'),
           meta: { authenticated: true },
-          children: [{
-            path: 'bots',
-            name: 'marketplaceBotsList',
-            component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceBotsList.vue'),
-          },
-          {
-            path: 'components',
-            name: 'marketplaceComponentsList',
-            component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceComponentsList.vue'),
-          }],
         },
         {
           path: 'marketplace/bots/:id',
@@ -124,9 +114,27 @@ const router = new Router({
           meta: { authenticated: true },
         },
         {
+          path: 'marketplace/components',
+          name: 'marketplaceComponentsList',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceComponentsList.vue'),
+          meta: { authenticated: true },
+        },
+        {
           path: 'marketplace/components/:id',
           name: 'markeplaceComponentsView',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceComponentsView.vue'),
+          meta: { authenticated: true },
+        },
+        {
+          path: 'marketplace/services',
+          name: 'marketplaceServicesList',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceServicesList.vue'),
+          meta: { authenticated: true },
+        },
+        {
+          path: 'marketplace/services/:id',
+          name: 'markeplaceServicesView',
+          component: () => import(/* webpackChunkName: "greenhouse" */ './views/MarketplaceServicesView.vue'),
           meta: { authenticated: true },
         },
         {

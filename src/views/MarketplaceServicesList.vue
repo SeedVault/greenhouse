@@ -1,12 +1,12 @@
 <template>
-  <component-list type="component"></component-list>
+  <component-list type="service"></component-list>
 </template>
 
 <script>
 import ComponentList from '@/components/ComponentList.vue';
 
 export default {
-  name: 'MarketplaceComponentsList',
+  name: 'MarketplaceServicesList',
   components: {
     ComponentList,
   },

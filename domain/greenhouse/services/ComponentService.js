@@ -89,9 +89,14 @@ const ComponentService = {
     if (search !== '') {
       query['$and'] = [{ $or: [{name: { $regex:  `.*${search}.*`, $options: 'i' }}, {description: { $regex:  `.*${search}.*`, $options: 'i' }}] }];
     }
-    if (componentType !== '' ) {
+    if (Array.isArray(componentType)) {
       query['componentType'] = componentType;
+    } else {
+      if (componentType !== '' ) {
+        query['componentType'] = componentType;
+      }
     }
+
     if (status !== '' ) {
       query['status'] = status;
     }

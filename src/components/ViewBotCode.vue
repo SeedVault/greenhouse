@@ -74,14 +74,14 @@ export default {
   },
   methods: {
     getHadronUrl(suffix) {
-      return HADRON_URL + suffix      
+      return HADRON_URL + suffix
     },
     getRhizomeUrl(suffix) {
       return RHIZOME_URL + suffix
     },
     getData() {
       this.loading = true;
-      this.axios.get(`/api/markteplace/bots/${this.id}`)
+      this.axios.get(`/api/marketplace/bots/${this.id}`)
         .then((result) => {
           const ids = [];
           this.loading = false;

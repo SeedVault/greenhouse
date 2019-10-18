@@ -192,9 +192,10 @@ module.exports = function(app) {
   app.post('/api/bots/delete', bots.delete);
   app.post('/api/bots/:id/change-picture', upload.single('pictureFile'), bots.changePicture);
   app.get('/api/bots/:id', bots.view);
-  app.get('/api/markteplace/bots', marketplace.marketplaceBotsList);
-  app.get('/api/markteplace/bots/:id', marketplace.marketplaceBotsView);
-  app.get('/api/markteplace/components', marketplace.marketplaceComponentsList);
+  app.get('/api/marketplace/bots', marketplace.marketplaceBotsList);
+  app.get('/api/marketplace/bots/:id', marketplace.marketplaceBotsView);
+  app.get('/api/marketplace/components', marketplace.marketplaceComponentsList);
+  app.get('/api/marketplace/services', marketplace.marketplaceServicesList);
   app.post('/api/subscriptions/bots/:id/subscribe', bots.subscribe);
   app.post('/api/subscriptions/bots/:id/unsubscribe', bots.unsubscribe);
 }

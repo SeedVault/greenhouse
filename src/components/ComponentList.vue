@@ -7,10 +7,7 @@
             <form>
               <div class="form-row">
                 <div class="col-12 col-sm-6 mb-2">
-                  <div class="nav menu">
-                  <a class="nav-link" @click="setSubscription('')" v-bind:class="{'list__filter': true, 'active': subscription === '' }" href="#">{{ $t('domain.bot_statuses.all') }}</a>
-                  <a class="nav-link" @click="setSubscription('mine')" v-bind:class="{'list__filter': true, 'active': subscription === 'mine' }" href="#">{{ $t('bots.my_subscriptions') }}</a>
-                  </div>
+
                 </div>
                 <div class="col-12 col-sm-2 mb-2">
                 </div>
@@ -36,28 +33,26 @@
               </div>
               <div class="row">
                 <div class="col-6">
-                  <!-- empty left -->
                 </div>
                 <div class="col-6 list__sorting">
-                  <div v-show="!fetching & bots.length > 0">
-                    {{ $t('common.sort_by') }}:
-                    <a @click="setSortBy('name')" v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }" href="#">{{ $t('domain.bot.name') }}</a>
-                    <a @click="setSortBy('updatedAt')" v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }" href="#">{{ $t('common.date') }}</a>
-                    <a @click="toggleSortType()" class="list__sort icon-hover">
-                      <template v-if="sortType === 'desc'">
-                        <img :src="require('@/assets/icons/outline-sort-desc-24px.svg')" />
-                      </template>
-                      <template v-else>
-                        <img :src="require('@/assets/icons/outline-sort-asc-24px.svg')" />
-                      </template>
-                    </a>
-                  </div>
+                  {{ $t('common.sort_by') }}:
+                  <a @click="setSortBy('name')" v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }" href="#">{{ $t('domain.component.name') }}</a>
+                  <a @click="setSortBy('updatedAt')" v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }" href="#">{{ $t('common.date') }}</a>
+                  <a @click="toggleSortType()" class="list__sort icon-hover">
+                    <template v-if="sortType === 'desc'">
+                      <img :src="require('@/assets/icons/outline-sort-desc-24px.svg')" />
+                    </template>
+                    <template v-else>
+                      <img :src="require('@/assets/icons/outline-sort-asc-24px.svg')" />
+                    </template>
+                  </a>
                 </div>
               </div>
             </form>
           </div>
           <div class="shadow-ruler">
             <div class="card-body">
+
 
               <div>
                 <div class="fetching text-center" v-show="fetching">
@@ -69,33 +64,33 @@
                 </div>
 
                 <div class="list" v-show="!fetching">
-                  <div class="list__empty" v-show="!fetching & bots.length === 0">
-                    {{ $t('bots.there_are_no_bots') }}
+                  <div class="list__empty" v-show="!fetching & components.length === 0">
+                    {{ $t('components.there_are_no_components') }}
                   </div>
-                  <div v-for="(bot, index) in bots" :key="index">
+                  <div v-for="(component, index) in components" :key="index">
                     <div class="row">
                       <div class="col-sm">
                         <div class="media">
-                          <img :src="bot.pictureUrl" class="list__image mr-4" @click="viewBot(bot._id)">
+                          <img :src="component.pictureUrl" class="list__image mr-4" @click="viewComponent(component._id)">
                           <div class="media-body list-body mb-2">
-                            <h5 class="list__name mt-0">{{ bot.name }}</h5>
-                            <div class="list__description">{{ bot.description }}</div>
+                            <h5 class="list__name mt-0">{{ component.name }}</h5>
+                            <div class="list__description">{{ component.description }}</div>
                             <div class="list__misc clearfix">
                               <div class="list__rating">
-                                <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                              <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
                               </div>
-                              <div class="list__category">{{ $t("domain.bot.category") }}:
-                              {{ $t(`domain.bot_categories.${bot.category}`) }}
+                              <div class="list__category">{{ $t("domain.component.category") }}:
+                              {{ $t(`domain.component_categories.${component.category}`) }}
                               </div>
-                              <div class="list__updated">{{ $t("bots.updated") }}
-                              {{ bot.updatedAt | toDate('short') }}
+                              <div class="list__updated">{{ $t("components.updated") }}
+                              {{ component.updatedAt | toDate('short') }}
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                       <div class="col-sm-2 align-self-center">
-                        <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="viewBot(bot._id)">{{ $t('common.view') }}</button>
+                        <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="viewComponent(component._id)">{{ $t('common.view') }}</button>
                       </div>
                     </div>
                     <hr >
@@ -117,6 +112,7 @@
               </div>
 
 
+
             </div>
           </div>
         </div>
@@ -126,28 +122,26 @@
 </template>
 
 <script>
-
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
-import MyProducts from '@/views/MyProducts.vue';
 
 export default {
-  name: 'BotsList',
+  name: 'ComponentsList',
   components: {
     AppLayout,
     StarRating,
-    MyProducts,
   },
+  props: ['type'],
   data() {
     return {
       search: '',
       focusOnSearch: false,
       fetching: false,
-      bots: [],
+      components: [],
       pagesCount: 0,
       resultsCount: 0,
       page: 1,
-      subscription: '',
+      status: 'enabled',
       sortBy: 'name',
       sortType: 'asc',
     };
@@ -168,12 +162,17 @@ export default {
     },
     getData() {
       this.fetching = true;
-      this.bots = [];
-      this.axios.get('/api/marketplace/bots', {
+      this.components = [];
+      let endpoint = '/api/marketplace/components';
+      if (this.type === 'service') {
+        endpoint = '/api/marketplace/services';
+      }
+      this.axios.get(endpoint, {
         params: {
+          username: this.$store.getters.user.username,
           page: this.page,
           search: this.search,
-          subscription: this.subscription,
+          status: this.status,
           sortBy: this.sortBy,
           sortType: this.sortType,
         },
@@ -182,15 +181,15 @@ export default {
           this.fetching = false;
           this.pagesCount = results.data.pagesCount;
           this.resultsCount = results.data.resultsCount;
-          this.bots = results.data.results;
+          this.components = results.data.results;
         })
         .catch((error) => {
           this.fetching = false;
           this.oops = true;
         });
     },
-    setSubscription(column) {
-      this.subscription = column;
+    setStatus(column) {
+      this.status = column;
       this.doSearch();
     },
     setSortBy(column) {
@@ -205,8 +204,12 @@ export default {
       this.page = pageNumber;
       this.getData();
     },
-    viewBot(id) {
-      this.$router.push({ name: 'marketplaceBotsView', params: { id } });
+    viewComponent(id) {
+      if (this.type === 'component') {
+        this.$router.push({ name: 'markeplaceComponentsView', params: { id } });
+      } else {
+        this.$router.push({ name: 'markeplaceServicesView', params: { id } });
+      }
     },
   },
 };
@@ -253,7 +256,7 @@ export default {
 .menu {
   a {
     font-size: 16px;
-    padding: 13px 0px 13px 0px;
+    padding: 13px 30px 13px 0px;
     color: #686b77;
     img {
       padding-right: 2px;
@@ -284,6 +287,7 @@ export default {
     }
   }
 }
+
 
 .list {
   margin-top: 10px;
