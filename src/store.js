@@ -65,7 +65,7 @@ export default new Vuex.Store({
     apps: [
       {
         text: 'apps.accounts',
-        icon: 'outline-app-24px@2x.svg',
+        icon: 'icon-gear.svg',
         url: `${appAccountsUrl}/{{ locale }}/profile`,
       },
       {
