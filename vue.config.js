@@ -1,4 +1,5 @@
 const server = require('./server/app');
+const webpack = require('webpack');
 
 module.exports = {
   devServer: {
@@ -16,4 +17,13 @@ module.exports = {
       enableInSFC: true,
     },
   },
+  
+  configureWebpack: {
+    plugins: [        
+        new webpack.DefinePlugin({            
+            'HADRON_URL': JSON.stringify(process.env.HADRON_URL),
+            'RHIZOME_URL': JSON.stringify(process.env.RHIZOME_URL)
+        })
+    ]
+  }
 };

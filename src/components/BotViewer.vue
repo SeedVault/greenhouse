@@ -185,18 +185,10 @@ export default {
   },
   methods: {
     getHadronUrl(suffix) {
-      if (window.location.hostname === 'greenhouse.seedtoken.io') {
-        return  `https://hadron.seedtoken.io${suffix}`;
-      } else {
-        return `https://hadron.botanic.io${suffix}`;
-      }
+      return HADRON_URL + suffix      
     },
     getRhizomeUrl(suffix) {
-      if (window.location.hostname === 'greenhouse.seedtoken.io') {
-        return  `https://rhizome.seedtoken.io${suffix}`;
-      } else {
-        return `https://rhizome.botanic.io${suffix}`;
-      }
+      return RHIZOME_URL + suffix
     },
     removeHadron() {
       if (typeof window.inToggle !== 'undefined') {
