@@ -3,18 +3,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-var appAccountsUrl = 'https://127.0.0.1:9000';
-var appWalletUrl = 'https://127.0.0.1:9001';
-if (process.env.NODE_ENV === 'production') {
-  if (window.location.hostname === 'greenhouse-dev.seedtoken.io') {
-    appAccountsUrl = 'https://accounts.seedtoken.io';
-    appWalletUrl = 'https://wallet-dev.seedtoken.io';
-  } else {
-    appAccountsUrl = 'https://accounts2.seedtoken.io';
-    appWalletUrl = 'https://wallet.seedtoken.io';
-  }
-}
-
 // Data source:
 // https://github.com/stefangabos/world_countries/blob/master/data/en/countries.json
 export default new Vuex.Store({
@@ -37,48 +25,66 @@ export default new Vuex.Store({
     allHttpMethods: ['GET', 'POST'],
     menu: [
       {
+        id: 1,
         text: 'app.dashboard',
         icon: 'outline-dashboard-24px@2x.svg',
         target: 'dashboard',
       },
       {
+        id: 2,
         text: 'app.marketplace',
         icon: 'outline-marketplace-24px.svg',
         target: 'marketplaceBotsList',
       },
       {
+        id: 3,
         text: 'app.my_products',
         icon: 'outline-my-products-24px.svg',
         target: 'botsList',
       },
       {
+        id: 4,
         text: 'app.my_data',
         icon: 'outline-security-24px@2x.svg',
         target: 'myData',
       },
       {
+        id: 5,
+        type: 'divider',
+        text: '',
+        icon: '',
+        target: '',
+      },
+      {
+        id: 6,
+        text: 'apps.accounts',
+        icon: 'icon-gear.svg',
+        url: `${ACCOUNTS_URL}/{{ locale }}/profile`,
+      },
+      {
+        id: 7,
+        text: 'apps.wallet',
+        icon: 'outline-app-24px@2x.svg',
+        url: `${WALLET_URL}/{{ locale }}/dashboard`,
+      },
+      {
+        id: 8,
+        type: 'divider',
+        text: '',
+        icon: '',
+        target: '',
+      },
+      {
+        id: 9,
         text: 'app.community',
         icon: 'icon-community-24px.svg',
         target: 'community',
-      },
-    ],
-    apps: [
-      {
-        text: 'apps.accounts',
-        icon: 'icon-gear.svg',
-        url: `${appAccountsUrl}/{{ locale }}/profile`,
-      },
-      {
-        text: 'apps.wallet',
-        icon: 'outline-app-24px@2x.svg',
-        url: `${appWalletUrl}/{{ locale }}/dashboard`,
       },
     ],
   },
   getters: {
     /* eslint-disable no-shadow */
     lang: state => state.lang,
-    apps: state => state.apps,
     user: state => state.user,
     userChecked: state => state.userChecked,
     menu: state => state.menu,

@@ -1,5 +1,5 @@
-const server = require('./server/app');
 const webpack = require('webpack');
+const server = require('./server/app');
 
 module.exports = {
   devServer: {
@@ -17,13 +17,16 @@ module.exports = {
       enableInSFC: true,
     },
   },
-  
+
   configureWebpack: {
-    plugins: [        
-        new webpack.DefinePlugin({            
-            'HADRON_URL': JSON.stringify(process.env.HADRON_URL),
-            'RHIZOME_URL': JSON.stringify(process.env.RHIZOME_URL)
-        })
-    ]
-  }
+    plugins: [
+      new webpack.DefinePlugin({
+        HADRON_URL: JSON.stringify(process.env.HADRON_URL),
+        RHIZOME_URL: JSON.stringify(process.env.RHIZOME_URL),
+        ACCOUNTS_URL: JSON.stringify(process.env.ACCOUNTS_URL),
+        WALLET_URL: JSON.stringify(process.env.WALLET_URL),
+        GREENHOUSE_URL: JSON.stringify(process.env.GREENHOUSE_URL),
+      }),
+    ],
+  },
 };
