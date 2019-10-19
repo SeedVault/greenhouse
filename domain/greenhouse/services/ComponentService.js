@@ -80,7 +80,7 @@ const ComponentService = {
     return await Component.find().where('_id').in(ids).exec();
   },
 
-  findPaginatedComponents: async (resultsPerPage, currentPage, username, search, componentType, status, sortBy, sortType) => {
+  findPaginatedComponents: async (resultsPerPage, currentPage, username, search, componentType, status, sortBy, sortType, category) => {
     let query = {}
     let sorting = {}
     if (username !== '' ) {
@@ -99,6 +99,9 @@ const ComponentService = {
 
     if (status !== '' ) {
       query['status'] = status;
+    }
+    if (category !== '' ) {
+      query['category'] = category;
     }
     if (sortBy !== '' ) {
       sorting[sortBy] = sortType;

@@ -6,7 +6,7 @@ const {resolve} = require("path");
 
 const marketplace = {
 
-  // GET - /api/marketplace/bots/:id
+  // GET - /api/marketplace/bots
   marketplaceBotsList: async (req, res, next) => {
     if (!req.user) {
       return res.status(403).json('Forbidden');
@@ -25,6 +25,7 @@ const marketplace = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
+      let category = req.query.category || '';
       let data = '';
       if (subscription === 'mine') {
         data = await BotService.findPaginatedBotSubscriptions(
@@ -36,6 +37,7 @@ const marketplace = {
           status,
           sortBy,
           sortType,
+          category
         );
       } else {
         data = await BotService.findPaginatedBots(
@@ -46,6 +48,7 @@ const marketplace = {
           status,
           sortBy,
           sortType,
+          category
         );
       }
       res.json(data);
@@ -108,6 +111,7 @@ const marketplace = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
+      let category = req.query.category || '';
       // 'botengine', 'service', 'channel'
       const data = await ComponentService.findPaginatedComponents(
         resultsPerPage,
@@ -118,6 +122,7 @@ const marketplace = {
         status,
         sortBy,
         sortType,
+        category,
       );
       return res.json(data);
     } catch (err) {

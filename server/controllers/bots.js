@@ -26,6 +26,7 @@ const bots = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
+      const category = '';
       const data = await BotService.findPaginatedBots(
         resultsPerPage,
         page,
@@ -34,6 +35,7 @@ const bots = {
         status,
         sortBy,
         sortType,
+        category
       );
       res.json(data);
     } catch (err) {

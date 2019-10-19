@@ -6,13 +6,18 @@
           <div class="card-body top-box">
             <form>
               <div class="form-row">
-                <div class="col-12 col-sm-6 mb-2">
+                <div class="col-12 col-sm-4 mb-2">
                   <div class="nav menu">
                   <a class="nav-link" @click="setSubscription('')" v-bind:class="{'list__filter': true, 'active': subscription === '' }" href="#">{{ $t('domain.bot_statuses.all') }}</a>
                   <a class="nav-link" @click="setSubscription('mine')" v-bind:class="{'list__filter': true, 'active': subscription === 'mine' }" href="#">{{ $t('bots.my_subscriptions') }}</a>
                   </div>
                 </div>
-                <div class="col-12 col-sm-2 mb-2">
+                <div class="col-12 col-sm-4 mb-2">
+                  <div class="form-group">
+                    <select id="category" v-model="category" @change="changeCategory" class="form-control medium-size">
+                      <option v-for="option in botCategories" :value="option.value">{{ option.text }}</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="col-12 col-sm-4 mb-2">
                   <div class="input-group">
@@ -130,6 +135,7 @@
 
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
+import { mapGetters } from 'vuex';
 import MyProducts from '@/views/MyProducts.vue';
 
 export default {
@@ -141,6 +147,7 @@ export default {
   },
   data() {
     return {
+      category: '',
       search: '',
       focusOnSearch: false,
       fetching: false,
@@ -151,6 +158,7 @@ export default {
       subscription: '',
       sortBy: 'name',
       sortType: 'asc',
+      validationErrors: [],
     };
   },
   created() {
@@ -162,6 +170,9 @@ export default {
     },
     searchBlur() {
       this.focusOnSearch = false;
+    },
+    changeCategory() {
+      this.doSearch();
     },
     doSearch() {
       this.page = 1;
@@ -177,6 +188,7 @@ export default {
           subscription: this.subscription,
           sortBy: this.sortBy,
           sortType: this.sortType,
+          category: this.category,
         },
       })
         .then((results) => {
@@ -210,6 +222,23 @@ export default {
       this.$router.push({ name: 'marketplaceBotsView', params: { id } });
     },
   },
+  computed: {
+    ...mapGetters(['allBotCategories']),
+    botCategories() {
+      const botCategoryList = [];
+      botCategoryList.push({
+        value: '',
+        text: this.$i18n.t('domain.bot.all_categories'),
+      });
+      for (let i = 0; i < this.allBotCategories.length; i++) {
+        botCategoryList.push({
+          value: this.allBotCategories[i],
+          text: this.$i18n.t(`domain.bot_categories.${this.allBotCategories[i]}`),
+        });
+      }
+      return botCategoryList;
+    },
+  }
 };
 </script>
 

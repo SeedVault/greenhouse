@@ -147,7 +147,7 @@ const BotService = {
     }
   },
 
-  findPaginatedBots: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+  findPaginatedBots: async (resultsPerPage, currentPage, username, search, status, sortBy, sortType, category) => {
     let query = {}
     let sorting = {}
     if (username !== '' ) {
@@ -158,6 +158,9 @@ const BotService = {
     }
     if (status !== '' ) {
       query['status'] = status;
+    }
+    if (category !== '' ) {
+      query['category'] = category;
     }
     if (sortBy !== '' ) {
       sorting[sortBy] = sortType;
@@ -272,7 +275,7 @@ const BotService = {
     return subscriptions;
   },
 
-  findPaginatedBotSubscriptions: async (currentUsername, resultsPerPage, currentPage, username, search, status, sortBy, sortType) => {
+  findPaginatedBotSubscriptions: async (currentUsername, resultsPerPage, currentPage, username, search, status, sortBy, sortType, category) => {
     const subscriptions = await BotService.findSubscriptionByUser(currentUsername);
     const ids = [];
     for (let i = 0; i < subscriptions.length; i++) {
@@ -289,6 +292,9 @@ const BotService = {
     }
     if (status !== '' ) {
       query['status'] = status;
+    }
+    if (category !== '' ) {
+      query['category'] = category;
     }
     if (sortBy !== '' ) {
       sorting[sortBy] = sortType;

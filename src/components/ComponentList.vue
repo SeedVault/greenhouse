@@ -6,10 +6,15 @@
           <div class="card-body top-box">
             <form>
               <div class="form-row">
-                <div class="col-12 col-sm-6 mb-2">
+                <div class="col-12 col-sm-4 mb-2">
 
                 </div>
-                <div class="col-12 col-sm-2 mb-2">
+                <div class="col-12 col-sm-4 mb-2">
+                  <div class="form-group">
+                    <select id="category" v-model="category" @change="changeCategory" class="form-control medium-size">
+                      <option v-for="option in componentCategories" :value="option.value">{{ option.text }}</option>
+                    </select>
+                  </div>
                 </div>
                 <div class="col-12 col-sm-4 mb-2">
                   <div class="input-group">
@@ -132,6 +137,7 @@
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'ComponentsList',
@@ -142,6 +148,7 @@ export default {
   props: ['type'],
   data() {
     return {
+      category: '',
       search: '',
       focusOnSearch: false,
       fetching: false,
@@ -164,6 +171,9 @@ export default {
     searchBlur() {
       this.focusOnSearch = false;
     },
+    changeCategory() {
+      this.doSearch();
+    },
     doSearch() {
       this.page = 1;
       this.getData();
@@ -183,6 +193,7 @@ export default {
           status: this.status,
           sortBy: this.sortBy,
           sortType: this.sortType,
+          category: this.category,
         },
       })
         .then((results) => {
@@ -220,6 +231,23 @@ export default {
       }
     },
   },
+    computed: {
+    ...mapGetters(['allComponentCategories']),
+    componentCategories() {
+      const componentCategoryList = [];
+      componentCategoryList.push({
+        value: '',
+        text: this.$i18n.t('domain.component.all_categories'),
+      });
+      for (let i = 0; i < this.allComponentCategories.length; i++) {
+        componentCategoryList.push({
+          value: this.allComponentCategories[i],
+          text: this.$i18n.t(`domain.component_categories.${this.allComponentCategories[i]}`),
+        });
+      }
+      return componentCategoryList;
+    },
+  }
 };
 </script>
 

@@ -31,6 +31,7 @@ const components = {
       if (sortType !== 'asc' && sortType !== 'desc') {
         sortType = 'asc';
       }
+      const category = '';
       const data = await ComponentService.findPaginatedComponents(
         resultsPerPage,
         page,
@@ -40,6 +41,7 @@ const components = {
         status,
         sortBy,
         sortType,
+        category
       );
       res.json(data);
     } catch (err) {
