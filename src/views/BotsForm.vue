@@ -500,9 +500,21 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
-      if (this.pricingModel === 'free') {
-        this.pricePerUse = '0';
-        this.pricePerMonth = '0';
+      switch(this.pricingModel) {
+        case 'free':
+          this.pricePerUse = '0';
+          this.pricePerMonth = '0';
+          break;
+        case 'pay_per_use':
+          if (this.pricePerMonth === '') {
+            this.pricePerMonth = '0';
+          }
+          break;
+        case 'pay_per_month':
+          if (this.pricePerUse === '') {
+            this.pricePerUse = '0';
+          }
+          break;
       }
       this.axios.post('/api/bots/save', {
         id: this.id,
