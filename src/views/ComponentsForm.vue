@@ -23,9 +23,16 @@
 
             <div class="row row-form" v-show="!saving && !saved">
               <div class="col-md-3">
-                <h4><template v-if="isNew">{{ $t('components.new_component') }}</template>
-                <template v-else>{{ $t('components.modify_component') }}</template>
-                </h4>
+                <template v-if="isSeedUser">
+                  <h4><template v-if="isNew">{{ $t('components.new_component') }}</template>
+                  <template v-else>{{ $t('components.modify_component') }}</template>
+                  </h4>
+                </template>
+                <template v-else>
+                  <h4><template v-if="isNew">{{ $t('services.new_service') }}</template>
+                  <template v-else>{{ $t('services.modify_service') }}</template>
+                  </h4>
+                </template>
 
               </div>
               <div class="col-md-9">
@@ -35,14 +42,16 @@
                 <form @submit.prevent="save" v-show="!saving">
 
                   <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-12" v-if="isSeedUser">
                       <input-select v-model="componentType" :options="componentTypes" id="componentType"
                         :label="$t('domain.component.component_type')"
                         icon="outline-my-products-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
+                  </div>
 
-                    <div class="form-group col-md-8">
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
                       <input-select v-model="category" :options="componentCategories" id="category"
                         :label="$t('domain.component.category')"
                         icon="outline-icon-types-24px.svg"
@@ -323,6 +332,9 @@ export default {
     },
     isNew() {
       return (this.id === '');
+    },
+    isSeedUser() {
+      return this.$store.getters.user.email === SEED_USER_EMAIL;
     },
     urlToGoBack() {
       if (this.isNew) {

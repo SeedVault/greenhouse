@@ -127,12 +127,12 @@ const marketplace = {
 
   // GET - /marketplace/services/list
   marketplaceServicesList: async (req, res, next) => {
-    return marketplace.getComponentList(req, res, next, 'channel');
+    return marketplace.getComponentList(req, res, next, 'service');
   },
 
   // GET - /marketplace/components/list
   marketplaceComponentsList: async (req, res, next) => {
-    return marketplace.getComponentList(req, res, next, ['botengine', 'service']);
+    return marketplace.getComponentList(req, res, next, ['botengine', 'channel']);
   },
 }
 

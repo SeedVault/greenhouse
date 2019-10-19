@@ -60,19 +60,19 @@ const router = new Router({
             component: () => import(/* webpackChunkName: "greenhouse" */ './views/BotsList.vue'),
           },
           {
-            path: 'components',
+            path: 'services',
             name: 'componentsList',
             component: () => import(/* webpackChunkName: "greenhouse" */ './views/ComponentsList.vue'),
           }],
         },
         {
-          path: 'products/components/form/:id?',
+          path: 'products/services/form/:id?',
           name: 'componentsForm',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/ComponentsForm.vue'),
           meta: { authenticated: true },
         },
         {
-          path: 'products/components/:id',
+          path: 'products/services/:id',
           name: 'componentsView',
           component: () => import(/* webpackChunkName: "greenhouse" */ './views/ComponentsView.vue'),
           meta: { authenticated: true },

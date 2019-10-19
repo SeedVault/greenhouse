@@ -220,7 +220,8 @@
   },
   "products": {
     "bots": "Bots",
-    "components": "Componentes"
+    "components": "Componentes",
+    "services": "Servicios"
   },
   "components": {
     "new_component": "Nuevo componente",
@@ -228,6 +229,13 @@
     "updated": "Actualizado",
     "delete_this_component": "¿Eliminar este componente?",
     "there_are_no_components": "No hay componentes"
+  },
+  "services": {
+    "new_service": "Nuevo servicio",
+    "modify_service": "Modificar servicio",
+    "updated": "Actualizado",
+    "delete_this_service": "¿Eliminar este servicio?",
+    "there_are_no_services": "No hay servicios"
   },
   "properties": {
     "new_property": "Nueva propiedad",

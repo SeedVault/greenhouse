@@ -16,8 +16,8 @@
                     </li>
                     <li class="nav-item">
                       <router-link class="nav-link" :to="{ name: 'componentsList' }">
-                        <img :src="require('@/assets/icons/outline-component-24px.svg')" />
-                        {{ $t('products.components') }}
+                        <img :src="require('@/assets/icons/icon-service-24px.svg')" />
+                        {{ $t('products.services') }}
                       </router-link>
                     </li>
                   </ul>

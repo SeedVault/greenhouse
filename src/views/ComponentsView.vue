@@ -359,10 +359,17 @@ export default {
       const { id } = this.$route.params;
       this.$router.push({ name: 'componentsForm', params: { id } });
     },
+    isSeedUser() {
+      return this.$store.getters.user.email === SEED_USER_EMAIL;
+    },
     confirmDelete() {
       const { id } = this.$route.params;
+      let deleteWarning = 'services.delete_this_service';
+      if (this.isSeedUser()) {
+        deleteWarning = 'components.delete_this_component';
+      }
       this.$bvModal.msgBoxConfirm(' ', {
-        title: this.$i18n.t('components.delete_this_component'),
+        title: this.$i18n.t(deleteWarning),
         size: 'md',
         buttonSize: 'md',
         okVariant: 'danger',
