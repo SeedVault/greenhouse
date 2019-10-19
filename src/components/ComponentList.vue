@@ -65,7 +65,12 @@
 
                 <div class="list" v-show="!fetching">
                   <div class="list__empty" v-show="!fetching & components.length === 0">
-                    {{ $t('components.there_are_no_components') }}
+                    <template v-if="type === 'service'">
+                      {{ $t('services.there_are_no_services') }}
+                    </template>
+                    <template v-else>
+                      {{ $t('components.there_are_no_components') }}
+                    </template>
                   </div>
                   <div v-for="(component, index) in components" :key="index">
                     <div class="row">
@@ -78,6 +83,9 @@
                             <div class="list__misc clearfix">
                               <div class="list__rating">
                               <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                              </div>
+                              <div class="list__category">{{ $t("common.by") }}
+                              {{ component.username }}
                               </div>
                               <div class="list__category">{{ $t("domain.component.category") }}:
                               {{ $t(`domain.component_categories.${component.category}`) }}

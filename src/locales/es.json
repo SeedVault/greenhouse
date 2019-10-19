@@ -175,7 +175,8 @@
     "choose_from_list": "Elegir de la lista",
     "free": "Gratis",
     "get": "Usar",
-    "subscription_type": "Tipo de suscripción"
+    "subscription_type": "Tipo de suscripción",
+    "by": "por"
   },
   "app": {
     "dashboard": "Inicio",

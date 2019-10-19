@@ -84,6 +84,7 @@
                               <div class="list__rating">
                                 <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
                               </div>
+                              <div class="list__category">{{ $t("common.by") }} {{ bot.username }}</div>
                               <div class="list__category">{{ $t("domain.bot.category") }}:
                               {{ $t(`domain.bot_categories.${bot.category}`) }}
                               </div>

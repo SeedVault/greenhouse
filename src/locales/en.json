@@ -175,7 +175,8 @@
     "choose_from_list": "Choose from list",
     "free": "Free",
     "get": "Get",
-    "subscription_type": "Subscription type"
+    "subscription_type": "Subscription type",
+    "by": "by"
   },
   "app": {
     "dashboard": "Dashboard",
