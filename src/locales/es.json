@@ -263,7 +263,8 @@
     "there_are_no_transactions": "No hay transacciones",
     "unknown": "(desconocido)",
     "withdraw": "Retiro",
-    "deposit": "Depósito"
+    "deposit": "Depósito",
+    "view_all_transactions": "Ver todas las transacciones"
   },
   "products": {
     "bots": "Bots",

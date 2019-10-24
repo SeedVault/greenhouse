@@ -19,7 +19,7 @@
     data-bot-talks-first="true"
     data-bot-subtitle=""
     data-bot-voice-recognition-visible="false"
-    data-bot-title="SEED Bot"
+    :data-bot-title="name"
     :data-bot-external-css="getHadronUrl('https://hadron.botanic.io/sprout/sequoia_b.css')"
     :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
     data-bot-load-font="Montserrat:300,400,600"
@@ -117,12 +117,14 @@ export default {
     data-bot-talks-first="true"
     data-bot-subtitle=""
     data-bot-voice-recognition-visible="false"
-    data-bot-title="SEED Bot"
+    data-bot-title="${this.name}"
     data-bot-external-css="${dataBotExternalCss}"
     data-bot-launcher-external-css="${dataBotLauncherExternalCss}"
     data-bot-load-font="Montserrat:300,400,600"
     data-bot-bbot-uri="${dataBotBbotUri}"
     data-bot-publisher-token="${this.token}"
+    data-bot-uses-3d-avatar="true"
+    data-bot-uses-3d-text-panel="false"
 ></span>
 <script type="text/javascript" src="${launcherBundleJs}"><\/script>`;
     }

@@ -26,7 +26,7 @@
                 data-bot-talks-first="true"
                 data-bot-subtitle=""
                 data-bot-voice-recognition-visible="false"
-                data-bot-title="SEED Bot"
+                :data-bot-title="name"
                 :data-bot-external-css="getHadronUrl('/sprout/sequoia_b.css')"
                 :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
                 data-bot-load-font="Montserrat:300,400,600"
@@ -35,6 +35,8 @@
                 data-bot-auto-opens="true"
                 data-bot-remembers-state="false"
                 :data-bot-publisher-token="token"
+                data-bot-uses-3d-avatar="true"
+                data-bot-uses-3d-text-panel="false"
               ></span>
             </template>
 
