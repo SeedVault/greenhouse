@@ -8,6 +8,7 @@
         :key="_id"
         :is="property.inputType"
         :label="property.name"
+        :tooltip="property.tooltip"
         :id="inputName(property._id)"
         :name="inputName(property._id)"
         :value="propertiesData[inputName(property._id)]"

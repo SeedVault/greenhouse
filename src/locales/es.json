@@ -114,6 +114,8 @@
       "options_placeholder": "Ingresa las opciones de la lista separadas por coma (ej: queso, vino tino, manzana)",
       "value": "Valor",
       "value_placeholder": "Ingresa el valor",
+      "tooltip": "Tooltip",
+      "tooltip_placeholder": "Tooltip opcional",
       "validation": {
         "property_not_found": "Propiedad no hallada"
       }

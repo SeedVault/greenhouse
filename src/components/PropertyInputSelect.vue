@@ -2,6 +2,7 @@
   <div class="form-group">
     <label :for="id">{{ label }}</label>
     <select
+      :title="tooltip"
       :id="id"
       :name="name"
       :value="value"
@@ -18,6 +19,6 @@
 <script>
 export default {
   name: 'PropertyInputSelect',
-  props: ['id', 'name', 'label', 'value', 'options', 'validationErrors'],
+  props: ['id', 'name', 'label', 'value', 'options', 'tooltip', 'validationErrors'],
 };
 </script>

@@ -199,6 +199,7 @@ const components = {
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
           value: req.body.propertyValue,
+          tooltip: req.body.propertyTooltip,
         };
         await ComponentService.addComponentProperty(req.user.username, id, p, propertyGroup);
       } else {
@@ -210,6 +211,7 @@ const components = {
           options: req.body.propertyOptions,
           required: req.body.propertyRequired,
           value: req.body.propertyValue,
+          tooltip: req.body.propertyTooltip,
         };
         await ComponentService.updateComponentProperty(req.user.username, id, p, propertyGroup);
       }

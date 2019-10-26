@@ -202,6 +202,7 @@ const ComponentService = {
     p.options = property.options;
     p.required = property.required;
     p.value = property.value;
+    p.tooltip = property.tooltip;
     try {
       await component.save();
     } catch (err) {

@@ -47,6 +47,11 @@ const PropertySchema = mongoose.Schema({
     type: String,
     trim: true
   },
+  tooltip: {
+    type: String,
+    trim: true,
+    default: ''
+  },
 });
 
 

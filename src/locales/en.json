@@ -114,6 +114,8 @@
       "options_placeholder": "Enter a comma separated list of options (e.g: cheese, red wine, apple)",
       "value": "Value",
       "value_placeholder": "Enter the value",
+      "tooltip": "Tooltip",
+      "tooltip_placeholder": "Optional tooltip",
       "validation": {
         "property_not_found": "Property not found"
       }

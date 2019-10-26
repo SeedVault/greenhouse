@@ -236,6 +236,11 @@
                               icon="outline-icon-label-24px.svg"
                               :validationErrors="validationErrors"></input-text>
                           </div>
+                          <div class="form-group col-md-12">
+                            <input-textarea id="tooltip" v-model="propertyTooltip" :label="$t('domain.property.tooltip')" :rows="5"
+                            :placeholder="$t('domain.property.tooltip_placeholder')" icon="outline-help_outline-24px@2x.svg"
+                              :validationErrors="validationErrors"></input-textarea>
+                          </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-4 mt-2">
@@ -318,7 +323,7 @@ export default {
       propertyOptions: '',
       propertyRequired: 'yes',
       propertyValue: '',
-
+      propertyTooltip: '',
       drag: false,
     };
   },
@@ -431,6 +436,7 @@ export default {
       this.propertyOptions = '';
       this.propertyRequired = 'yes';
       this.propertyValue = '';
+      this.propertyTooltip = '';
       this.showPropertyForm = true;
     },
     modifyProperty(p, propertyGroup) {
@@ -444,6 +450,7 @@ export default {
       this.propertyOptions = p.options;
       this.propertyRequired = p.required;
       this.propertyValue = p.value;
+      this.propertyTooltip = p.tooltip;
       this.showPropertyForm = true;
     },
     saveProperty() {
@@ -460,6 +467,7 @@ export default {
         propertyOptions: this.propertyOptions,
         propertyRequired: this.propertyRequired,
         propertyValue: this.propertyValue,
+        propertyTooltip: this.propertyTooltip,
       })
         .then((result) => {
           this.saving = false;
