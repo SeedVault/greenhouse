@@ -231,12 +231,12 @@ describe('Bots', () => {
     await createBot('bot two', components);
     await createBot('bot three', components);
     await createBot('bot four', components);
-    const resultsPageOne = await botService.findPaginatedBots(3, 1, '', '', '', 'name', 'asc');
+    const resultsPageOne = await botService.findPaginatedBots(3, 1, '', '', '', 'name', 'asc', '');
     expect(resultsPageOne.results.length).toBe(3);
     expect(resultsPageOne.resultsCount).toBe(4);
     expect(resultsPageOne.currentPage).toBe(1);
     expect(resultsPageOne.pagesCount).toBe(2);
-    const resultsPageTwo = await botService.findPaginatedBots(3, 2, '', '', '', 'name', 'asc');
+    const resultsPageTwo = await botService.findPaginatedBots(3, 2, '', '', '', 'name', 'asc', '');
     expect(resultsPageTwo.results.length).toBe(1);
     expect(resultsPageTwo.resultsCount).toBe(4);
     expect(resultsPageTwo.currentPage).toBe(2);
@@ -252,13 +252,13 @@ describe('Bots', () => {
     four.username = 'janedoe';
     four.status = 'disabled';
     await botService.updateBot('johndoe', four);
-    let rows = await botService.findPaginatedBots(3, 1, 'johndoe', '', '', 'name', 'asc');
+    let rows = await botService.findPaginatedBots(3, 1, 'johndoe', '', '', 'name', 'asc', '');
     expect(rows.results.length).toBe(3);
-    rows = await botService.findPaginatedBots(3, 1, 'janedoe', '', 'disabled', 'name', 'asc');
+    rows = await botService.findPaginatedBots(3, 1, 'janedoe', '', 'disabled', 'name', 'asc', '');
     expect(rows.results.length).toBe(1);
-    rows = await botService.findPaginatedBots(3, 1, 'mike', '', '', 'name', 'asc');
+    rows = await botService.findPaginatedBots(3, 1, 'mike', '', '', 'name', 'asc', '');
     expect(rows.results.length).toBe(0);
-    rows = await botService.findPaginatedBots(3, 1, 'johndoe', 'three', '', 'name', 'asc');
+    rows = await botService.findPaginatedBots(3, 1, 'johndoe', 'three', '', 'name', 'asc', '');
     expect(rows.results.length).toBe(1);
   });
 
@@ -337,7 +337,7 @@ describe('Bot subscription', () => {
     await createBot('bot three', components);
     await botService.subscribe('janedoe', botOne._id, 'free');
     await botService.subscribe('janedoe', botTwo._id, 'free');
-    const rows = await botService.findPaginatedBotSubscriptions('janedoe', 3, 1, '', '', '', 'name', 'asc');
+    const rows = await botService.findPaginatedBotSubscriptions('janedoe', 3, 1, '', '', '', 'name', 'asc', '');
     expect(rows.resultsCount).toBe(2);
   });
 });
