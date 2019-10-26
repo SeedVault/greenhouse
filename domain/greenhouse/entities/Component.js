@@ -109,6 +109,11 @@ const ComponentSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  features: {
+    type: String,
+    required: [true, 'validation.required'],
+    trim: true
+  },
   license: {
     type: String,
     required: [true, 'validation.required'],

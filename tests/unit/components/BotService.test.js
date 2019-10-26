@@ -14,6 +14,7 @@ async function createComponent(name, componentType) {
     'general',
     name,
     `Description of ${name}`,
+    `Features of ${name}`,
     'license here',
     `${fn}`,
     `${fn}Fn`,

@@ -62,6 +62,7 @@ const components = {
           req.body.category,
           req.body.name,
           req.body.description,
+          req.body.features,
           req.body.license,
           req.body.key,
           req.body.functionName,
@@ -81,6 +82,7 @@ const components = {
         component.category = req.body.category;
         component.name = req.body.name;
         component.description = req.body.description;
+        component.features = req.body.features;
         component.license = req.body.license;
         component.key = req.body.key,
         component.functionName = req.body.functionName;

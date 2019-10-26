@@ -72,6 +72,9 @@
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'description' }]">
                       <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.component.description") }}</a>
                     </li>
+                    <li v-bind:class="['nav-item', { 'active': selectedTab === 'features' }]">
+                      <a class="nav-link" @click="selectedTab='features'">{{ $t("domain.component.features") }}</a>
+                    </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'license' }]">
                       <a class="nav-link" @click="selectedTab='license'">{{ $t("domain.component.license") }}</a>
                     </li>
@@ -95,6 +98,11 @@
 
                     <h2 class="view__subtitle">{{ $t("domain.component.status") }}</h2>
                     <p>{{ $t(`domain.component_statuses.${status}`) }}</p>
+                  </div>
+
+                  <div v-show="selectedTab === 'features'">
+                    <h2 class="view__subtitle"></h2>
+                    <p class="nl2br">{{ features }}</p>
                   </div>
 
                   <div v-show="selectedTab === 'license'">
@@ -280,6 +288,7 @@ export default {
       category: 'general',
       name: '',
       description: '',
+      features: '',
       license: '',
       key: '',
       functionName: '',
@@ -326,6 +335,7 @@ export default {
           this.category = result.data.category;
           this.name = result.data.name;
           this.description = result.data.description;
+          this.features = result.data.features;
           this.license = result.data.license;
           this.key = result.data.key;
           this.functionName = result.data.functionName;

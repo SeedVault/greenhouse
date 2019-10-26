@@ -31,6 +31,8 @@
       "name_placeholder": "Nombre del component",
       "description": "Descripción",
       "description_placeholder": "Breve descripción del componente",
+      "features": "Características",
+      "features_placeholder": "Características",
       "license": "Licencia",
       "license_placeholder": "Texto de la licencia",
       "key": "Nombre del componente para serialización",

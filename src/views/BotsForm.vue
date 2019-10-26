@@ -79,7 +79,7 @@
                   <div class="form-row">
                     <div class="form-group col-md-12">
                       <input-textarea v-model="features" id="features" :label="$t('domain.bot.features')" :rows="5"
-                        :placeholder="$t('domain.bot.description_placeholder')" icon="outline-icon-description-24px.svg"
+                        :placeholder="$t('domain.bot.features_placeholder')" icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>

@@ -28,13 +28,14 @@ class PropertyNotFoundError extends ValidationError {
 
 const ComponentService = {
 
-  createComponent: async (componentType, category, name, description, license, key, functionName, url,
+  createComponent: async (componentType, category, name, description, features, license, key, functionName, url,
     httpMethod, timeout, pricingModel, pricePerUse, pricePerMonth, status, username) => {
       let component = new Component({
         componentType,
         category,
         name,
         description,
+        features,
         license,
         key,
         functionName,
