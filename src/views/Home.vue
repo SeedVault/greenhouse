@@ -19,6 +19,10 @@
               class="d-none d-md-inline ml-3"/>
             </router-link>
           </div>
+          <div class="disclaimer">
+            <div class="disclaimer__title">{{ $t('home.disclaimer') }}</div>
+            <p class="disclaimer__text">{{ $t('home.disclaimer_text') }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -54,5 +58,21 @@ h1 {
 .access-button {
   font-size: 16px;
   font-weight: 400;
+}
+
+.disclaimer {
+  margin-top: 5rem !important;
+  font-size: 11px;
+  color: #323743;
+  text-align: justify;
+
+  &__title {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  &__text {
+    width: 80%;
+  }
 }
 </style>

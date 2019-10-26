@@ -247,7 +247,9 @@
   "home": {
     "title": "Share, Discover, Earn",
     "subheadline": "Greenhouse makes it fast and easy to use awesome bots while assuring end users' data and privacy are protected",
-    "call_to_action": "Enter the marketplace"
+    "call_to_action": "Enter the marketplace",
+    "disclaimer": "Disclaimer",
+    "disclaimer_text": "You are participating in a beta test of SEED’s Greenhouse.  By doing so you agree that SEED is not responsible for any lost, damaged, misdirected or other impacts on your data and/or for any damages of any kind caused by any third party data. During this beta test, SEED tokens have no cash or other value and are for experimental purposes only."
   },
   "legal": {
     "tos": {

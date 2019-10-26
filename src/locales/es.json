@@ -247,7 +247,9 @@
   "home": {
     "title": "Comparte, Descubre, Gana dinero",
     "subheadline": "Greenhouse hace que sea rápido y fácil utilizar asombrosos bots mientras asegura que los datos y la privacidad de los usuarios finales estén protegidos",
-    "call_to_action": "Ingresa al marketplace"
+    "call_to_action": "Ingresa al marketplace",
+    "disclaimer": "Aviso legal",
+    "disclaimer_text": "Estás participan en una prueba beta de SEED's Greenhouse. Al hacerlo, aceptas que SEED no se hace responsable por ninguna pérdida, daño, malversación u otro impacto sobre tus datos ni por cualquier daño de cualquier tipo causado por datos de terceros. Durante esta prueba beta, los tokens SEED no tienen dinero en efectivo ni ningún otro valor y solo se usan para fines experimentales."
   },
   "legal": {
     "tos": {
