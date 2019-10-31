@@ -261,33 +261,6 @@ ComponentSchema.virtual('hasPublisherProps').get(function () {
   return false;
 });
 
-/* ComponentSchema.post('save', async function(doc) {
-  return;
-  await DotService.deleteOne({componentId: doc._id});
-  let dotservice = new DotService({ componentId: doc._id });
-  dotservice.title = doc.name;
-  dotservice.serviceId = doc.key;
-  dotservice.category = doc.category;
-  dotservice.function_name = doc.functionName;
-  dotservice.cost = doc.pricePerUse;
-  dotservice.headers = new Map();
-  dotservice.predefined_vars = new Map();
-  dotservice.mapped_vars = new Map();
-  for (let i = 0; i < doc.headers.length; i++) {
-    dotservice.headers.set(doc.headers[i].name, doc.headers[i].value);
-  }
-  for (let i = 0; i < doc.predefinedVars.length; i++) {
-    dotservice.predefined_vars.set(doc.predefinedVars[i].name, doc.predefinedVars[i].value);
-  }
-  for (let i = 0; i < doc.mappedVars.length; i++) {
-    dotservice.mapped_vars.set(doc.mappedVars[i].name, doc.mappedVars[i].value);
-  }
-  dotservice.pricingModel = doc.pricingModel;
-  dotservice.perUseCost = doc.pricePerUse;
-  dotservice.monthlyCost = doc.pricePerMonth;
-  await dotservice.save();
-}); */
-
 module.exports = {
   PropertySchema,
   Component: mongoose.model('Components', ComponentSchema)

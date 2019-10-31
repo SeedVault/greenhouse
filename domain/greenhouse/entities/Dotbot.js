@@ -47,6 +47,11 @@ const DotServiceSchema = mongoose.Schema({
     required: [true, 'validation.required'],
     trim: true
   },
+  subscriptionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, 'validation.required'],
+    trim: true,
+  },
   subscriptionType: {
     type: String,
     required: [true, 'validation.required'],
@@ -71,85 +76,6 @@ const DotServiceSchema = mongoose.Schema({
   mapped_vars: {
     type: [String]
   }
-  /* componentId: {
-    type: String,
-    required: [true, 'validation.required'],
-    index: true,
-    unique: true,
-    trim: true
-  },
-  title: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true
-  },
-  serviceId: {
-    type: String,
-    required: [true, 'validation.required'],
-    unique: true,
-    trim: true
-  },
-  category: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-  },
-  function_name: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true
-  },
-  method: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-    default: 'get'
-  },
-  timeout: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-    default: 3
-  },
-  headers: {
-    type: Map,
-    of: String
-  },
-  predefined_vars: {
-    type: Map,
-    of: String
-  },
-  mapped_vars: {
-    type: Map,
-    of: String
-  },
-  pricingModel: {
-    type: String,
-    required: [true, 'validation.required'],
-    enum:  {
-      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
-      message: 'validation.option'
-    },
-    trim: true,
-    index: true,
-    default: 'free'
-  },
-  perUseCost: {
-    type: Number,
-    min: [0, 'validation.option'],
-    max: [9999, 'validation.option'],
-    required: [true, 'validation.required'],
-    default: 0,
-    index: true
-  },
-  monthlyCost: {
-    type: Number,
-    min: [0, 'validation.option'],
-    max: [9999, 'validation.option'],
-    required: [true, 'validation.required'],
-    default: 0,
-    index: true
-  }, */
 });
 
 
@@ -287,69 +213,6 @@ const DotbotSchema = mongoose.Schema({
     type: Date,
     required: [true, 'validation.required'],
   }
-  /*botId: {
-    type: String,
-    required: [true, 'validation.required'],
-    index: true,
-    unique: true,
-    trim: true
-  },
-
-
-  ownerId: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-  },
-  description: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true
-  },
-  status: {
-    type: String,
-    required: [true, 'validation.required'],
-    trim: true,
-    default: 'enabled'
-  },
-  pricingModel: {
-    type: String,
-    required: [true, 'validation.required'],
-    enum:  {
-      values: ['free', 'pay_per_use', 'pay_per_month', 'pay_per_use_or_month'],
-      message: 'validation.option'
-    },
-    trim: true,
-    index: true,
-    default: 'free'
-  },
-  perUseCost: {
-    type: Number,
-    min: [0, 'validation.option'],
-    max: [9999, 'validation.option'],
-    required: [true, 'validation.required'],
-    default: 0,
-    index: true
-  },
-  monthlyCost: {
-    type: Number,
-    min: [0, 'validation.option'],
-    max: [9999, 'validation.option'],
-    required: [true, 'validation.required'],
-    default: 0,
-    index: true
-  },
-  chatbotEngine: {
-    type: Map,
-    of: String
-  },
-  channels: {
-    type: Map,
-    of: { type: Map, of: String },
-  },
-  remote_apis: {
-    type: [ ServicePropSchema ],
-  } */
 });
 
 module.exports = {
