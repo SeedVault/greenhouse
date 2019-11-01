@@ -2,7 +2,6 @@
   <div class="form-group">
     <label :for="id">{{ label }} <property-tooltip :tooltip="tooltip"></property-tooltip></label>
     <select
-      :title="tooltip"
       :id="id"
       :name="name"
       :value="value"
