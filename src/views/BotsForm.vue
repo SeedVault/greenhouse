@@ -982,14 +982,14 @@ export default {
           text: this.$i18n.t('domain.pricing_models.free')
         });
       } else {
-        if (this.componentPricingModel === 'pay_per_use' || this.componentPricingModel === 'pay_per_use_or_month') {
+        if (this.componentPricingModel === 'pay_per_month' || this.componentPricingModel === 'pay_per_use_or_month') {
           pricingOptionsList.push({
             value: 'month',
             text: this.$i18n.t(`domain.component.price_per_month`) +
             `(${this.componentPricePerMonth} SEED)`
           });
         }
-        if (this.componentPricingModel === 'pay_per_month' || this.componentPricingModel === 'pay_per_use_or_month') {
+        if (this.componentPricingModel === 'pay_per_use' || this.componentPricingModel === 'pay_per_use_or_month') {
           pricingOptionsList.push({
             value: 'use',
             text: this.$i18n.t('domain.component.price_per_use') +
