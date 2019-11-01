@@ -27,6 +27,7 @@ module.exports = {
         WALLET_URL: JSON.stringify(process.env.WALLET_URL),
         GREENHOUSE_URL: JSON.stringify(process.env.GREENHOUSE_URL),
         SEED_USER_EMAIL: JSON.stringify(process.env.SEED_USER_EMAIL),
+        PARITY_URL_EXPLORER: JSON.stringify(process.env.PARITY_URL_EXPLORER),
       }),
     ],
   },

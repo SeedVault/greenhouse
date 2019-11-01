@@ -18,7 +18,7 @@ async function main() {
     try {
       await botSubscription.save();
     } catch (err) {
-      console.log('* Unable to export bot subcription');
+      console.log('* Unable to export bot subscription');
       console.log();
       console.log('DATA:', botSubscription);
       console.log();
