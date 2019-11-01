@@ -85,7 +85,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="license" id="license" :label="$t('domain.component.license')" :rows="5"
+                      <input-textarea v-model="license" id="license" :label="$t('domain.component.license')" :tooltip="$t('domain.component.license_tooltip')" :rows="5"
                         :placeholder="$t('domain.component.license_placeholder')" icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-textarea>
                     </div>
@@ -124,6 +124,7 @@
                   <div class="form-row">
                     <div class="form-group col-md-4">
                       <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
+                        :tooltip="$t('domain.component.pricing_model_tooltip')"
                         :label="$t('domain.component.pricing_model')"
                         icon="outline-icon-types-24px.svg"
                         :validationErrors="validationErrors"></input-select>

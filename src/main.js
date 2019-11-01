@@ -2,6 +2,7 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import 'seed-theme/src/styles/seed.scss';
 import Icon from 'seed-theme/src/components/Icon.vue';
+import HelpTooltip from 'seed-theme/src/components/HelpTooltip.vue';
 import InputText from 'seed-theme/src/components/InputText.vue';
 import InputTextarea from 'seed-theme/src/components/InputTextarea.vue';
 import InputPassword from 'seed-theme/src/components/InputPassword.vue';
@@ -23,6 +24,7 @@ import i18n from './i18n';
 
 // Register global components
 Vue.component('icon', Icon);
+Vue.component('help-tooltip', HelpTooltip);
 Vue.component('input-select', InputSelect);
 Vue.component('icon-inside-input', IconInsideInput);
 Vue.component('icon-inside-textarea', IconInsideTextarea);

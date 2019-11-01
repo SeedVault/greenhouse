@@ -86,7 +86,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="license" id="license" :label="$t('domain.bot.license')" :rows="5"
+                      <input-textarea v-model="license" id="license" :label="$t('domain.bot.license')" :tooltip="$t('domain.bot.license_tooltip')" :rows="5"
                         :placeholder="$t('domain.bot.license_placeholder')" icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-textarea>
                     </div>
@@ -94,7 +94,7 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
+                      <input-select v-model="pricingModel" :tooltip="$t('domain.bot.pricing_model_tooltip')" :options="pricingModels" id="pricingModel"
                         :label="$t('domain.bot.pricing_model')"
                         icon="outline-icon-types-24px.svg"
                         :validationErrors="validationErrors"></input-select>
@@ -127,7 +127,7 @@
                   <div class="form-row">
                     <div class="form-group col-md-6">
                       <a name="botengine"></a>
-                      <label><h5>{{ $t('domain.bot.bot_engine') }}</h5></label>
+                      <label><h5>{{ $t('domain.bot.bot_engine') }} <help-tooltip :tooltip="$t('domain.bot.bot_engine_tooltip')"></help-tooltip></h5></label>
                       <template v-if="botengine.component">
                         <ul class="list-group">
                           <li class="list-group-item">
@@ -153,7 +153,7 @@
                   <div class="form-row">
                     <a name="service"></a>
                     <div class="form-group col-md-6">
-                      <label><h5>{{ $t('domain.bot.services') }}</h5></label>
+                      <label><h5>{{ $t('domain.bot.services') }} <help-tooltip :tooltip="$t('domain.bot.services_tooltip')"></help-tooltip></h5></label>
                       <template v-if="services.length > 0">
                         ​<ul class="list-group">
                           <li v-for="service in services" class="list-group-item">
@@ -179,7 +179,7 @@
                   <div class="form-row">
                     <a name="channel"></a>
                     <div class="form-group col-md-6">
-                      <label><h5>{{ $t('domain.bot.channels') }}</h5></label>
+                      <label><h5>{{ $t('domain.bot.channels') }} <help-tooltip :tooltip="$t('domain.bot.channels_tooltip')"></help-tooltip></h5></label>
                       <template v-if="channels.length > 0">
                         <ul class="list-group">
                           <li v-for="channel in channels" class="list-group-item">
@@ -370,7 +370,6 @@ import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
 import PropertyForm from '@/components/PropertyForm.vue';
-
 export default {
   name: 'BotsForm',
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div class="form-group">
-    <label :for="id">{{ label }} <property-tooltip :tooltip="tooltip"></property-tooltip></label>
+    <label :for="id">{{ label }} <help-tooltip :tooltip="tooltip"></help-tooltip></label>
     <input type="text"
       :id="id"
       :name="name"
@@ -14,12 +14,8 @@
 
 
 <script>
-import PropertyTooltip from '@/components/PropertyTooltip.vue';
 export default {
   name: 'PropertyInputText',
-  components: {
-    PropertyTooltip,
-  },
   props: ['id', 'name', 'label', 'value', 'tooltip', 'validationErrors'],
 };
 </script>
