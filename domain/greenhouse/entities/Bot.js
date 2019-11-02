@@ -337,11 +337,12 @@ BotSubscriptionSchema.post('save', async function(doc) {
       service.method = component.httpMethod.toLowerCase();
       service.timeout = component.timeout;
       service.function_name = component.functionName;
-      for (let k = 0; k < doc.services.length; k++) {
+      service.subscriptionId = bot.services[j]._id;
+      /* for (let k = 0; k < doc.services.length; k++) {
         if (doc.services[k].component.toString() === bot.services[j].component.toString()) {
           service.subscriptionId = doc.services[k]._id;
         }
-      }
+      } */
       switch (bot.services[j].subscriptionType) {
         case 'free':
           service.subscriptionType = 'free';
