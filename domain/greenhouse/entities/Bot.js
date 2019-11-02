@@ -223,25 +223,27 @@ BotSchema.post('save', async function(doc) {
   // chatbot engine
   dotbot.chatbotEngine = [];
   let component = await Component.findById(doc.botEngine.component);
-  for (let i = 0; i < component.properties.length; i++) {
-    let propertyId = `_${component.properties[i]._id}`;
-    let value = '';
-    switch (component.properties[i].valueType) {
-      case 'fixed':
-        value = component.properties[i].value;
-        break;
-      case 'developer':
-        if (doc.botEngine.values.has(propertyId)) {
-          value = doc.botEngine.values.get(propertyId);
-        }
-        break;
-      /*case 'publisher':
-        if (doc.values.has(propertyId)) {
-          value = doc.values.get(propertyId);
-        }
-        break; */
+  if (component != null) {
+    for (let i = 0; i < component.properties.length; i++) {
+      let propertyId = `_${component.properties[i]._id}`;
+      let value = '';
+      switch (component.properties[i].valueType) {
+        case 'fixed':
+          value = component.properties[i].value;
+          break;
+        case 'developer':
+          if (doc.botEngine.values.has(propertyId)) {
+            value = doc.botEngine.values.get(propertyId);
+          }
+          break;
+        /*case 'publisher':
+          if (doc.values.has(propertyId)) {
+            value = doc.values.get(propertyId);
+          }
+          break; */
+      }
+      dotbot.chatbotEngine.set(component.properties[i].name, value);
     }
-    dotbot.chatbotEngine.set(component.properties[i].name, value);
   }
   switch (doc.pricingModel) {
     case 'free':
