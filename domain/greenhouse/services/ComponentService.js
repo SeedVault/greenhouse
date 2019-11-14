@@ -131,7 +131,7 @@ const ComponentService = {
     if (err.errors) {
       let keys = Object.keys(err.errors);
       let values = Object.values(err.errors);
-      for (let i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys.length; i += 1) {
         if (keys[i].startsWith('properties.')) {
           let parts = keys[i].split('.');
           err.errors[keys[i]] = parts[2];
@@ -222,7 +222,7 @@ const ComponentService = {
   reorderComponentProperties: async (username, id, propertyIds, propertyGroup) => {
     let component = await ComponentService.findMyComponentById(username, id);
     let p = new Array(propertyIds.length);
-    for (let i = 0; i < propertyIds.length; i++) {
+    for (let i = 0; i < propertyIds.length; i += 1) {
       p[i] = await ComponentService.findProperty(component, propertyIds[i], propertyGroup);
     }
     switch (propertyGroup) {

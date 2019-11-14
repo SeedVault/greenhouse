@@ -375,7 +375,7 @@ export default {
       this.$router.push({ name: 'componentsForm', params: { id } });
     },
     isSeedUser() {
-      return this.$store.getters.user.email === SEED_USER_EMAIL;
+      return this.$store.getters.user.email === process.env.VUE_APP_SEED_USER_EMAIL;
     },
     confirmDelete() {
       const { id } = this.$route.params;
@@ -513,7 +513,7 @@ export default {
       this.axios.post('/api/components/property/delete', {
         id,
         propertyId,
-        propertyGroup
+        propertyGroup,
       })
         .then((result) => {
           this.getData();
@@ -528,24 +528,24 @@ export default {
     },
     reorderProperties(propertyGroup) {
       const newOrder = [];
-      switch(propertyGroup) {
+      switch (propertyGroup) {
         case 'properties':
-          for (let i = 0; i < this.properties.length; i++) {
+          for (let i = 0; i < this.properties.length; i += 1) {
             newOrder.push(this.properties[i]._id);
           }
           break;
         case 'headers':
-          for (let i = 0; i < this.headers.length; i++) {
+          for (let i = 0; i < this.headers.length; i += 1) {
             newOrder.push(this.headers[i]._id);
           }
           break;
         case 'predefinedVars':
-          for (let i = 0; i < this.predefinedVars.length; i++) {
+          for (let i = 0; i < this.predefinedVars.length; i += 1) {
             newOrder.push(this.predefinedVars[i]._id);
           }
           break;
         case 'mappedVars':
-          for (let i = 0; i < this.mappedVars.length; i++) {
+          for (let i = 0; i < this.mappedVars.length; i += 1) {
             newOrder.push(this.mappedVars[i]._id);
           }
           break;
@@ -573,7 +573,7 @@ export default {
     ...mapGetters(['allPropertyValueTypes', 'allPropertyInputTypes']),
     propertyValueTypes() {
       const inputTypeList = [];
-      for (let i = 0; i < this.allPropertyValueTypes.length; i++) {
+      for (let i = 0; i < this.allPropertyValueTypes.length; i += 1) {
         inputTypeList.push({
           value: this.allPropertyValueTypes[i],
           text: this.$i18n.t(`domain.property_value_types.${this.allPropertyValueTypes[i]}`),
@@ -583,7 +583,7 @@ export default {
     },
     propertyInputTypes() {
       const inputTypeList = [];
-      for (let i = 0; i < this.allPropertyInputTypes.length; i++) {
+      for (let i = 0; i < this.allPropertyInputTypes.length; i += 1) {
         inputTypeList.push({
           value: this.allPropertyInputTypes[i],
           text: this.$i18n.t(`domain.property_input_types.${this.allPropertyInputTypes[i]}`),
@@ -600,9 +600,8 @@ export default {
     propertiesCount() {
       if (this.componentType === 'service') {
         return this.headers.length + this.predefinedVars.length + this.mappedVars.length;
-      } else {
-        return this.properties.length;
       }
+      return this.properties.length;
     },
     dragOptions() {
       return {

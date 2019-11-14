@@ -10,5 +10,5 @@ export default {
   components: {
     BotConfigurator,
   },
-}
+};
 </script>

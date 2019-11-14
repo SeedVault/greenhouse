@@ -131,13 +131,13 @@ export default new Vuex.Store({
         id: 9,
         text: 'apps.accounts',
         icon: 'icon-gear.svg',
-        url: `${ACCOUNTS_URL}/{{ locale }}/profile`,
+        url: `${process.env.VUE_APP_ACCOUNTS_URL}/{{ locale }}/profile`,
       },
       {
         id: 10,
         text: 'apps.wallet',
         icon: 'outline-app-24px@2x.svg',
-        url: `${WALLET_URL}/{{ locale }}/dashboard`,
+        url: `${process.env.VUE_APP_WALLET_URL}/{{ locale }}/dashboard`,
       },
       {
         id: 11,

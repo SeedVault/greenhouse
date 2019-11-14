@@ -74,10 +74,10 @@ export default {
   },
   methods: {
     getHadronUrl(suffix) {
-      return HADRON_URL + suffix
+      return process.env.VUE_APP_HADRON_URL + suffix;
     },
     getRhizomeUrl(suffix) {
-      return RHIZOME_URL + suffix
+      return process.env.VUE_APP_RHIZOME_URL + suffix;
     },
     getData() {
       this.loading = true;
@@ -85,8 +85,8 @@ export default {
         .then((result) => {
           const ids = [];
           this.loading = false;
-          this.name   = result.data.bot.name;
-          this.token  = result.data.subscription.token;
+          this.name = result.data.bot.name;
+          this.token = result.data.subscription.token;
         })
         .catch((error) => {
           this.loading = false;
@@ -98,10 +98,10 @@ export default {
     getBackUrl() {
       switch (this.context) {
         case 'myProducts':
-          return { name: 'botsView', params: { id: this.id } }
+          return { name: 'botsView', params: { id: this.id } };
           break;
         case 'marketplace':
-          return { name: 'marketplaceBotsView', params: { id: this.id } }
+          return { name: 'marketplaceBotsView', params: { id: this.id } };
           break;
       }
     },
@@ -127,9 +127,9 @@ export default {
     data-bot-uses-3d-text-panel="false"
 ></span>
 <script type="text/javascript" src="${launcherBundleJs}"><\/script>`;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

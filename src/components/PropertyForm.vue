@@ -51,7 +51,7 @@ export default {
     },
     checkValueType(propertyValueType) {
       return propertyValueType === this.valueType;
-    }
+    },
   },
 };
 </script>

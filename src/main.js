@@ -45,15 +45,17 @@ Vue.prototype.axios = axios;
 // Register function to normalize mongoose validation messages
 Vue.prototype.normalizeErrors = (errors) => {
   const data = [];
-  for (const [key, value] of Object.entries(errors.data.errors)) {
-    data[key] = [{ msg: value.message }];
+  const keys = Object.keys(errors.data.errors);
+  const values = Object.values(errors.data.errors);
+  for (let i = 0; i < keys.length; i += 1) {
+    data[keys[i]] = [{ msg: values[i].message }];
   }
   return data;
 };
 
 // Global filters
-Vue.filter('toCryptoCurrency', (value) => {
-  value = value.toString();
+Vue.filter('toCryptoCurrency', (numericValue) => {
+  const value = numericValue.toString();
   let sInt = '';
   let sDec = '';
   let thousandsSeparator = ',';
@@ -62,8 +64,8 @@ Vue.filter('toCryptoCurrency', (value) => {
     sInt = value;
   } else {
     const parts = value.split('.');
-    sInt = parts[0];
-    sDec = parts[1];
+    sInt = parts[0]; // eslint-disable-line prefer-destructuring
+    sDec = parts[1]; // eslint-disable-line prefer-destructuring
   }
   if (i18n.locale === 'es') {
     thousandsSeparator = '.';
@@ -92,11 +94,12 @@ Vue.filter('toDate', (value, format) => {
   }
 });
 
-Vue.filter('toCurrency', (value, decimals) => {
+Vue.filter('toCurrency', (value, nDecimals) => {
   if (!value) return '';
   if (typeof value !== 'number') {
     return value;
   }
+  let decimals = nDecimals;
   if (!decimals) {
     decimals = 0;
   }

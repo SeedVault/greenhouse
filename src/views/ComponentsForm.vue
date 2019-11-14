@@ -252,7 +252,7 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
-      switch(this.pricingModel) {
+      switch (this.pricingModel) {
         case 'free':
           this.pricePerUse = '0';
           this.pricePerMonth = '0';
@@ -302,7 +302,7 @@ export default {
     ...mapGetters(['allComponentTypes', 'allComponentCategories', 'allComponentStatuses', 'allPricingModels', 'allHttpMethods']),
     componentTypes() {
       const componentTypeList = [];
-      for (let i = 0; i < this.allComponentTypes.length; i++) {
+      for (let i = 0; i < this.allComponentTypes.length; i += 1) {
         componentTypeList.push({
           value: this.allComponentTypes[i],
           text: this.$i18n.t(`domain.component_types.${this.allComponentTypes[i]}`),
@@ -312,7 +312,7 @@ export default {
     },
     componentCategories() {
       const componentCategoryList = [];
-      for (let i = 0; i < this.allComponentCategories.length; i++) {
+      for (let i = 0; i < this.allComponentCategories.length; i += 1) {
         componentCategoryList.push({
           value: this.allComponentCategories[i],
           text: this.$i18n.t(`domain.component_categories.${this.allComponentCategories[i]}`),
@@ -322,7 +322,7 @@ export default {
     },
     componentStatuses() {
       const componentStatusList = [];
-      for (let i = 0; i < this.allComponentStatuses.length; i++) {
+      for (let i = 0; i < this.allComponentStatuses.length; i += 1) {
         componentStatusList.push({
           value: this.allComponentStatuses[i],
           text: this.$i18n.t(`domain.component_statuses.${this.allComponentStatuses[i]}`),
@@ -332,7 +332,7 @@ export default {
     },
     pricingModels() {
       const pricingModelList = [];
-      for (let i = 0; i < this.allPricingModels.length; i++) {
+      for (let i = 0; i < this.allPricingModels.length; i += 1) {
         pricingModelList.push({
           value: this.allPricingModels[i],
           text: this.$i18n.t(`domain.pricing_models.${this.allPricingModels[i]}`),
@@ -342,7 +342,7 @@ export default {
     },
     httpMethods() {
       const httpMethodsList = [];
-      for (let i = 0; i < this.allHttpMethods.length; i++) {
+      for (let i = 0; i < this.allHttpMethods.length; i += 1) {
         httpMethodsList.push({
           value: this.allHttpMethods[i],
           text: this.allHttpMethods[i],
@@ -354,7 +354,7 @@ export default {
       return (this.id === '');
     },
     isSeedUser() {
-      return this.$store.getters.user.email === SEED_USER_EMAIL;
+      return this.$store.getters.user.email === process.env.VUE_APP_SEED_USER_EMAIL;
     },
     urlToGoBack() {
       if (this.isNew) {

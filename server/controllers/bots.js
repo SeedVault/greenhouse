@@ -62,11 +62,11 @@ const bots = {
       let id = req.body.id;
       let botengine = await bots.toComponentValues(req.body.botengine);
       let services = [];
-      for (let i = 0; i < req.body.services.length; i++) {
+      for (let i = 0; i < req.body.services.length; i += 1) {
         services.push(await bots.toComponentValues(req.body.services[i]));
       }
       let channels = [];
-      for (let i = 0; i < req.body.channels.length; i++) {
+      for (let i = 0; i < req.body.channels.length; i += 1) {
         channels.push(await bots.toComponentValues(req.body.channels[i]));
       }
       if (req.body.id === '') {
@@ -188,11 +188,11 @@ const bots = {
       const subscriptionType = req.body.subscriptionType;
       let botengine = await bots.toComponentValues(req.body.botengine);
       let services = [];
-      for (let i = 0; i < req.body.services.length; i++) {
+      for (let i = 0; i < req.body.services.length; i += 1) {
         services.push(await bots.toComponentValues(req.body.services[i]));
       }
       let channels = [];
-      for (let i = 0; i < req.body.channels.length; i++) {
+      for (let i = 0; i < req.body.channels.length; i += 1) {
         channels.push(await bots.toComponentValues(req.body.channels[i]));
       }
       const subscription = await BotService.subscribe(

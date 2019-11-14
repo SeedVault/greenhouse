@@ -238,22 +238,22 @@ ComponentSchema.virtual('pictureUrl').get(function () {
 });
 
 ComponentSchema.virtual('hasPublisherProps').get(function () {
-  for (let i = 0; i < this.properties.length; i++) {
+  for (let i = 0; i < this.properties.length; i += 1) {
     if (this.properties[i].valueType == 'publisher') {
       return true;
     }
   }
-  for (let i = 0; i < this.headers.length; i++) {
+  for (let i = 0; i < this.headers.length; i += 1) {
     if (this.headers[i].valueType == 'publisher') {
       return true;
     }
   }
-  for (let i = 0; i < this.predefinedVars.length; i++) {
+  for (let i = 0; i < this.predefinedVars.length; i += 1) {
     if (this.predefinedVars[i].valueType == 'publisher') {
       return true;
     }
   }
-  for (let i = 0; i < this.mappedVars.length; i++) {
+  for (let i = 0; i < this.mappedVars.length; i += 1) {
     if (this.mappedVars[i].valueType == 'publisher') {
       return true;
     }

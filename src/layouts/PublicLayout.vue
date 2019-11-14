@@ -63,15 +63,15 @@ export default {
       return this.$store.getters.user;
     },
     logoImage() {
-      return this.$store.getters.logoImage
+      return this.$store.getters.logoImage;
     },
     logoText() {
-      return this.$store.getters.logoText
+      return this.$store.getters.logoText;
     },
     logoTextStyle() {
       return `padding-left:5px;height:30px;width:${this.$store.getters.logoTextWidth};`;
     },
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

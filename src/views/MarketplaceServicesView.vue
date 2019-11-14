@@ -10,5 +10,5 @@ export default {
   components: {
     ComponentViewer,
   },
-}
+};
 </script>

@@ -125,7 +125,6 @@
               </div>
 
 
-
             </div>
           </div>
         </div>
@@ -231,7 +230,7 @@ export default {
       }
     },
   },
-    computed: {
+  computed: {
     ...mapGetters(['allComponentCategories']),
     componentCategories() {
       const componentCategoryList = [];
@@ -239,7 +238,7 @@ export default {
         value: '',
         text: this.$i18n.t('domain.component.all_categories'),
       });
-      for (let i = 0; i < this.allComponentCategories.length; i++) {
+      for (let i = 0; i < this.allComponentCategories.length; i += 1) {
         componentCategoryList.push({
           value: this.allComponentCategories[i],
           text: this.$i18n.t(`domain.component_categories.${this.allComponentCategories[i]}`),
@@ -247,7 +246,7 @@ export default {
       }
       return componentCategoryList;
     },
-  }
+  },
 };
 </script>
 

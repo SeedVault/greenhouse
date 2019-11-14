@@ -28,7 +28,7 @@ const WalletService = {
     let addresses = [];
     let transactions = [];
     if (latestTransactions.length > 0) {
-      for (let i = 0; i < latestTransactions.length; i++) {
+      for (let i = 0; i < latestTransactions.length; i += 1) {
         if (!addresses.includes(latestTransactions[i].from.toLowerCase())) {
           addresses.push(latestTransactions[i].from.toLowerCase());
         }
@@ -38,7 +38,7 @@ const WalletService = {
       }
       let allProfiles = await WalletService.findProfiles(addresses);
       // format transactions
-      for (let i = 0; i < latestTransactions.length; i++) {
+      for (let i = 0; i < latestTransactions.length; i += 1) {
         let sDate = new Date(latestTransactions[i].timestamp * 1000);
         let fromUsername = '';
         let toUsername = '';
@@ -83,9 +83,9 @@ const WalletService = {
 
 
   findProfiles: async(keywords) => {
-    let url = process.env.ACCOUNTS_URL + '/api/profiles/search';
+    let url = process.env.VUE_APP_ACCOUNTS_URL + '/api/profiles/search';
     let params = '';
-    for (let i = 0; i < keywords.length; i++) {
+    for (let i = 0; i < keywords.length; i += 1) {
       params += (params === ''? '?': '&') + 'q[]=' + encodeURIComponent(keywords[i]);
     }
     url += params;
@@ -93,7 +93,7 @@ const WalletService = {
     let data = await response.json();
     // convert data to array with keys
     let results = [];
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i += 1) {
       results[data[i].keyword] = data[i].profile;
     }
     return results;

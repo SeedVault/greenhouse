@@ -118,7 +118,7 @@ module.exports = function(app) {
     let lang = req.cookies.lang;
     if (!lang) {
       let acceptsLanguages = req.acceptsLanguages();
-      for (let i = 0; i < acceptsLanguages.length; i++) {
+      for (let i = 0; i < acceptsLanguages.length; i += 1) {
         let langParts = acceptsLanguages[i].split('-');
         if (availableLocales.includes(langParts[0])) {
           lang = langParts[0];

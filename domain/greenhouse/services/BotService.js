@@ -75,11 +75,11 @@ const BotService = {
     pricePerMonth, status, username, botEngineParams, servicesParams, channelsParams) => {
     const botEngine = await BotService.createConfig(botEngineParams);
     let services = [];
-    for (let i = 0; i < servicesParams.length; i++) {
+    for (let i = 0; i < servicesParams.length; i += 1) {
       services.push(await BotService.createConfig(servicesParams[i]));
     }
     let channels = [];
-    for (let i = 0; i < channelsParams.length; i++) {
+    for (let i = 0; i < channelsParams.length; i += 1) {
       channels.push(await BotService.createConfig(channelsParams[i]));
     }
     let bot = new Bot({
@@ -213,11 +213,11 @@ const BotService = {
       }
       const botEngine = await BotService.createSubscriptionConfig(botEngineParams);
       let services = [];
-      for (let i = 0; i < servicesParams.length; i++) {
+      for (let i = 0; i < servicesParams.length; i += 1) {
         services.push(await BotService.createSubscriptionConfig(servicesParams[i]));
       }
       let channels = [];
-      for (let i = 0; i < channelsParams.length; i++) {
+      for (let i = 0; i < channelsParams.length; i += 1) {
         channels.push(await BotService.createSubscriptionConfig(channelsParams[i]));
       }
     const bot = await BotService.findBotById(botId);
@@ -278,7 +278,7 @@ const BotService = {
   findPaginatedBotSubscriptions: async (currentUsername, resultsPerPage, currentPage, username, search, status, sortBy, sortType, category) => {
     const subscriptions = await BotService.findSubscriptionByUser(currentUsername);
     const ids = [];
-    for (let i = 0; i < subscriptions.length; i++) {
+    for (let i = 0; i < subscriptions.length; i += 1) {
       ids.push(ObjectId(subscriptions[i].bot));
     }
     let query = {}

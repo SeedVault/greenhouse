@@ -138,10 +138,10 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import MyProducts from '@/views/MyProducts.vue';
 import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
+import MyProducts from '@/views/MyProducts.vue';
 
 export default {
   name: 'MarketplaceBotsView',
@@ -187,10 +187,10 @@ export default {
   },
   methods: {
     getHadronUrl(suffix) {
-      return HADRON_URL + suffix
+      return process.env.VUE_APP_HADRON_URL + suffix;
     },
     getRhizomeUrl(suffix) {
-      return RHIZOME_URL + suffix
+      return process.env.VUE_APP_RHIZOME_URL + suffix;
     },
     removeHadron() {
       if (typeof window.inToggle !== 'undefined') {
@@ -198,9 +198,9 @@ export default {
       }
     },
     injectHadron() {
-      if (typeof window.inToggle == 'undefined') {
+      if (typeof window.inToggle === 'undefined') {
         const script = document.createElement('script');
-        script.onload = () => { }
+        script.onload = () => { };
         script.src = this.getHadronUrl('/launcher.bundle.js');
         document.head.appendChild(script);
       } else {
@@ -309,7 +309,6 @@ export default {
           this.$router.push({ name: 'marketplaceBotsConfigure', params: { id } });
           break;
       }
-
     },
     testBot() {
       const { id } = this.$route.params;
@@ -382,14 +381,14 @@ export default {
     getBackUrl() {
       switch (this.context) {
         case 'myProducts':
-          return { name: 'botsList' }
+          return { name: 'botsList' };
           break;
         case 'marketplace':
-          return { name: 'marketplaceBotsList' }
+          return { name: 'marketplaceBotsList' };
           break;
       }
     },
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

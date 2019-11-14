@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     getExplorerUrl() {
-      return PARITY_URL_EXPLORER;
+      return process.env.VUE_APP_PARITY_URL_EXPLORER;
     },
   },
   methods: {

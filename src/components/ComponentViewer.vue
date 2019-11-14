@@ -267,7 +267,7 @@ export default {
     ...mapGetters(['allPropertyValueTypes', 'allPropertyInputTypes']),
     propertyValueTypes() {
       const inputTypeList = [];
-      for (let i = 0; i < this.allPropertyValueTypes.length; i++) {
+      for (let i = 0; i < this.allPropertyValueTypes.length; i += 1) {
         inputTypeList.push({
           value: this.allPropertyValueTypes[i],
           text: this.$i18n.t(`domain.property_value_types.${this.allPropertyValueTypes[i]}`),
@@ -277,7 +277,7 @@ export default {
     },
     propertyInputTypes() {
       const inputTypeList = [];
-      for (let i = 0; i < this.allPropertyInputTypes.length; i++) {
+      for (let i = 0; i < this.allPropertyInputTypes.length; i += 1) {
         inputTypeList.push({
           value: this.allPropertyInputTypes[i],
           text: this.$i18n.t(`domain.property_input_types.${this.allPropertyInputTypes[i]}`),
@@ -294,9 +294,8 @@ export default {
     propertiesCount() {
       if (this.componentType === 'service') {
         return this.headers.length + this.predefinedVars.length + this.mappedVars.length;
-      } else {
-        return this.properties.length;
       }
+      return this.properties.length;
     },
     dragOptions() {
       return {
@@ -309,10 +308,10 @@ export default {
     getBackUrl() {
       switch (this.context) {
         case 'components':
-          return { name: 'marketplaceComponentsList' }
+          return { name: 'marketplaceComponentsList' };
           break;
         case 'services':
-          return { name: 'marketplaceServicesList' }
+          return { name: 'marketplaceServicesList' };
           break;
       }
     },

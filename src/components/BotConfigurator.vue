@@ -8,12 +8,16 @@
         <div class="card box">
           <div class="card-body">
 
-            <router-link class="nav-link back" :to="getBackUrl" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+            <router-link class="nav-link back" :to="getBackUrl" v-show="!saving &&
+            !saved && !showComponentList && !showPropertiesForm">
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+              {{ $t('common.back') }}
             </router-link>
 
-            <a class="nav-link back" :href="'#components'" @click="showPropertiesForm = false" v-show="!saving && !saved && showPropertiesForm">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+            <a class="nav-link back" :href="'#components'"
+            @click="showPropertiesForm = false" v-show="!saving && !saved && showPropertiesForm">
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+              {{ $t('common.back') }}
             </a>
 
             <div class="saving text-center" v-show="saving || saved">
@@ -25,7 +29,8 @@
               </div>
             </div>
 
-            <div class="row row-form" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
+            <div class="row row-form" v-show="!saving && !saved &&
+            !showComponentList && !showPropertiesForm">
               <div class="col-md-3">
                 <h4 class="bot-title">{{ name }}</h4>
               </div>
@@ -38,9 +43,14 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <label :for="subscriptionType">{{ $t('domain.component.pricing_model') }}</label>
-                      <select v-model="subscriptionType" class="input-with-icon form-control" id="subscriptionType" name="subscriptionType">
-                        <option v-for="option in pricingOptions" :key="option.value" v-bind:value="option.value">
+                      <label :for="subscriptionType">
+                        {{ $t('domain.component.pricing_model') }}
+                      </label>
+                      <select v-model="subscriptionType"
+                      class="input-with-icon form-control" id="subscriptionType"
+                      name="subscriptionType">
+                        <option v-for="option in pricingOptions" :key="option.value"
+                        v-bind:value="option.value">
                           {{ option.text }}
                         </option>
                       </select>
@@ -58,21 +68,39 @@
                         <ul class="list-group">
                           <template v-if="visibleComponents.includes(botengine.component)">
                             <li class="list-group-item">
-                              <a style="cursor: pointer" @click="selectComponent(botengine.component, 'botengine', true)"><img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" /></a>
-                              <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine', true)">{{ cachedComponentName(botengine.component) }}</a>
+                              <a style="cursor: pointer"
+                              @click="selectComponent(botengine.component, 'botengine', true)"
+                              ><img class="component-logo-small"
+                              :src="cachedComponentPictureUrl(botengine.component)" /></a>
+                              <a class="list-group-item-link"
+                              @click="selectComponent(botengine.component, 'botengine', true)"
+                              >{{ cachedComponentName(botengine.component) }}</a>
                             </li>
                           </template>
                           <template v-if="services.length > 0">
-                            <li v-for="service in services" :key="service._id" class="list-group-item" v-if="visibleComponents.includes(service.component)">
-                              <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
-                              <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
+                            <template v-for="service in services">
+                            <li v-if="visibleComponents.includes(service.component)"
+                             :key="service._id" class="list-group-item">
+                              <img class="component-logo-small"
+                              :src="cachedComponentPictureUrl(service.component)" />
+                              <a class="list-group-item-link"
+                              @click="selectComponent(service.component, 'service', true)"
+                              >{{ cachedComponentName(service.component) }}</a>
                             </li>
+                            </template>
                           </template>
                           <template v-if="channels.length > 0">
-                            <li v-for="channel in channels" :key="channel._id" class="list-group-item" v-if="visibleComponents.includes(channel.component)">
-                              <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
-                              <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
+                            <template v-for="channel in channels">
+                            <li v-if="visibleComponents.includes(channel.component)"
+                            :key="channel._id" class="list-group-item">
+                              <img class="component-logo-small"
+                              :src="cachedComponentPictureUrl(channel.component)" />
+                              <a class="list-group-item-link"
+                              @click="selectComponent(channel.component, 'channel', true)"
+                              >{{ cachedComponentName(channel.component) }}</a>
                             </li>
+                            </template>
+
                         </template>
                         </ul>
                       </div>
@@ -100,14 +128,24 @@
                   <div class="col-md-9">
                     <template v-if="componentType == 'service'">
                       <h5 class="mb-4">{{ $t("domain.component.headers") }}</h5>
-                      <property-form :properties="headers" v-model="headersData" :propertiesData="headersData" valueType="publisher" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form :properties="headers" v-model="headersData"
+                      :propertiesData="headersData" valueType="publisher"
+                      :validationErrors="validationErrorsProperties"></property-form>
                       <h5 class="mb-4 mt-4">{{ $t("domain.component.predefinedVars") }}</h5>
-                      <property-form :properties="predefinedVars" v-model="predefinedVarsData" :propertiesData="predefinedVarsData" valueType="publisher" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form :properties="predefinedVars"
+                      v-model="predefinedVarsData" :propertiesData="predefinedVarsData"
+                      valueType="publisher" :validationErrors="validationErrorsProperties">
+                      </property-form>
                       <h5 class="mb-4 mt-4">{{ $t("domain.component.mappedVars") }}</h5>
-                      <property-form :properties="mappedVars" v-model="mappedVarsData" :propertiesData="mappedVarsData" valueType="publisher" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form :properties="mappedVars" v-model="mappedVarsData"
+                      :propertiesData="mappedVarsData" valueType="publisher"
+                      :validationErrors="validationErrorsProperties"></property-form>
                     </template>
                     <template v-else>
-                      <property-form :properties="properties" v-model="propertiesData" :propertiesData="propertiesData" valueType="publisher" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form :properties="properties"
+                      v-model="propertiesData" :propertiesData="propertiesData"
+                      valueType="publisher" :validationErrors="validationErrorsProperties">
+                      </property-form>
                     </template>
                     <div class="form-row">
                       <div class="form-group col-md-4 button-area">
@@ -130,7 +168,6 @@
 
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
-import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
 import PropertyForm from '@/components/PropertyForm.vue';
 
@@ -138,7 +175,6 @@ export default {
   name: 'MarketplaceBotsForm',
   components: {
     AppLayout,
-    StarRating,
     PropertyForm,
   },
   props: ['context'],
@@ -214,34 +250,34 @@ export default {
   methods: {
     async getData() {
       this.loading = true;
-      let result = [];
+      const result = [];
       this.visibleComponents = [];
       try {
         result[0] = await this.axios.get(`/api/marketplace/bots/${this.id}`);
         const ids = [];
-        this.name          = result[0].data.bot.name;
-        this.pricingModel  = result[0].data.bot.pricingModel;
-        this.pricePerUse   = result[0].data.bot.pricePerUse;
+        this.name = result[0].data.bot.name;
+        this.pricingModel = result[0].data.bot.pricingModel;
+        this.pricePerUse = result[0].data.bot.pricePerUse;
         this.pricePerMonth = result[0].data.bot.pricePerMonth;
         this.pricingOptions = [];
         if (this.pricingModel === 'free') {
           this.pricingOptions.push({
             value: 'free',
-            text: this.$i18n.t('domain.pricing_models.free')
+            text: this.$i18n.t('domain.pricing_models.free'),
           });
         } else {
           if (this.pricingModel === 'pay_per_use' || this.pricingModel === 'pay_per_use_or_month') {
             this.pricingOptions.push({
               value: 'use',
-              text: this.$i18n.t('domain.component.price_per_use') +
-              `(${this.pricePerUse} SEED)`
+              text: `${this.$i18n.t('domain.component.price_per_use')
+              }(${this.pricePerUse} SEED)`,
             });
           }
           if (this.pricingModel === 'pay_per_month' || this.pricingModel === 'pay_per_use_or_month') {
             this.pricingOptions.push({
               value: 'month',
-              text: this.$i18n.t(`domain.component.price_per_month`) +
-              `(${this.pricePerMonth} SEED)`
+              text: `${this.$i18n.t('domain.component.price_per_month')
+              }(${this.pricePerMonth} SEED)`,
             });
           }
         }
@@ -257,19 +293,19 @@ export default {
         delete (this.botengine._id);
         this.services = result[0].data.bot.services;
         this.servicesSubscription = result[0].data.subscription.services;
-        for (let i = 0; i < this.services.length; i++) {
+        for (let i = 0; i < this.services.length; i += 1) {
           ids.push(this.services[i].component);
           delete (this.services[i]._id);
         }
         this.channels = result[0].data.bot.channels;
         this.channelsSubscription = result[0].data.subscription.channels;
-        for (let i = 0; i < this.channels.length; i++) {
+        for (let i = 0; i < this.channels.length; i += 1) {
           ids.push(this.channels[i].component);
           delete (this.channels[i]._id);
         }
         result[1] = await this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } });
 
-        for (let i = 0; i < result[1].data.length; i++) {
+        for (let i = 0; i < result[1].data.length; i += 1) {
           this.cachedComponents.set(result[1].data[i]._id, result[1].data[i]);
           if (result[1].data[i].hasPublisherProps) {
             this.visibleComponents.push(result[1].data[i]._id);
@@ -284,12 +320,15 @@ export default {
     getCachedComponents(ids) {
       this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } })
         .then((results) => {
-          for (let i = 0; i < results.data.length; i++) {
+          for (let i = 0; i < results.data.length; i += 1) {
             this.cachedComponents.set(results.data[i]._id, results.data[i]);
           }
           this.loading = false;
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.loading = false;
           this.oops = true;
         });
@@ -298,9 +337,9 @@ export default {
       /* let pendingConfiguration = new Map();
       for (const c of this.cachedComponents.values()) {
         if (c.hasPublisherProps === true) {
-          for (let i = 0; i < this.servicesSubscription.length; i++) {
+          for (let i = 0; i < this.servicesSubscription.length; i += 1) {
             if (this.services[i].component === c._id) {
-              for (let j = 0; j < c.predefinedVars.length; j++) {
+              for (let j = 0; j < c.predefinedVars.length; j += 1) {
                 let p = c.predefinedVars[j];
                 if (p.valueType === 'publisher' && p.required === 'yes') {
                   let k = Object.keys(this.servicesSubscription[i].values);
@@ -324,14 +363,14 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
-      var botId = this.id;
+      const botId = this.id;
       this.axios.post(`/api/subscriptions/bots/${botId}/subscribe`, {
         subscriptionType: this.subscriptionType,
         botengine: this.botengine,
         services: this.services,
         channels: this.channels,
       })
-        .then((result) => {
+        .then(() => { // (result)
           // const { id } = result.data;
           this.saving = false;
           this.saved = true;
@@ -342,9 +381,14 @@ export default {
             case 'marketplace':
               this.$router.push({ name: 'marketplaceBotsView', params: { id: this.id } });
               break;
+            default:
+              // do nothing
           }
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.saving = false;
           if (error.response.status === 422) {
             this.validationErrors = this.normalizeErrors(error.response);
@@ -356,10 +400,8 @@ export default {
     priceWithFormat(pricingModel, pricePerUse, pricePerMonth) {
       if (pricingModel === 'free') {
         return this.$i18n.t('common.free');
-      } else {
-        return `${pricePerUse} SEED/use or ${pricePerMonth} SEED/month`;
       }
-
+      return `${pricePerUse} SEED/use or ${pricePerMonth} SEED/month`;
     },
     findInputType(property) {
       let sControl = '';
@@ -373,6 +415,8 @@ export default {
         case 'select':
           sControl = 'PropertyInputSelect';
           break;
+        default:
+          // do nothing
       }
       return sControl;
     },
@@ -394,22 +438,22 @@ export default {
           this.componentPricePerUse = result.data.pricePerUse;
           this.properties = result.data.properties;
           let k = Object.keys(this.propertiesData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.propertiesData, k[j]);
           }
           this.headers = result.data.headers;
           k = Object.keys(this.headersData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.headersData, k[j]);
           }
           this.predefinedVars = result.data.predefinedVars;
           k = Object.keys(this.predefinedVarsData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.predefinedVarsData, k[j]);
           }
           this.mappedVars = result.data.mappedVars;
           k = Object.keys(this.mappedVarsData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.mappedVarsData, k[j]);
           }
           // Load current data
@@ -426,7 +470,7 @@ export default {
               }
               break;
             case 'service':
-              for (let i = 0; i < this.services.length; i++) {
+              for (let i = 0; i < this.services.length; i += 1) {
                 if (this.services[i].component === componentId) {
                   this.currentData = Object.assign({}, this.services[i].values);
                   if (typeof this.servicesSubscription !== 'undefined') {
@@ -436,13 +480,13 @@ export default {
                       }
                     }
                   }
-                  //this.subscriptionType = this.services[i].subscriptionType;
+                  // this.subscriptionType = this.services[i].subscriptionType;
                   break;
                 }
               }
               break;
             case 'channel':
-              for (let i = 0; i < this.channels.length; i++) {
+              for (let i = 0; i < this.channels.length; i += 1) {
                 if (this.channels[i].component === componentId) {
                   this.currentData = Object.assign({}, this.channels[i].values);
                   if (typeof this.channelsSubscription !== 'undefined') {
@@ -457,6 +501,8 @@ export default {
                 }
               }
               break;
+            default:
+              // do nothing
           }
           if (typeof this.currentData === 'undefined') {
             this.currentData = [];
@@ -465,10 +511,10 @@ export default {
           const currentDataValues = Object.values(this.currentData);
           // Set properties
           this.propertiesData = [];
-          for (let i = 0; i < this.properties.length; i++) {
+          for (let i = 0; i < this.properties.length; i += 1) {
             const vKey = `_${this.properties[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -480,10 +526,10 @@ export default {
           }
           // Set headers
           this.headersData = [];
-          for (let i = 0; i < this.headers.length; i++) {
+          for (let i = 0; i < this.headers.length; i += 1) {
             const vKey = `_${this.headers[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -495,10 +541,10 @@ export default {
           }
           // Set predefinedVars
           this.predefinedVarsData = [];
-          for (let i = 0; i < this.predefinedVars.length; i++) {
+          for (let i = 0; i < this.predefinedVars.length; i += 1) {
             const vKey = `_${this.predefinedVars[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -510,10 +556,10 @@ export default {
           }
           // Set mappedVars
           this.mappedVarsData = [];
-          for (let i = 0; i < this.mappedVars.length; i++) {
+          for (let i = 0; i < this.mappedVars.length; i += 1) {
             const vKey = `_${this.mappedVars[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -525,6 +571,9 @@ export default {
           }
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.fetching = false;
           this.showPropertiesForm = false;
           this.oops = true;
@@ -540,10 +589,10 @@ export default {
       // check properties
       let k = Object.keys(this.propertiesData);
       let v = Object.values(this.propertiesData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.properties.length; i++) {
+      for (let i = 0; i < this.properties.length; i += 1) {
         if (this.properties[i].valueType === 'publisher' && this.properties[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.properties[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -557,10 +606,10 @@ export default {
       // check headers
       k = Object.keys(this.headersData);
       v = Object.values(this.headersData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.headers.length; i++) {
+      for (let i = 0; i < this.headers.length; i += 1) {
         if (this.headers[i].valueType === 'publisher' && this.headers[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.headers[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -574,10 +623,10 @@ export default {
       // check predefinedVars
       k = Object.keys(this.predefinedVarsData);
       v = Object.values(this.predefinedVarsData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.predefinedVars.length; i++) {
+      for (let i = 0; i < this.predefinedVars.length; i += 1) {
         if (this.predefinedVars[i].valueType === 'publisher' && this.predefinedVars[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.predefinedVars[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -591,10 +640,10 @@ export default {
       // check mappedVars
       k = Object.keys(this.mappedVarsData);
       v = Object.values(this.mappedVarsData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.mappedVars.length; i++) {
+      for (let i = 0; i < this.mappedVars.length; i += 1) {
         if (this.mappedVars[i].valueType === 'publisher' && this.mappedVars[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.mappedVars[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -617,7 +666,7 @@ export default {
           this.botengine = Object.assign({}, c);
           break;
         case 'service':
-          for (let i = 0; i < this.services.length; i++) {
+          for (let i = 0; i < this.services.length; i += 1) {
             if (this.services[i].component === c.component) {
               this.services[i].values = Object.assign({}, c.values);
               found = true;
@@ -629,7 +678,7 @@ export default {
           }
           break;
         case 'channel':
-          for (let i = 0; i < this.channels.length; i++) {
+          for (let i = 0; i < this.channels.length; i += 1) {
             if (this.channels[i].component === c.component) {
               this.channels[i].values = Object.assign({}, c.values);
               found = true;
@@ -640,6 +689,8 @@ export default {
             this.channels.push(Object.assign({}, c));
           }
           break;
+        default:
+        // do nothing
       }
     },
     cachedComponentName(componentId) {
@@ -659,7 +710,7 @@ export default {
     ...mapGetters(['allBotCategories', 'allBotStatuses', 'allPricingModels']),
     botCategories() {
       const botCategoryList = [];
-      for (let i = 0; i < this.allBotCategories.length; i++) {
+      for (let i = 0; i < this.allBotCategories.length; i += 1) {
         botCategoryList.push({
           value: this.allBotCategories[i],
           text: this.$i18n.t(`domain.bot_categories.${this.allBotCategories[i]}`),
@@ -669,7 +720,7 @@ export default {
     },
     botStatuses() {
       const botStatusList = [];
-      for (let i = 0; i < this.allBotStatuses.length; i++) {
+      for (let i = 0; i < this.allBotStatuses.length; i += 1) {
         botStatusList.push({
           value: this.allBotStatuses[i],
           text: this.$i18n.t(`domain.bot_statuses.${this.allBotStatuses[i]}`),
@@ -679,7 +730,7 @@ export default {
     },
     pricingModels() {
       const pricingModelList = [];
-      for (let i = 0; i < this.allPricingModels.length; i++) {
+      for (let i = 0; i < this.allPricingModels.length; i += 1) {
         pricingModelList.push({
           value: this.allPricingModels[i],
           text: this.$i18n.t(`domain.pricing_models.${this.allPricingModels[i]}`),
@@ -693,11 +744,11 @@ export default {
     getBackUrl() {
       switch (this.context) {
         case 'myProducts':
-          return { name: 'botsView', params: { id: this.id } }
-          break;
+          return { name: 'botsView', params: { id: this.id } };
         case 'marketplace':
-          return { name: 'marketplaceBotsView', params: { id: this.id } }
-          break;
+          return { name: 'marketplaceBotsView', params: { id: this.id } };
+        default:
+          return '';
       }
     },
   },

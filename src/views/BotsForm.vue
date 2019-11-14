@@ -8,16 +8,24 @@
         <div class="card box">
           <div class="card-body">
 
-            <router-link class="nav-link back" :to="urlToGoBack" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+            <router-link class="nav-link back" :to="urlToGoBack"
+            v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+              {{ $t('common.back') }}
             </router-link>
 
-            <a class="nav-link back" :href="componentTypeContext" @click="showComponentList = false" v-show="!saving && !saved && showComponentList && !showPropertiesForm">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+            <a class="nav-link back" :href="componentTypeContext"
+            @click="showComponentList = false"
+            v-show="!saving && !saved && showComponentList && !showPropertiesForm">
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+              {{ $t('common.back') }}
             </a>
 
-            <a class="nav-link back" @click="showPropertiesForm = false; showComponentList = !editMode" v-show="showPropertiesForm">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+            <a class="nav-link back"
+            @click="showPropertiesForm = false; showComponentList = !editMode"
+            v-show="showPropertiesForm">
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+              {{ $t('common.back') }}
             </a>
 
             <div class="saving text-center" v-show="saving || saved">
@@ -29,7 +37,8 @@
               </div>
             </div>
 
-            <div class="row row-form" v-show="!saving && !saved && !showComponentList && !showPropertiesForm">
+            <div class="row row-form" v-show="!saving && !saved &&
+            !showComponentList && !showPropertiesForm">
               <div class="col-md-3">
                 <h4><template v-if="isNew">{{ $t('bots.new_bot') }}</template>
                 <template v-else>{{ $t('bots.modify_bot') }}</template>
@@ -54,59 +63,79 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="botId" id="botId" name="botId" :label="$t('domain.bot.bot_id')"
-                        :placeholder="$t('domain.bot.bot_id_placeholder')" icon="outline-icon-fingerprint-24px.svg"
-                        :validationErrors="validationErrors"></input-text>
+                      <input-text v-model="botId" id="botId" name="botId"
+                      :label="$t('domain.bot.bot_id')"
+                      :placeholder="$t('domain.bot.bot_id_placeholder')"
+                      icon="outline-icon-fingerprint-24px.svg"
+                      :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
                       <input-text v-model="name" id="name" :label="$t('domain.bot.name')"
-                        :placeholder="$t('domain.bot.name_placeholder')" icon="outline-bot-icon-24.svg"
+                        :placeholder="$t('domain.bot.name_placeholder')"
+                        icon="outline-bot-icon-24.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="description" id="description" :label="$t('domain.bot.description')"
-                        :placeholder="$t('domain.bot.description_placeholder')" icon="outline-icon-description-24px.svg"
-                        :validationErrors="validationErrors"></input-text>
+                      <input-text v-model="description" id="description"
+                      :label="$t('domain.bot.description')"
+                      :placeholder="$t('domain.bot.description_placeholder')"
+                      icon="outline-icon-description-24px.svg"
+                      :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="features" id="features" :label="$t('domain.bot.features')" :rows="5"
-                        :placeholder="$t('domain.bot.features_placeholder')" icon="outline-icon-description-24px.svg"
-                        :validationErrors="validationErrors"></input-textarea>
+                      <input-textarea v-model="features" id="features"
+                      :label="$t('domain.bot.features')" :rows="5"
+                      :placeholder="$t('domain.bot.features_placeholder')"
+                      icon="outline-icon-description-24px.svg"
+                      :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="license" id="license" :label="$t('domain.bot.license')" :tooltip="$t('domain.bot.license_tooltip')" :rows="5"
-                        :placeholder="$t('domain.bot.license_placeholder')" icon="outline-icon-description-24px.svg"
-                        :validationErrors="validationErrors"></input-textarea>
+                      <input-textarea v-model="license" id="license"
+                      :label="$t('domain.bot.license')"
+                      :tooltip="$t('domain.bot.license_tooltip')" :rows="5"
+                      :placeholder="$t('domain.bot.license_placeholder')"
+                      icon="outline-icon-description-24px.svg"
+                      :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <input-select v-model="pricingModel" :tooltip="$t('domain.bot.pricing_model_tooltip')" :options="pricingModels" id="pricingModel"
+                      <input-select v-model="pricingModel"
+                      :tooltip="$t('domain.bot.pricing_model_tooltip')"
+                      :options="pricingModels" id="pricingModel"
                         :label="$t('domain.bot.pricing_model')"
                         icon="outline-icon-types-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='pay_per_use' || pricingModel==='pay_per_use_or_month'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
-                        :placeholder="$t('domain.bot.price_per_use')" icon="outline-coin-24px@2x.svg"
+                      <input-text v-show="pricingModel==='pay_per_use'
+                      || pricingModel==='pay_per_use_or_month'"
+                      v-model="pricePerUse" id="pricePerUse"
+                      :label="$t('domain.bot.price_per_use')"
+                        :placeholder="$t('domain.bot.price_per_use')"
+                        icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='pay_per_month' || pricingModel==='pay_per_use_or_month'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
-                        :placeholder="$t('domain.bot.price_per_month')" icon="outline-coin-24px@2x.svg"
+                      <input-text v-show="pricingModel==='pay_per_month'
+                      || pricingModel==='pay_per_use_or_month'"
+                      v-model="pricePerMonth" id="pricePerMonth"
+                      :label="$t('domain.bot.price_per_month')"
+                        :placeholder="$t('domain.bot.price_per_month')"
+                        icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
@@ -127,24 +156,35 @@
                   <div class="form-row">
                     <div class="form-group col-md-6">
                       <a name="botengine"></a>
-                      <label><h5>{{ $t('domain.bot.bot_engine') }} <help-tooltip :tooltip="$t('domain.bot.bot_engine_tooltip')"></help-tooltip></h5></label>
+                      <label><h5>{{ $t('domain.bot.bot_engine') }} <help-tooltip
+                      :tooltip="$t('domain.bot.bot_engine_tooltip')"></help-tooltip>
+                      </h5></label>
                       <template v-if="botengine.component">
                         <ul class="list-group">
                           <li class="list-group-item">
-                            <a style="cursor: pointer" @click="selectComponent(botengine.component, 'botengine', true)"><img class="component-logo-small" :src="cachedComponentPictureUrl(botengine.component)" /></a>
-                            <a class="list-group-item-link" @click="selectComponent(botengine.component, 'botengine', true)">{{ cachedComponentName(botengine.component) }}</a>
-                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(botengine.component, 'botengine')">
+                            <a style="cursor: pointer"
+                            @click="selectComponent(botengine.component, 'botengine', true)"
+                            ><img class="component-logo-small"
+                            :src="cachedComponentPictureUrl(botengine.component)" /></a>
+                            <a class="list-group-item-link"
+                            @click="selectComponent(botengine.component, 'botengine', true)"
+                            >{{ cachedComponentName(botengine.component) }}</a>
+                            <a class="list-group-item-delete icon-hover"
+                            @click="confirmDeleteComponent(botengine.component, 'botengine')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
                           </li>
                         </ul>
                       </template>
                       <template v-else>
-                        <div class="no-component-selected">{{ $t('bots.there_are_no_bot_engines_selected') }}</div>
+                        <div class="no-component-selected"
+                        >{{ $t('bots.there_are_no_bot_engines_selected') }}</div>
                       </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
-                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('botengine')">{{ $t('common.choose_from_list') }}</a>
+                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton"
+                      @click="componentList('botengine')"
+                      >{{ $t('common.choose_from_list') }}</a>
                     </div>
                   </div>
 
@@ -153,24 +193,34 @@
                   <div class="form-row">
                     <a name="service"></a>
                     <div class="form-group col-md-6">
-                      <label><h5>{{ $t('domain.bot.services') }} <help-tooltip :tooltip="$t('domain.bot.services_tooltip')"></help-tooltip></h5></label>
+                      <label><h5>{{ $t('domain.bot.services') }} <help-tooltip
+                      :tooltip="$t('domain.bot.services_tooltip')"></help-tooltip>
+                      </h5></label>
                       <template v-if="services.length > 0">
-                        ​<ul class="list-group">
-                          <li v-for="service in services" class="list-group-item">
-                            <img class="component-logo-small" :src="cachedComponentPictureUrl(service.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(service.component, 'service', true)">{{ cachedComponentName(service.component) }}</a>
-                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(service.component, 'service')">
+                        <ul class="list-group">
+                          <li v-for="service in services" class="list-group-item"
+                          :key="service._id">
+                            <img class="component-logo-small"
+                            :src="cachedComponentPictureUrl(service.component)" />
+                            <a class="list-group-item-link"
+                            @click="selectComponent(service.component, 'service', true)"
+                            >{{ cachedComponentName(service.component) }}</a>
+                            <a class="list-group-item-delete icon-hover"
+                            @click="confirmDeleteComponent(service.component, 'service')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
                           </li>
                         </ul>
                       </template>
                       <template v-else>
-                        <div class="no-component-selected">{{ $t('bots.there_are_no_services_selected') }}</div>
+                        <div class="no-component-selected"
+                        >{{ $t('bots.there_are_no_services_selected') }}</div>
                       </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
-                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('service', true)">{{ $t('common.choose_from_list') }}</a>
+                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton"
+                      @click="componentList('service', true)">
+                      {{ $t('common.choose_from_list') }}</a>
                     </div>
                   </div>
 
@@ -179,24 +229,33 @@
                   <div class="form-row">
                     <a name="channel"></a>
                     <div class="form-group col-md-6">
-                      <label><h5>{{ $t('domain.bot.channels') }} <help-tooltip :tooltip="$t('domain.bot.channels_tooltip')"></help-tooltip></h5></label>
+                      <label><h5>{{ $t('domain.bot.channels') }} <help-tooltip
+                      :tooltip="$t('domain.bot.channels_tooltip')"></help-tooltip>
+                      </h5></label>
                       <template v-if="channels.length > 0">
                         <ul class="list-group">
-                          <li v-for="channel in channels" class="list-group-item">
-                            <img class="component-logo-small" :src="cachedComponentPictureUrl(channel.component)" />
-                            <a class="list-group-item-link" @click="selectComponent(channel.component, 'channel', true)">{{ cachedComponentName(channel.component) }}</a>
-                            <a class="list-group-item-delete icon-hover" @click="confirmDeleteComponent(channel.component, 'channel')">
+                          <li v-for="channel in channels" class="list-group-item"
+                          :key="channel._id">
+                            <img class="component-logo-small"
+                            :src="cachedComponentPictureUrl(channel.component)" />
+                            <a class="list-group-item-link"
+                            @click="selectComponent(channel.component, 'channel', true)"
+                            >{{ cachedComponentName(channel.component) }}</a>
+                            <a class="list-group-item-delete icon-hover"
+                            @click="confirmDeleteComponent(channel.component, 'channel')">
                               <img :src="require('@/assets/icons/outline-icon-delete-24px.svg')" />
                             </a>
                           </li>
                         </ul>
                       </template>
                       <template v-else>
-                        <div class="no-component-selected">{{ $t('bots.there_are_no_channels_selected') }}</div>
+                        <div class="no-component-selected">
+                          {{ $t('bots.there_are_no_channels_selected') }}</div>
                       </template>
                     </div>
                     <div class="form-group col-md-6 text-right">
-                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton" @click="componentList('channel')">{{ $t('common.choose_from_list') }}</a>
+                      <a href="#" class="btn btn-sm btn-primary mb-2 smallButton"
+                      @click="componentList('channel')">{{ $t('common.choose_from_list') }}</a>
                     </div>
                   </div>
 
@@ -213,17 +272,21 @@
               </div>
             </div>
 
-            <div class="row row-form" v-show="!saving && !saved && showComponentList && !showPropertiesForm">
+            <div class="row row-form" v-show="!saving && !saved &&
+            showComponentList && !showPropertiesForm">
               <div class="col-md-3">
                 <h4 class="component-title">{{ $t(`bots.list_of_${componentType}`) }}</h4>
               </div>
               <div class="col-md-5"></div>
               <div class="col-md-4 mb-2">
                 <div class="input-group">
-                  <input type="text" v-model="search" class="form-control medium-size" :placeholder="$t('common.search')"
+                  <input type="text" v-model="search"
+                  class="form-control medium-size" :placeholder="$t('common.search')"
                   v-on:keydown.enter.prevent="doSearch" @blur="searchBlur" @focus="searchFocus">
                   <div class="input-group-append">
-                    <span v-bind:class="{'input-group-text': true, 'search-button': !focusOnSearch, 'search-button-focused': focusOnSearch }" @click.prevent="doSearch">
+                    <span v-bind:class="{'input-group-text': true, 'search-button':
+                    !focusOnSearch, 'search-button-focused': focusOnSearch }"
+                    @click.prevent="doSearch">
                       <template v-if="focusOnSearch">
                         <img :src="require('@/assets/icons/outline-search-white-24px.svg')" />
                       </template>
@@ -243,8 +306,12 @@
                 </div>
                 <div class="col-6 list__sorting">
                   {{ $t('common.sort_by') }}:
-                  <a @click="setSortBy('name')" v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }" href="#">{{ $t('domain.component.name') }}</a>
-                  <a @click="setSortBy('updatedAt')" v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }" href="#">{{ $t('common.date') }}</a>
+                  <a @click="setSortBy('name')"
+                  v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }"
+                  href="#">{{ $t('domain.component.name') }}</a>
+                  <a @click="setSortBy('updatedAt')"
+                  v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }"
+                  href="#">{{ $t('common.date') }}</a>
                   <a @click="toggleSortType()" class="list__sort icon-hover">
                     <template v-if="sortType === 'desc'">
                       <img :src="require('@/assets/icons/outline-sort-desc-24px.svg')" />
@@ -268,7 +335,9 @@
                         <div class="list__description">{{ component.description }}</div>
                         <div class="list__misc clearfix">
                           <div class="list__rating">
-                          <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                          <star-rating :rating="3.5" :increment="0.5"
+                          :star-size="18" :show-rating="false" :inline="true"
+                          :read-only="true"></star-rating>
                           </div>
                           <div class="list__category">{{ $t("domain.component.category") }}:
                           {{ $t(`domain.component_categories.${component.category}`) }}
@@ -282,11 +351,14 @@
                   </div>
                   <div class="col-sm-2 align-self-center text-right">
                     <div class="list__price">
-                      {{ priceWithFormat(component.pricingModel, component.pricePerUse, component.pricePerMonth) }}
+                      {{ priceWithFormat(component.pricingModel,
+                      component.pricePerUse, component.pricePerMonth) }}
                     </div>
                   </div>
                   <div class="col-sm-2 align-self-center">
-                    <button class="btn btn-sm btn-primary btn-block mb-2" @click="selectComponent(component._id, componentType, false)">{{ $t('common.get') }}</button>
+                    <button class="btn btn-sm btn-primary btn-block mb-2"
+                    @click="selectComponent(component._id, componentType, false)"
+                    >{{ $t('common.get') }}</button>
                   </div>
                 </div>
                 <hr >
@@ -294,11 +366,13 @@
               <div class="row">
                 <div class="col-sm text-center">
                   <div class="list__paginator" v-show="pagesCount > 1">
-                    <a @click="jumpToPage(page - 1)" v-show="page - 1 > 0" :title="$t('common.go_to_previous_page')" class="icon-hover">
+                    <a @click="jumpToPage(page - 1)" v-show="page - 1 > 0"
+                      :title="$t('common.go_to_previous_page')" class="icon-hover">
                       <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
                     </a>
                     <span class="list__paginator-text">{{ $t('common.page') }} {{ page }}</span>
-                    <a @click="jumpToPage(page + 1)" v-show="page + 1 <= pagesCount" :title="$t('common.go_to_next_page')" class="icon-hover">
+                    <a @click="jumpToPage(page + 1)" v-show="page + 1 <= pagesCount"
+                    :title="$t('common.go_to_next_page')" class="icon-hover">
                       <img :src="require('@/assets/icons/outline-icon-forward-24px.svg')" />
                     </a>
                   </div>
@@ -322,29 +396,59 @@
                   </div>
                   <div class="col-md-9">
                     <div class="form-group">
-                      <label :for="subscriptionType">{{ $t('domain.component.pricing_model') }}</label>
-                      <select v-model="subscriptionType" class="input-with-icon form-control" id="subscriptionType" name="subscriptionType">
-                        <option v-for="option in pricingOptions" :key="option.value" v-bind:value="option.value">
+                      <label :for="subscriptionType">
+                        {{ $t('domain.component.pricing_model') }}
+                      </label>
+                      <select v-model="subscriptionType"
+                      class="input-with-icon form-control" id="subscriptionType"
+                      name="subscriptionType">
+                        <option v-for="option in pricingOptions" :key="option.value"
+                        v-bind:value="option.value">
                           {{ option.text }}
                         </option>
                       </select>
                       <icon-inside-input icon="outline-icon-types-24px.svg"></icon-inside-input>
                     </div>
-                    <!-- <input-select v-model="subscriptionType" :options="pricingOptions" id="subscriptionType" name="subscriptionType"
+                    <!-- <input-select v-model="subscriptionType"
+                        :options="pricingOptions" id="subscriptionType"
+                        name="subscriptionType"
                         :label="$t('common.subscription_type')"
                         icon="outline-icon-types-24px.svg"
-                        :validationErrors="validationErrorsProperties" class="mb-4"></input-select> -->
+                        :validationErrors="validationErrorsProperties"
+                        class="mb-4"></input-select> -->
                     <hr class="mt-4 mb-4" />
                     <template v-if="componentType == 'service'">
                       <h5 class="mb-4">{{ $t("domain.component.headers") }}</h5>
-                      <property-form :properties="headers" v-model="headersData" :propertiesData="headersData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form
+                      :properties="headers"
+                      v-model="headersData"
+                      :propertiesData="headersData"
+                      valueType="developer"
+                      :validationErrors="validationErrorsProperties">
+                      </property-form>
                       <h5 class="mb-4 mt-4">{{ $t("domain.component.predefinedVars") }}</h5>
-                      <property-form :properties="predefinedVars" v-model="predefinedVarsData" :propertiesData="predefinedVarsData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form
+                      :properties="predefinedVars"
+                      v-model="predefinedVarsData"
+                      :propertiesData="predefinedVarsData"
+                      valueType="developer"
+                      :validationErrors="validationErrorsProperties">
+                      </property-form>
                       <h5 class="mb-4 mt-4">{{ $t("domain.component.mappedVars") }}</h5>
-                      <property-form :properties="mappedVars" v-model="mappedVarsData" :propertiesData="mappedVarsData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form  :properties="mappedVars"
+                      v-model="mappedVarsData"
+                      :propertiesData="mappedVarsData"
+                      valueType="developer"
+                      :validationErrors="validationErrorsProperties">
+                      </property-form>
                     </template>
                     <template v-else>
-                      <property-form :properties="properties" v-model="propertiesData" :propertiesData="propertiesData" valueType="developer" :validationErrors="validationErrorsProperties"></property-form>
+                      <property-form :properties="properties"
+                      v-model="propertiesData"
+                      :propertiesData="propertiesData"
+                      valueType="developer"
+                      :validationErrors="validationErrorsProperties">
+                      </property-form>
                     </template>
                     <div class="form-row">
                       <div class="form-group col-md-4 button-area">
@@ -370,6 +474,7 @@ import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
 import { mapGetters } from 'vuex';
 import PropertyForm from '@/components/PropertyForm.vue';
+
 export default {
   name: 'BotsForm',
   components: {
@@ -466,18 +571,21 @@ export default {
           ids.push(this.botengine.component);
           delete (this.botengine._id);
           this.services = result.data.services;
-          for (let i = 0; i < this.services.length; i++) {
+          for (let i = 0; i < this.services.length; i += 1) {
             ids.push(this.services[i].component);
             delete (this.services[i]._id);
           }
           this.channels = result.data.channels;
-          for (let i = 0; i < this.channels.length; i++) {
+          for (let i = 0; i < this.channels.length; i += 1) {
             ids.push(this.channels[i].component);
             delete (this.channels[i]._id);
           }
           this.getCachedComponents(ids);
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.loading = false;
           this.oops = true;
         });
@@ -485,12 +593,15 @@ export default {
     getCachedComponents(ids) {
       this.axios.get('/api/components/lookup', { params: { ids: ids.join(',') } })
         .then((results) => {
-          for (let i = 0; i < results.data.length; i++) {
+          for (let i = 0; i < results.data.length; i += 1) {
             this.cachedComponents.set(results.data[i]._id, results.data[i]);
           }
           this.loading = false;
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.loading = false;
           this.oops = true;
         });
@@ -499,7 +610,7 @@ export default {
       this.validationErrors = [];
       this.saving = true;
       this.saved = false;
-      switch(this.pricingModel) {
+      switch (this.pricingModel) {
         case 'free':
           this.pricePerUse = '0';
           this.pricePerMonth = '0';
@@ -510,6 +621,8 @@ export default {
         case 'pay_per_month':
           this.pricePerUse = '0';
           break;
+        default:
+          // do nothing
       }
       this.axios.post('/api/bots/save', {
         id: this.id,
@@ -534,6 +647,9 @@ export default {
           this.$router.push({ name: 'botsView', params: { id } });
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.saving = false;
           if (error.response.status === 422) {
             this.validationErrors = this.normalizeErrors(error.response);
@@ -594,6 +710,9 @@ export default {
           this.components = results.data.results;
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.fetching = false;
           this.oops = true;
         });
@@ -601,10 +720,8 @@ export default {
     priceWithFormat(pricingModel, pricePerUse, pricePerMonth) {
       if (pricingModel === 'free') {
         return this.$i18n.t('common.free');
-      } else {
-        return `${pricePerUse} SEED/use or ${pricePerMonth} SEED/month`;
       }
-
+      return `${pricePerUse} SEED/use or ${pricePerMonth} SEED/month`;
     },
     findInputType(property) {
       let sControl = '';
@@ -618,6 +735,8 @@ export default {
         case 'select':
           sControl = 'PropertyInputSelect';
           break;
+        default:
+          // do nothing
       }
       return sControl;
     },
@@ -639,22 +758,22 @@ export default {
           this.componentPricePerUse = result.data.pricePerUse;
           this.properties = result.data.properties;
           let k = Object.keys(this.propertiesData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.propertiesData, k[j]);
           }
           this.headers = result.data.headers;
           k = Object.keys(this.headersData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.headersData, k[j]);
           }
           this.predefinedVars = result.data.predefinedVars;
           k = Object.keys(this.predefinedVarsData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.predefinedVarsData, k[j]);
           }
           this.mappedVars = result.data.mappedVars;
           k = Object.keys(this.mappedVarsData);
-          for (let j = 0; j < k.length; j++) {
+          for (let j = 0; j < k.length; j += 1) {
             this.$delete(this.mappedVarsData, k[j]);
           }
           // Load current data
@@ -667,7 +786,7 @@ export default {
               }
               break;
             case 'service':
-              for (let i = 0; i < this.services.length; i++) {
+              for (let i = 0; i < this.services.length; i += 1) {
                 if (this.services[i].component === componentId) {
                   this.currentData = Object.assign({}, this.services[i].values);
                   this.subscriptionType = this.services[i].subscriptionType;
@@ -676,7 +795,7 @@ export default {
               }
               break;
             case 'channel':
-              for (let i = 0; i < this.channels.length; i++) {
+              for (let i = 0; i < this.channels.length; i += 1) {
                 if (this.channels[i].component === componentId) {
                   this.currentData = Object.assign({}, this.channels[i].values);
                   this.subscriptionType = this.channels[i].subscriptionType;
@@ -684,6 +803,8 @@ export default {
                 }
               }
               break;
+            default:
+              // do nothing
           }
           if (typeof this.currentData === 'undefined') {
             this.currentData = [];
@@ -698,10 +819,10 @@ export default {
           const currentDataValues = Object.values(this.currentData);
           // Set properties
           this.propertiesData = [];
-          for (let i = 0; i < this.properties.length; i++) {
+          for (let i = 0; i < this.properties.length; i += 1) {
             const vKey = `_${this.properties[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -713,10 +834,10 @@ export default {
           }
           // Set headers
           this.headersData = [];
-          for (let i = 0; i < this.headers.length; i++) {
+          for (let i = 0; i < this.headers.length; i += 1) {
             const vKey = `_${this.headers[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -728,10 +849,10 @@ export default {
           }
           // Set predefinedVars
           this.predefinedVarsData = [];
-          for (let i = 0; i < this.predefinedVars.length; i++) {
+          for (let i = 0; i < this.predefinedVars.length; i += 1) {
             const vKey = `_${this.predefinedVars[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -743,10 +864,10 @@ export default {
           }
           // Set mappedVars
           this.mappedVarsData = [];
-          for (let i = 0; i < this.mappedVars.length; i++) {
+          for (let i = 0; i < this.mappedVars.length; i += 1) {
             const vKey = `_${this.mappedVars[i]._id}`;
             let v = '';
-            for (let j = 0; j < currentDataKeys.length; j++) {
+            for (let j = 0; j < currentDataKeys.length; j += 1) {
               if (currentDataKeys[j] === vKey) {
                 v = currentDataValues[j];
                 break;
@@ -758,6 +879,9 @@ export default {
           }
         })
         .catch((error) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(error);
+          }
           this.fetching = false;
           this.showPropertiesForm = false;
           this.oops = true;
@@ -773,7 +897,7 @@ export default {
       let isValid = true;
       // check subscription type
       if (this.subscriptionType === '') {
-        this.validationErrorsProperties['subscriptionType'] = {
+        this.validationErrorsProperties.subscriptionType = {
           err: {
             msg: 'validation.required',
           },
@@ -783,10 +907,10 @@ export default {
       // check properties
       let k = Object.keys(this.propertiesData);
       let v = Object.values(this.propertiesData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.properties.length; i++) {
+      for (let i = 0; i < this.properties.length; i += 1) {
         if (this.properties[i].valueType === 'developer' && this.properties[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.properties[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -800,10 +924,10 @@ export default {
       // check headers
       k = Object.keys(this.headersData);
       v = Object.values(this.headersData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.headers.length; i++) {
+      for (let i = 0; i < this.headers.length; i += 1) {
         if (this.headers[i].valueType === 'developer' && this.headers[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.headers[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -817,10 +941,10 @@ export default {
       // check predefinedVars
       k = Object.keys(this.predefinedVarsData);
       v = Object.values(this.predefinedVarsData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.predefinedVars.length; i++) {
+      for (let i = 0; i < this.predefinedVars.length; i += 1) {
         if (this.predefinedVars[i].valueType === 'developer' && this.predefinedVars[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.predefinedVars[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -834,10 +958,10 @@ export default {
       // check mappedVars
       k = Object.keys(this.mappedVarsData);
       v = Object.values(this.mappedVarsData);
-      for (let j = 0; j < k.length; j++) {
+      for (let j = 0; j < k.length; j += 1) {
         c.values[k[j]] = v[j];
       }
-      for (let i = 0; i < this.mappedVars.length; i++) {
+      for (let i = 0; i < this.mappedVars.length; i += 1) {
         if (this.mappedVars[i].valueType === 'developer' && this.mappedVars[i].required === 'yes' && v[i].trim() === '') {
           const id = `_${this.mappedVars[i]._id}`;
           this.validationErrorsProperties[id] = {
@@ -860,7 +984,7 @@ export default {
           this.botengine = Object.assign({}, c);
           break;
         case 'service':
-          for (let i = 0; i < this.services.length; i++) {
+          for (let i = 0; i < this.services.length; i += 1) {
             if (this.services[i].component === c.component) {
               this.services[i].subscriptionType = c.subscriptionType;
               this.services[i].values = Object.assign({}, c.values);
@@ -873,7 +997,7 @@ export default {
           }
           break;
         case 'channel':
-          for (let i = 0; i < this.channels.length; i++) {
+          for (let i = 0; i < this.channels.length; i += 1) {
             if (this.channels[i].component === c.component) {
               this.channels[i].subscriptionType = c.subscriptionType;
               this.channels[i].values = Object.assign({}, c.values);
@@ -885,6 +1009,8 @@ export default {
             this.channels.push(Object.assign({}, c));
           }
           break;
+        default:
+          // do nothing
       }
     },
     cachedComponentName(componentId) {
@@ -918,7 +1044,7 @@ export default {
                 this.botengine = {};
                 break;
               case 'service':
-                for (let i = 0; i < this.services.length; i++) {
+                for (let i = 0; i < this.services.length; i += 1) {
                   if (this.services[i].component === componentId) {
                     this.services.splice(i, 1);
                     break;
@@ -926,17 +1052,22 @@ export default {
                 }
                 break;
               case 'channel':
-                for (let i = 0; i < this.channels.length; i++) {
+                for (let i = 0; i < this.channels.length; i += 1) {
                   if (this.channels[i].component === componentId) {
                     this.channels.splice(i, 1);
                     break;
                   }
                 }
                 break;
+              default:
+                // do nothing
             }
           }
         })
         .catch((err) => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error(err);
+          }
           this.oops = true;
         });
     },
@@ -945,7 +1076,7 @@ export default {
     ...mapGetters(['allBotCategories', 'allBotStatuses', 'allPricingModels']),
     botCategories() {
       const botCategoryList = [];
-      for (let i = 0; i < this.allBotCategories.length; i++) {
+      for (let i = 0; i < this.allBotCategories.length; i += 1) {
         botCategoryList.push({
           value: this.allBotCategories[i],
           text: this.$i18n.t(`domain.bot_categories.${this.allBotCategories[i]}`),
@@ -955,7 +1086,7 @@ export default {
     },
     botStatuses() {
       const botStatusList = [];
-      for (let i = 0; i < this.allBotStatuses.length; i++) {
+      for (let i = 0; i < this.allBotStatuses.length; i += 1) {
         botStatusList.push({
           value: this.allBotStatuses[i],
           text: this.$i18n.t(`domain.bot_statuses.${this.allBotStatuses[i]}`),
@@ -965,7 +1096,7 @@ export default {
     },
     pricingModels() {
       const pricingModelList = [];
-      for (let i = 0; i < this.allPricingModels.length; i++) {
+      for (let i = 0; i < this.allPricingModels.length; i += 1) {
         pricingModelList.push({
           value: this.allPricingModels[i],
           text: this.$i18n.t(`domain.pricing_models.${this.allPricingModels[i]}`),
@@ -978,21 +1109,21 @@ export default {
       if (this.componentPricingModel === 'free') {
         pricingOptionsList.push({
           value: 'free',
-          text: this.$i18n.t('domain.pricing_models.free')
+          text: this.$i18n.t('domain.pricing_models.free'),
         });
       } else {
         if (this.componentPricingModel === 'pay_per_month' || this.componentPricingModel === 'pay_per_use_or_month') {
           pricingOptionsList.push({
             value: 'month',
-            text: this.$i18n.t(`domain.component.price_per_month`) +
-            `(${this.componentPricePerMonth} SEED)`
+            text: `${this.$i18n.t('domain.component.price_per_month')
+            }(${this.componentPricePerMonth} SEED)`,
           });
         }
         if (this.componentPricingModel === 'pay_per_use' || this.componentPricingModel === 'pay_per_use_or_month') {
           pricingOptionsList.push({
             value: 'use',
-            text: this.$i18n.t('domain.component.price_per_use') +
-            `(${this.componentPricePerUse} SEED)`
+            text: `${this.$i18n.t('domain.component.price_per_use')
+            }(${this.componentPricePerUse} SEED)`,
           });
         }
       }

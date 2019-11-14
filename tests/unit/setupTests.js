@@ -6,9 +6,10 @@ beforeEach(async () => {
   if (mongoose.connection.readyState === 0) {
     await db();
   }
-  Object.entries(mongoose.connection.collections).map(
-    async ([c]) => mongoose.connection.collections[c].deleteMany({}),
-  );
+  const allCollections = Object.entries(mongoose.connection.collections).map(async ([c]) => {
+    await mongoose.connection.collections[c].deleteMany({});
+  });
+  await Promise.all(allCollections);
 });
 
 afterAll(async () => {

@@ -230,7 +230,7 @@ export default {
         value: '',
         text: this.$i18n.t('domain.bot.all_categories'),
       });
-      for (let i = 0; i < this.allBotCategories.length; i++) {
+      for (let i = 0; i < this.allBotCategories.length; i += 1) {
         botCategoryList.push({
           value: this.allBotCategories[i],
           text: this.$i18n.t(`domain.bot_categories.${this.allBotCategories[i]}`),
@@ -238,7 +238,7 @@ export default {
       }
       return botCategoryList;
     },
-  }
+  },
 };
 </script>
 

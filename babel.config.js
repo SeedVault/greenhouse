@@ -1,5 +1,5 @@
 module.exports = (api) => {
-  if (api.env('testing')) {
+  if (api.env('test')) {
     return {
       presets: [
         ['@babel/preset-env', {
@@ -12,7 +12,7 @@ module.exports = (api) => {
   }
   return {
     presets: [
-      ['@vue/app'],
+      ['@vue/cli-plugin-babel/preset'],
     ],
   };
 };

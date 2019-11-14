@@ -24,12 +24,17 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### Run your unit tests
 ```
-npm run test
+npm run test:unit
 ```
 
-### Lints and fixes files
+### Run your end-to-end tests
+```
+npm run test:e2e
+```
+
+### Lints files
 ```
 npm run lint
 ```
