@@ -16,7 +16,7 @@ module.exports = async () => {
     dbName: database,
     useNewUrlParser: true,
     useCreateIndex: true,
-    auth: {authdb:"admin"},
+    auth: {authdb: process.env.MONGO_INITDB_DATABASE},
     useUnifiedTopology: true
   });
 
