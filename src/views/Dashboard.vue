@@ -52,7 +52,8 @@
                 </tr>
               </tbody>
             </table>
-            <a class="mt-4" style="font-size: 12px" :href="getExplorerUrl" target="_blank">{{ $t('dashboard.view_all_transactions') }}</a>
+            <a class="mt-4" style="font-size: 12px" :href="getExplorerUrl"
+            target="_blank">{{ $t('dashboard.view_all_transactions') }}</a>
           </div>
         </div>
     </div>

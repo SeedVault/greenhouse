@@ -9,7 +9,8 @@
           <div class="card-body">
 
             <router-link class="nav-link back" :to="getBackUrl">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+               {{ $t('common.back') }}
             </router-link>
 
             <span id="hadron-container"
@@ -83,12 +84,11 @@ export default {
       this.loading = true;
       this.axios.get(`/api/marketplace/bots/${this.id}`)
         .then((result) => {
-          const ids = [];
           this.loading = false;
           this.name = result.data.bot.name;
           this.token = result.data.subscription.token;
         })
-        .catch((error) => {
+        .catch(() => { // (error)
           this.loading = false;
           this.oops = true;
         });
@@ -99,10 +99,10 @@ export default {
       switch (this.context) {
         case 'myProducts':
           return { name: 'botsView', params: { id: this.id } };
-          break;
         case 'marketplace':
           return { name: 'marketplaceBotsView', params: { id: this.id } };
-          break;
+        default:
+          return {};
       }
     },
     snippet() {
@@ -110,6 +110,7 @@ export default {
       const dataBotLauncherExternalCss = this.getHadronUrl('/sprout/sequoia-launcher_b.css');
       const dataBotBbotUri = this.getRhizomeUrl('/');
       const launcherBundleJs = this.getHadronUrl('/launcher.bundle.js');
+
       return `<span id="hadron-container"
     data-bot-first-message="Hi"
     data-bot-size-class="tall"
@@ -126,7 +127,7 @@ export default {
     data-bot-uses-3d-avatar="true"
     data-bot-uses-3d-text-panel="false"
 ></span>
-<script type="text/javascript" src="${launcherBundleJs}"><\/script>`;
+<script type="text/javascript" src="${launcherBundleJs}"><\/script>`; // eslint-disable-line no-useless-escape
     },
   },
 };

@@ -11,8 +11,10 @@
                 </div>
                 <div class="col-12 col-sm-4 mb-2">
                   <div class="form-group">
-                    <select id="category" v-model="category" @change="changeCategory" class="form-control medium-size">
-                      <option v-for="option in componentCategories" :value="option.value">{{ option.text }}</option>
+                    <select id="category" v-model="category" @change="changeCategory"
+                    class="form-control medium-size">
+                      <option v-for="option in componentCategories" :value="option.value"
+                      :key="option.value">{{ option.text }}</option>
                     </select>
                   </div>
                 </div>
@@ -41,8 +43,12 @@
                 </div>
                 <div class="col-6 list__sorting">
                   {{ $t('common.sort_by') }}:
-                  <a @click="setSortBy('name')" v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }" href="#">{{ $t('domain.component.name') }}</a>
-                  <a @click="setSortBy('updatedAt')" v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }" href="#">{{ $t('common.date') }}</a>
+                  <a @click="setSortBy('name')"
+                  v-bind:class="{'list__sort': true, 'active': sortBy === 'name' }"
+                  href="#">{{ $t('domain.component.name') }}</a>
+                  <a @click="setSortBy('updatedAt')"
+                  v-bind:class="{'list__sort': true, 'active': sortBy === 'updatedAt' }"
+                  href="#">{{ $t('common.date') }}</a>
                   <a @click="toggleSortType()" class="list__sort icon-hover">
                     <template v-if="sortType === 'desc'">
                       <img :src="require('@/assets/icons/outline-sort-desc-24px.svg')" />
@@ -81,13 +87,15 @@
                     <div class="row">
                       <div class="col-sm">
                         <div class="media">
-                          <img :src="component.pictureUrl" class="list__image mr-4" @click="viewComponent(component._id)">
+                          <img :src="component.pictureUrl" class="list__image mr-4"
+                          @click="viewComponent(component._id)">
                           <div class="media-body list-body mb-2">
                             <h5 class="list__name mt-0">{{ component.name }}</h5>
                             <div class="list__description">{{ component.description }}</div>
                             <div class="list__misc clearfix">
                               <div class="list__rating">
-                              <star-rating :rating="3.5" :increment="0.5" :star-size="18" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                              <star-rating :rating="3.5" :increment="0.5" :star-size="18"
+                              :show-rating="false" :inline="true" :read-only="true"></star-rating>
                               </div>
                               <div class="list__category">{{ $t("common.by") }}
                               {{ component.username }}
@@ -103,7 +111,8 @@
                         </div>
                       </div>
                       <div class="col-sm-2 align-self-center">
-                        <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="viewComponent(component._id)">{{ $t('common.view') }}</button>
+                        <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                        @click="viewComponent(component._id)">{{ $t('common.view') }}</button>
                       </div>
                     </div>
                     <hr >
@@ -111,11 +120,13 @@
                   <div class="row">
                     <div class="col-sm text-center">
                       <div class="list__paginator" v-show="pagesCount > 1">
-                        <a @click="jumpToPage(page - 1)" v-show="page - 1 > 0" :title="$t('common.go_to_previous_page')" class="icon-hover">
+                        <a @click="jumpToPage(page - 1)" v-show="page - 1 > 0"
+                          :title="$t('common.go_to_previous_page')" class="icon-hover">
                           <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
                         </a>
                         <span class="list__paginator-text">{{ $t('common.page') }} {{ page }}</span>
-                        <a @click="jumpToPage(page + 1)" v-show="page + 1 <= pagesCount" :title="$t('common.go_to_next_page')" class="icon-hover">
+                        <a @click="jumpToPage(page + 1)" v-show="page + 1 <= pagesCount"
+                        :title="$t('common.go_to_next_page')" class="icon-hover">
                           <img :src="require('@/assets/icons/outline-icon-forward-24px.svg')" />
                         </a>
                       </div>
@@ -201,7 +212,7 @@ export default {
           this.resultsCount = results.data.resultsCount;
           this.components = results.data.results;
         })
-        .catch((error) => {
+        .catch(() => { // (error)
           this.fetching = false;
           this.oops = true;
         });

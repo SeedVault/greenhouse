@@ -5,8 +5,8 @@ export default {
   extends: Line,
   props: ['chartdata', 'options'],
   mounted() {
-    this.renderChart(this.chartdata, this.options),
-    { responsive: true, maintainAspectRatio: false };
+    this.renderChart(this.chartdata, this.options,
+      { responsive: true, maintainAspectRatio: false });
   },
 };
 </script>

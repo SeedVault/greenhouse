@@ -9,7 +9,8 @@
           <div class="card-body">
 
             <router-link class="nav-link back" :to="getBackUrl">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+               {{ $t('common.back') }}
             </router-link>
 
             <div class="deleting text-center" v-show="deleting || deleted">
@@ -35,12 +36,14 @@
                   {{ $t('common.free') }}
                   </strong></p>
                 </div>
-                <div v-if="pricingModel === 'pay_per_use' || pricingModel === 'pay_per_use_or_month'">
+                <div
+                v-if="pricingModel === 'pay_per_use' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_use") }}: <strong>
                     {{ pricePerUse }} SEED
                   </strong></p>
                 </div>
-                <div v-if="pricingModel === 'pay_per_month' || pricingModel === 'pay_per_use_or_month'">
+                <div
+                v-if="pricingModel === 'pay_per_month' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_month") }}: <strong>
                     {{ pricePerMonth }} SEED
                   </strong></p>
@@ -55,14 +58,17 @@
                 </p>
                 </div>
                 <div class="col-md-2">
-                  <!-- <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="editComponent()">{{ $t('common.modify') }}</button>
-                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmDelete()">{{ $t('common.delete') }}</button> -->
+                  <!-- <button type="submit" class="btn btn-sm btn-primary
+                  btn-block mb-2" @click="editComponent()">{{ $t('common.modify') }}</button>
+                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2"
+                  @click="confirmDelete()">{{ $t('common.delete') }}</button> -->
                 </div>
               </div>
               <div class="row view">
                 <div class="col-md-3">
                   <div class="rating">
-                    <star-rating :rating="3.5" :increment="0.5" :star-size="26" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                    <star-rating :rating="3.5" :increment="0.5" :star-size="26"
+                    :show-rating="false" :inline="true" :read-only="true"></star-rating>
                   </div>
                 </div>
                 <div class="col-md-9">
@@ -70,16 +76,21 @@
                   <ul class="nav nav-underline">
                     <li class="nav-item active">
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'description' }]">
-                      <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.component.description") }}</a>
+                      <a class="nav-link" style="padding-left:0px"
+                      @click="selectedTab='description'"
+                      >{{ $t("domain.component.description") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'features' }]">
-                      <a class="nav-link" @click="selectedTab='features'">{{ $t("domain.component.features") }}</a>
+                      <a class="nav-link" @click="selectedTab='features'"
+                      >{{ $t("domain.component.features") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'license' }]">
-                      <a class="nav-link" @click="selectedTab='license'">{{ $t("domain.component.license") }}</a>
+                      <a class="nav-link" @click="selectedTab='license'"
+                      >{{ $t("domain.component.license") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'properties' }]">
-                      <a class="nav-link" @click="selectedTab='properties'">{{ $t("domain.component.properties") }} ({{ propertiesCount }})</a>
+                      <a class="nav-link" @click="selectedTab='properties'"
+                      >{{ $t("domain.component.properties") }} ({{ propertiesCount }})</a>
                     </li>
                   </ul>
 
@@ -114,7 +125,8 @@
                   <div v-show="selectedTab === 'properties'">
                     <div v-show="!showPropertyForm && componentType !== 'service'">
                       <h2 class="view__subtitle">{{ $t("domain.component.properties") }}</h2>
-                      <div class="no_properties" v-show="properties.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <div class="no_properties" v-show="properties.length === 0"
+                      >{{ $t("properties.there_are_no_properties") }}</div>
                       <ul>
                         <li v-for="property in properties" :key="property._id">
                           <span>{{ property.name }}</span>
@@ -123,7 +135,8 @@
                     </div>
                     <div v-show="!showPropertyForm && componentType === 'service'">
                       <h2 class="view__subtitle">{{ $t("domain.component.headers") }}</h2>
-                      <div class="no_properties" v-show="headers.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <div class="no_properties" v-show="headers.length === 0"
+                      >{{ $t("properties.there_are_no_properties") }}</div>
                       <ul>
                         <li v-for="property in headers" :key="property._id">
                           <span>{{ property.name }}</span>
@@ -132,7 +145,8 @@
                     </div>
                     <div v-show="!showPropertyForm && componentType === 'service'">
                       <h2 class="view__subtitle">{{ $t("domain.component.predefinedVars") }}</h2>
-                      <div class="no_properties" v-show="predefinedVars.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <div class="no_properties" v-show="predefinedVars.length === 0"
+                      >{{ $t("properties.there_are_no_properties") }}</div>
                       <ul>
                         <li v-for="property in predefinedVars" :key="property._id">
                           <span>{{ property.name }}</span>
@@ -141,7 +155,8 @@
                     </div>
                     <div v-show="!showPropertyForm && componentType === 'service'">
                       <h2 class="view__subtitle">{{ $t("domain.component.mappedVars") }}</h2>
-                      <div class="no_properties" v-show="mappedVars.length === 0">{{ $t("properties.there_are_no_properties") }}</div>
+                      <div class="no_properties" v-show="mappedVars.length === 0"
+                      >{{ $t("properties.there_are_no_properties") }}</div>
                        <ul>
                         <li v-for="property in mappedVars" :key="property._id">
                           <span>{{ property.name }}</span>
@@ -164,7 +179,6 @@
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
-import draggable from 'vuedraggable';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -172,7 +186,6 @@ export default {
   components: {
     AppLayout,
     StarRating,
-    draggable,
   },
   props: ['context'],
   data() {
@@ -255,13 +268,13 @@ export default {
           this.username = result.data.username;
           this.updatedAt = result.data.updatedAt;
         })
-        .catch((error) => {
+        .catch(() => { // (error)
           this.loading = false;
           this.oops = true;
         });
     },
-    reorderProperties(propertyGroup) {
-    },
+    /* reorderProperties(propertyGroup) {
+    }, */
   },
   computed: {
     ...mapGetters(['allPropertyValueTypes', 'allPropertyInputTypes']),
@@ -309,10 +322,10 @@ export default {
       switch (this.context) {
         case 'components':
           return { name: 'marketplaceComponentsList' };
-          break;
         case 'services':
           return { name: 'marketplaceServicesList' };
-          break;
+        default:
+          return {};
       }
     },
   },

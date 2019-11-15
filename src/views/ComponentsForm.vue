@@ -9,7 +9,8 @@
           <div class="card-body">
 
             <router-link class="nav-link back" :to="urlToGoBack">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" />
+               {{ $t('common.back') }}
             </router-link>
 
             <div class="saving text-center" v-show="saving || saved">
@@ -43,7 +44,8 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12" v-if="isSeedUser">
-                      <input-select v-model="componentType" :options="componentTypes" id="componentType"
+                      <input-select v-model="componentType"
+                        :options="componentTypes" id="componentType"
                         :label="$t('domain.component.component_type')"
                         icon="outline-my-products-24px.svg"
                         :validationErrors="validationErrors"></input-select>
@@ -52,7 +54,8 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-select v-model="category" :options="componentCategories" id="category"
+                      <input-select v-model="category"
+                        :options="componentCategories" id="category"
                         :label="$t('domain.component.category')"
                         icon="outline-icon-types-24px.svg"
                         :validationErrors="validationErrors"></input-select>
@@ -61,32 +64,41 @@
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="name" id="name" :label="$t('domain.component.name')"
-                        :placeholder="$t('domain.component.name_placeholder')" icon="outline-component-24px.svg"
+                      <input-text v-model="name" id="name"
+                        :label="$t('domain.component.name')"
+                        :placeholder="$t('domain.component.name_placeholder')"
+                        icon="outline-component-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="description" id="description" :label="$t('domain.component.description')"
-                        :placeholder="$t('domain.component.description_placeholder')" icon="outline-icon-description-24px.svg"
+                      <input-text v-model="description" id="description"
+                        :label="$t('domain.component.description')"
+                        :placeholder="$t('domain.component.description_placeholder')"
+                        icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="features" id="features" :label="$t('domain.component.features')" :rows="5"
-                        :placeholder="$t('domain.component.features_placeholder')" icon="outline-icon-description-24px.svg"
+                      <input-textarea v-model="features" id="features"
+                        :label="$t('domain.component.features')" :rows="5"
+                        :placeholder="$t('domain.component.features_placeholder')"
+                        icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-textarea v-model="license" id="license" :label="$t('domain.component.license')" :tooltip="$t('domain.component.license_tooltip')" :rows="5"
-                        :placeholder="$t('domain.component.license_placeholder')" icon="outline-icon-description-24px.svg"
+                      <input-textarea v-model="license" id="license"
+                        :label="$t('domain.component.license')"
+                        :tooltip="$t('domain.component.license_tooltip')" :rows="5"
+                        :placeholder="$t('domain.component.license_placeholder')"
+                        icon="outline-icon-description-24px.svg"
                         :validationErrors="validationErrors"></input-textarea>
                     </div>
                   </div>
@@ -94,57 +106,74 @@
                   <div class="form-row">
                     <div class="form-group col-md-12">
                       <input-text v-model="url" id="url" :label="$t('domain.component.url')"
-                        :placeholder="$t('domain.component.url_placeholder')" icon="outline-icon-url-24px.svg"
+                        :placeholder="$t('domain.component.url_placeholder')"
+                        icon="outline-icon-url-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <input-select v-model="httpMethod" :options="httpMethods" id="httpMethod"
+                      <input-select v-model="httpMethod" :options="httpMethods"
+                        id="httpMethod"
                         :label="$t('domain.component.http_method')"
                         icon="outline-icon-list-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-model="timeout" id="timeout" :label="$t('domain.component.timeout')"
-                        :placeholder="$t('domain.component.timeout')" icon="outline-history-24px@2x.svg"
+                      <input-text v-model="timeout" id="timeout"
+                        :label="$t('domain.component.timeout')"
+                        :placeholder="$t('domain.component.timeout')"
+                        icon="outline-history-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-12">
-                      <input-text v-model="key" id="key" :label="$t('domain.component.key')"
-                        :placeholder="$t('domain.component.key_placeholder')" icon="outline-icon-code-24px.svg"
+                      <input-text v-model="key" id="key"
+                      :label="$t('domain.component.key')"
+                        :placeholder="$t('domain.component.key_placeholder')"
+                        icon="outline-icon-code-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-4">
-                      <input-select v-model="pricingModel" :options="pricingModels" id="pricingModel"
+                      <input-select v-model="pricingModel"
+                      :options="pricingModels" id="pricingModel"
                         :tooltip="$t('domain.component.pricing_model_tooltip')"
                         :label="$t('domain.component.pricing_model')"
                         icon="outline-icon-types-24px.svg"
                         :validationErrors="validationErrors"></input-select>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='pay_per_use' || pricingModel==='pay_per_use_or_month'" v-model="pricePerUse" id="pricePerUse" :label="$t('domain.bot.price_per_use')"
-                        :placeholder="$t('domain.component.price_per_use')" icon="outline-coin-24px@2x.svg"
+                      <input-text v-show="pricingModel==='pay_per_use'
+                      || pricingModel==='pay_per_use_or_month'" v-model="pricePerUse"
+                      id="pricePerUse" :label="$t('domain.bot.price_per_use')"
+                        :placeholder="$t('domain.component.price_per_use')"
+                        icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                     <div class="form-group col-md-4">
-                      <input-text v-show="pricingModel==='pay_per_month' || pricingModel==='pay_per_use_or_month'" v-model="pricePerMonth" id="pricePerMonth" :label="$t('domain.bot.price_per_month')"
-                        :placeholder="$t('domain.component.price_per_month')" icon="outline-coin-24px@2x.svg"
+                      <input-text
+                      v-show="pricingModel==='pay_per_month'
+                      || pricingModel==='pay_per_use_or_month'"
+                      v-model="pricePerMonth" id="pricePerMonth"
+                      :label="$t('domain.bot.price_per_month')"
+                        :placeholder="$t('domain.component.price_per_month')"
+                        icon="outline-coin-24px@2x.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
                   </div>
 
                   <div class="form-row">
                     <div class="form-group col-md-8">
-                      <input-text v-model="functionName" id="functionName" :label="$t('domain.component.function_name')"
-                        :placeholder="$t('domain.component.function_name_placeholder')" icon="outline-icon-function-24px.svg"
+                      <input-text v-model="functionName" id="functionName"
+                      :label="$t('domain.component.function_name')"
+                        :placeholder="$t('domain.component.function_name_placeholder')"
+                        icon="outline-icon-function-24px.svg"
                         :validationErrors="validationErrors"></input-text>
                     </div>
 
@@ -243,7 +272,7 @@ export default {
           this.username = result.data.username;
           this.updatedAt = result.data.updatedAt;
         })
-        .catch((error) => {
+        .catch(() => { // (error)
           this.loading = false;
           this.oops = true;
         });
@@ -263,6 +292,8 @@ export default {
         case 'pay_per_month':
           this.pricePerUse = '0';
           break;
+        default:
+          // do nothing
       }
       this.axios.post('/api/components/save', {
         id: this.id,

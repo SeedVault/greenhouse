@@ -6,7 +6,8 @@
           <div class="card-body">
 
             <router-link class="nav-link back" :to="getBackUrl">
-              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')" /> {{ $t('common.back') }}
+              <img :src="require('@/assets/icons/outline-icon-back-24px.svg')"
+              /> {{ $t('common.back') }}
             </router-link>
 
             <div class="deleting text-center" v-show="deleting || deleted">
@@ -42,8 +43,11 @@
 
             <div class="row row-form view" v-show="!deleting && !deleted">
               <div class="col-md-3">
-                <picture-changer ref="pictureChanger" v-show="username === this.$store.getters.user.username && context == 'myProducts'"></picture-changer>
-                <img :src="pictureUrl" class="img-fluid img-view" v-show="context !== 'myProducts'"/>
+                <picture-changer ref="pictureChanger"
+                v-show="username === this.$store.getters.user.username && context == 'myProducts'"
+                ></picture-changer>
+                <img :src="pictureUrl" class="img-fluid img-view"
+                v-show="context !== 'myProducts'"/>
               </div>
 
               <div class="col-md-7">
@@ -55,12 +59,14 @@
                   {{ $t('common.free') }}
                   </strong></p>
                 </div>
-                <div v-if="pricingModel === 'pay_per_use' || pricingModel === 'pay_per_use_or_month'">
+                <div
+                v-if="pricingModel === 'pay_per_use' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_use") }}: <strong>
                     {{ pricePerUse }} SEED
                   </strong></p>
                 </div>
-                <div v-if="pricingModel === 'pay_per_month' || pricingModel === 'pay_per_use_or_month'">
+                <div
+                v-if="pricingModel === 'pay_per_month' || pricingModel === 'pay_per_use_or_month'">
                   <p>{{ $t("domain.bot.price_per_month") }}: <strong>
                     {{ pricePerMonth }} SEED
                   </strong></p>
@@ -76,19 +82,33 @@
                 </p>
                 </div>
                 <div class="col-md-2">
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="editBot()" v-show="username === this.$store.getters.user.username && context == 'myProducts'">{{ $t('common.modify') }}</button>
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="subscribe()" v-show="!subscribed">{{ $t('bots.subscribe') }}</button>
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="subscribe()" v-show="subscribed">{{ $t('bots.configure') }}</button>
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="testBot()" v-show="subscribed">{{ $t('bots.test_bot') }}</button>
-                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2" @click="viewCode()" v-show="subscribed">{{ $t('bots.view_code') }}</button>
-                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmUnsubscribe()" v-show="subscribed && username !== this.$store.getters.user.username">{{ $t('bots.unsubscribe') }}</button>
-                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2" @click="confirmDelete()" v-show="username === this.$store.getters.user.username && context == 'myProducts'">{{ $t('common.delete') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                  @click="editBot()"
+                  v-show="username === this.$store.getters.user.username && context == 'myProducts'"
+                  >{{ $t('common.modify') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                  @click="subscribe()" v-show="!subscribed">{{ $t('bots.subscribe') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                  @click="subscribe()" v-show="subscribed">{{ $t('bots.configure') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                  @click="testBot()" v-show="subscribed">{{ $t('bots.test_bot') }}</button>
+                  <button type="submit" class="btn btn-sm btn-primary btn-block mb-2"
+                  @click="viewCode()" v-show="subscribed">{{ $t('bots.view_code') }}</button>
+                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2"
+                  @click="confirmUnsubscribe()"
+                  v-show="subscribed && username !== this.$store.getters.user.username"
+                  >{{ $t('bots.unsubscribe') }}</button>
+                  <button type="submit" class="btn btn-sm btn-danger btn-block mb-2"
+                  @click="confirmDelete()"
+                  v-show="username === this.$store.getters.user.username && context == 'myProducts'"
+                  >{{ $t('common.delete') }}</button>
                 </div>
               </div>
               <div class="row view">
                 <div class="col-md-3">
                   <div class="rating">
-                    <star-rating :rating="3.5" :increment="0.5" :star-size="26" :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                    <star-rating :rating="3.5" :increment="0.5" :star-size="26"
+                    :show-rating="false" :inline="true" :read-only="true"></star-rating>
                   </div>
                 </div>
                 <div class="col-md-9">
@@ -96,13 +116,16 @@
                   <ul class="nav nav-underline">
                     <li class="nav-item active">
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'description' }]">
-                      <a class="nav-link" style="padding-left:0px" @click="selectedTab='description'">{{ $t("domain.bot.description") }}</a>
+                      <a class="nav-link" style="padding-left:0px"
+                      @click="selectedTab='description'">{{ $t("domain.bot.description") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'features' }]">
-                      <a class="nav-link" @click="selectedTab='features'">{{ $t("domain.bot.features") }}</a>
+                      <a class="nav-link" @click="selectedTab='features'"
+                      >{{ $t("domain.bot.features") }}</a>
                     </li>
                     <li v-bind:class="['nav-item', { 'active': selectedTab === 'license' }]">
-                      <a class="nav-link" @click="selectedTab='license'">{{ $t("domain.bot.license") }}</a>
+                      <a class="nav-link" @click="selectedTab='license'"
+                      >{{ $t("domain.bot.license") }}</a>
                     </li>
                   </ul>
 
@@ -139,15 +162,12 @@
 <script>
 import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
 import StarRating from 'vue-star-rating';
-import { mapGetters } from 'vuex';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
-import MyProducts from '@/views/MyProducts.vue';
 
 export default {
   name: 'MarketplaceBotsView',
   components: {
     AppLayout,
-    MyProducts,
     StarRating,
     PictureChanger,
   },
@@ -239,7 +259,7 @@ export default {
             this.token = result.data.subscription.token;
           }
         })
-        .catch((error) => {
+        .catch(() => { // (error)
           this.loading = false;
           this.oops = true;
         });
@@ -249,7 +269,7 @@ export default {
       this.$router.push({ name: 'botsForm', params: { id } });
     },
     confirmDelete() {
-      const { id } = this.$route.params;
+      // const { id } = this.$route.params;
       this.$bvModal.msgBoxConfirm(' ', {
         title: this.$i18n.t('bots.delete_this_bot'),
         size: 'md',
@@ -266,7 +286,7 @@ export default {
             this.deleteBot();
           }
         })
-        .catch((err) => {
+        .catch(() => { // (err)
           this.oops = true;
         });
     },
@@ -278,7 +298,7 @@ export default {
       this.axios.post('/api/bots/delete', {
         id,
       })
-        .then((result) => {
+        .then(() => { // (result)
           this.deleting = false;
           this.deleted = true;
           switch (this.context) {
@@ -288,6 +308,8 @@ export default {
             case 'marketplace':
               this.$router.push({ name: 'marketplaceBotsList' });
               break;
+            default:
+              // do nothing
           }
         })
         .catch((error) => {
@@ -308,10 +330,12 @@ export default {
         case 'marketplace':
           this.$router.push({ name: 'marketplaceBotsConfigure', params: { id } });
           break;
+        default:
+          // do nothing
       }
     },
     testBot() {
-      const { id } = this.$route.params;
+      // const { id } = this.$route.params;
       this.removeHadron();
       this.injectHadron();
       // this.$router.push({ name: 'botsForm', params: { id } });
@@ -325,10 +349,12 @@ export default {
         case 'marketplace':
           this.$router.push({ name: 'marketplaceBotsCode', params: { id } });
           break;
+        default:
+          // do nothing
       }
     },
     confirmUnsubscribe() {
-      const { id } = this.$route.params;
+      // const { id } = this.$route.params;
       this.$bvModal.msgBoxConfirm(' ', {
         title: this.$i18n.t('bots.unsubscribe_from_this_bot'),
         size: 'md',
@@ -345,7 +371,7 @@ export default {
             this.unsubscribe();
           }
         })
-        .catch((err) => {
+        .catch(() => { // (err)
           this.oops = true;
         });
     },
@@ -355,7 +381,7 @@ export default {
       this.deleted = false;
       const { id } = this.$route.params;
       this.axios.post(`/api/subscriptions/bots/${id}/unsubscribe`, {})
-        .then((result) => {
+        .then(() => { // (result)
           this.deleting = false;
           this.deleted = true;
           switch (this.context) {
@@ -365,6 +391,8 @@ export default {
             case 'marketplace':
               this.$router.push({ name: 'marketplaceBotsList' });
               break;
+            default:
+              // do nothing
           }
         })
         .catch((error) => {
@@ -382,10 +410,10 @@ export default {
       switch (this.context) {
         case 'myProducts':
           return { name: 'botsList' };
-          break;
         case 'marketplace':
           return { name: 'marketplaceBotsList' };
-          break;
+        default:
+          return {};
       }
     },
   },
