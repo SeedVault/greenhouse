@@ -151,6 +151,7 @@
       "pricing_model_tooltip": "Select one pricing option. Pay per use of your Bot. Pay a flat fee per month for use of your bot. Pay per use or per month option will give the publisher the option to pick either pay per use or pay per month.",
       "price_per_use": "Price per use", 
       "price_per_month": "Price per month",
+      "properties": "Properties",
       "status": "Status",
       "bot_engine": "Bot Engine",
       "bot_engine_tooltip": "Select a bot engine to power your Bot. Ex. ChatScript, Dialogflow, etc.",
@@ -277,7 +278,12 @@
     "unknown": "(unknown)",
     "withdraw": "Withdraw",
     "deposit": "Deposit",
-    "view_all_transactions": "View all transactions"
+    "view_all_transactions": "View all transactions",
+    "tutorials": "Tutorials",
+    "tutorials_text": "Short tutorial-style videos showing you the steps on how to create a bot, a service or how to connect an external bot engine:",
+    "tutorials_join_discord": "Join our community on Discord to discuss ideas, report issues and find projects:",
+    "tutorials_join_telegram_title": "Join our Telegram group",
+    "tutorials_join_telegram_text": "If you haven’t done so please join our Telegram group with more than 5K members:"
   },
   "products": {
     "bots": "Bots",

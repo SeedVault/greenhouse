@@ -16,6 +16,54 @@
             :options="chartBalanceOptions" :height="200"></balance-chart>
           </div>
         </div>
+
+        <div class="card box">
+          <div class="card-body">
+            <h4 class="card-title">{{ $t('dashboard.tutorials') }}</h4>
+        <div>{{ $t('dashboard.tutorials_text') }}</div>
+        <br />
+        <div class="media">
+          <a target="_blank" href="https://www.youtube.com/watch?v=nUdJ9-G9xHw&list=PLg58K2Ei6SkEJSkf3ipm1utqGfq_k6-rk">
+          <img class="align-self-start mr-3 img-fluid"
+          src="@/assets/images/tutorial-nUdJ9-G9xHwmq.jpg"
+          alt="Tutorial" style="width: 120px"></a>
+          <div class="media-body">
+            <a target="_blank" href="https://www.youtube.com/watch?v=nUdJ9-G9xHw&list=PLg58K2Ei6SkEJSkf3ipm1utqGfq_k6-rk">
+            <h6 class="mt-0">Greenhouse: Create New Bot with DialogFlow agent
+            for Web and Telegram</h6></a>
+            In this short tutorial, Gaby walks you through the steps to create
+            a new bot in the Greenhouse marketplace from scratch.
+          </div>
+        </div>
+        <br />
+        <h6>{{ $t('dashboard.tutorials_join_discord') }}</h6>
+        <div class="media">
+          <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
+          <img class="align-self-start"
+          src="@/assets/images/discord-logo-color.svg"
+          alt="Tutorial" style="width: 64px"></a>
+          <div class="media-body">
+            <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
+              <h6 class="mt-6">https://discordapp.com/invite/Suv5bFT</h6>
+            </a>
+          </div>
+        </div>
+
+        <h6>{{ $t('dashboard.tutorials_join_telegram_title') }}</h6>
+        <p>{{ $t('dashboard.tutorials_join_telegram_text') }}</p>
+        <div class="media">
+          <a target="_blank" href="https://t.me/seedtoken">
+          <img class="align-self-start mr-3"
+          src="@/assets/images/telegram-logo.svg"
+          alt="Tutorial" style="width: 48px"></a>
+          <div class="media-body">
+            <a target="_blank" href="https://t.me/seedtoken">
+              <h6 class="mt-6">https://t.me/seedtoken</h6>
+            </a>
+          </div>
+        </div>
+          </div>
+        </div>
       </div>
 
       <div class="col-lg-5">
@@ -198,4 +246,9 @@ export default {
     }
   }
 
+h6 { margin-top: 16px; }
+.media {
+  color: #686b77;
+  font-size: 12px;
+}
 </style>
