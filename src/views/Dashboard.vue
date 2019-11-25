@@ -35,33 +35,44 @@
             a new bot in the Greenhouse marketplace from scratch.
           </div>
         </div>
-        <br />
-        <h6>{{ $t('dashboard.tutorials_join_discord') }}</h6>
-        <div class="media">
-          <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
-          <img class="align-self-start"
-          src="@/assets/images/discord-logo-color.svg"
-          alt="Tutorial" style="width: 64px"></a>
-          <div class="media-body">
-            <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
-              <h6 class="mt-6">https://discordapp.com/invite/Suv5bFT</h6>
-            </a>
-          </div>
-        </div>
 
-        <h6>{{ $t('dashboard.tutorials_join_telegram_title') }}</h6>
-        <p>{{ $t('dashboard.tutorials_join_telegram_text') }}</p>
-        <div class="media">
-          <a target="_blank" href="https://t.me/seedtoken">
-          <img class="align-self-start mr-3"
-          src="@/assets/images/telegram-logo.svg"
-          alt="Tutorial" style="width: 48px"></a>
-          <div class="media-body">
-            <a target="_blank" href="https://t.me/seedtoken">
-              <h6 class="mt-6">https://t.me/seedtoken</h6>
-            </a>
           </div>
         </div>
+        <div class="card box">
+          <div class="card-body">
+
+            <h4 class="card-title">{{ $t('dashboard.tutorials_community') }}</h4>
+
+            <br />
+
+            <div class="media">
+              <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
+              <img class="align-self-start mr-3"
+              src="@/assets/images/discord-logo-color.svg"
+              alt="Tutorial" style="width: 48px"></a>
+              <div class="media-body">
+                <h6>{{ $t('dashboard.tutorials_join_discord') }}</h6>
+                <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
+                  <h6 class="mt-6">https://discordapp.com/invite/Suv5bFT</h6>
+                </a>
+              </div>
+            </div>
+
+            <hr />
+
+            <div class="media">
+              <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
+              <img class="align-self-start mr-3"
+              src="@/assets/images/telegram-logo.svg"
+              alt="Tutorial" style="width: 48px"></a>
+              <div class="media-body">
+                <h6>{{ $t('dashboard.tutorials_join_telegram_title') }}</h6>
+            <p>{{ $t('dashboard.tutorials_join_telegram_text') }}</p>
+                <a target="_blank" href="https://t.me/seedtoken">
+                  <h6 class="mt-6">https://t.me/seedtoken</h6>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -246,9 +257,16 @@ export default {
     }
   }
 
-h6 { margin-top: 16px; }
+// h6 { color: #212529 }
+
 .media {
   color: #686b77;
   font-size: 12px;
+}
+
+hr {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dotted #dedfe0;
 }
 </style>
