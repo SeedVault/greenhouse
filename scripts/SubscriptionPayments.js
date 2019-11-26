@@ -63,7 +63,7 @@ async function botSubscriptionPayment() {
 
 
         try {
-            let tx = await WalletService.send(bs.username, bs.bot.username, bs.bot.pricePerMonth, true) //use await to avoid hammering the node
+            let tx = await WalletService.send(bs.username, bs.bot.username, String(bs.bot.pricePerMonth), true) //use await to avoid hammering the node
             console.log('TX hash: ' + tx.transactionId)
 
             let q
@@ -105,6 +105,7 @@ async function serviceSubscriptionPayment() {
                 "as" : "service"
             }
         },
+        {"$unwind": "$service"},
         {"$lookup": {
                 from: "subscription_payments",
                 localField: "services._id",
@@ -141,7 +142,7 @@ async function serviceSubscriptionPayment() {
 
 
         try {
-            let tx = await WalletService.send(bs.username, bs.service.username, bs.service.pricePerMonth, true) //use await to avoid hammering the node
+            let tx = await WalletService.send(bs.username, bs.service.username, String(bs.service.pricePerMonth), true) //use await to avoid hammering the node
             console.log('TX hash: ' + tx.transactionId)
 
             let q
