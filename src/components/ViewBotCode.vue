@@ -130,6 +130,12 @@ export default {
     data-bot-publisher-token="${this.token}"
     data-bot-uses-3d-avatar="true"
     data-bot-uses-3d-text-panel="false"
+    data-bot-uses-3d-avatar-cam-pos-x="5"
+    data-bot-uses-3d-avatar-cam-pos-y="72"
+    data-bot-uses-3d-avatar-cam-pos-z="60"
+    data-bot-uses-3d-avatar-cam-target-pos-x="0"
+    data-bot-uses-3d-avatar-cam-target-pos-y="72"
+    data-bot-uses-3d-avatar-cam-target-pos-z="0"
 ></span>
 <script type="text/javascript" src="${launcherBundleJs}"><\/script>`; // eslint-disable-line no-useless-escape
     },

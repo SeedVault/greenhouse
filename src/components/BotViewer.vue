@@ -40,6 +40,12 @@
                 :data-bot-publisher-token="token"
                 data-bot-uses-3d-avatar="true"
                 data-bot-uses-3d-text-panel="false"
+                data-bot-uses-3d-avatar-cam-pos-x="5"
+                data-bot-uses-3d-avatar-cam-pos-y="72"
+                data-bot-uses-3d-avatar-cam-pos-z="60"
+                data-bot-uses-3d-avatar-cam-target-pos-x="0"
+                data-bot-uses-3d-avatar-cam-target-pos-y="72"
+                data-bot-uses-3d-avatar-cam-target-pos-z="0"
               ></span>
             </template>
 
