@@ -119,7 +119,7 @@
         <div class="card box">
           <div class="card-body">
             <h4 class="card-title" style="margin-bottom: 30px">
-              Discord</h4>
+              {{ $t('dashboard.our_discord_channel') }}</h4>
             <iframe src="https://disweb.dashflo.net/channels/417290225446944768/426348970361487360"
           height="600" width="100%"></iframe>
           </div>
