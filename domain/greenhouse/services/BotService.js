@@ -312,6 +312,81 @@ const BotService = {
       pagesCount,
     }
   },
+
+  normalizePropertyErrors(err) {
+    if (err.errors) {
+      let keys = Object.keys(err.errors);
+      let values = Object.values(err.errors);
+      for (let i = 0; i < keys.length; i += 1) {
+        if (keys[i].startsWith('properties.')) {
+          let parts = keys[i].split('.');
+          err.errors[keys[i]] = parts[2];
+          Object.defineProperty(err.errors, parts[2],
+            Object.getOwnPropertyDescriptor(err.errors, keys[i]));
+            err.errors[parts[2]] = values[i];
+            delete err.errors[keys[i]];
+        }
+      }
+    }
+    return err;
+  },
+
+  addProperty: async (username, id, property) => {
+    let bot = await BotService.findMyBotById(username, id);
+    bot.properties.push(property);
+    try {
+      return await bot.save();
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throw BotService.normalizePropertyErrors(err);
+      }
+    }
+  },
+
+  findProperty: async (bot, propertyId) => {
+    let p = await bot.properties.id(propertyId);
+    if (p === null) {
+      throw new PropertyNotFoundError();
+    } else {
+      return p;
+    }
+  },
+
+  updateProperty: async (username, id, property) => {
+    let bot = await BotService.findMyBotById(username, id);
+    let p = await BotService.findProperty(bot, property._id);
+    p.name = property.name;
+    p.valueType = property.valueType;
+    p.inputType = property.inputType;
+    p.options = property.options;
+    p.required = property.required;
+    p.value = property.value;
+    p.tooltip = property.tooltip;
+    try {
+      await bot.save();
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        throw BotService.normalizePropertyErrors(err);
+      }
+    }
+  },
+
+  deleteProperty: async (username, id, property) => {
+    let bot = await BotService.findMyBotById(username, id);
+    let p = await BotService.findProperty(bot, property._id);
+    p.remove();
+    return await bot.save();
+  },
+
+  reorderProperties: async (username, id, propertyIds) => {
+    let bot = await BotService.findMyBotById(username, id);
+    let p = new Array(propertyIds.length);
+    for (let i = 0; i < propertyIds.length; i += 1) {
+      p[i] = await BotService.findProperty(bot, propertyIds[i]);
+    }
+    bot.properties = p;
+    return await bot.save();
+  }
 }
 
 module.exports = {

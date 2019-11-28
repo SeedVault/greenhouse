@@ -222,6 +222,82 @@ const bots = {
       return res.status(500).json(err);
     }
   },
+
+  // POST - /bots/property/save
+  saveProperty: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyId = req.body.propertyId;
+      if (propertyId === '') {
+        const p = {
+          name: req.body.propertyName,
+          valueType: req.body.propertyValueType,
+          inputType: req.body.propertyInputType,
+          options: req.body.propertyOptions,
+          required: req.body.propertyRequired,
+          value: req.body.propertyValue,
+          tooltip: req.body.propertyTooltip,
+        };
+        await BotService.addProperty(req.user.username, id, p);
+      } else {
+        const p = {
+          _id: propertyId,
+          name: req.body.propertyName,
+          valueType: req.body.propertyValueType,
+          inputType: req.body.propertyInputType,
+          options: req.body.propertyOptions,
+          required: req.body.propertyRequired,
+          value: req.body.propertyValue,
+          tooltip: req.body.propertyTooltip,
+        };
+        await BotService.updateProperty(req.user.username, id, p);
+      }
+      res.status(200).json({saved: true});
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        res.status(422).json(err);
+      } else {
+        return res.status(500).json(err);
+      }
+    }
+  },
+
+  // POST - /bots/property/delete
+  deleteProperty: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyId = req.body.propertyId;
+      const p = {
+        _id: propertyId
+      }
+      await BotService.deleteProperty(req.user.username, id, p);
+      res.status(200).json({deleted: true});
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // POST - /bots/property/reorder
+  reorderProperties: async (req, res, next) => {
+    if (!req.user) {
+      return res.status(403).json('Forbidden');
+    }
+    try {
+      let id = req.body.id;
+      let propertyIds = req.body.propertyIds.split(',');
+      await BotService.reorderProperties(req.user.username, id, propertyIds);
+      res.status(200).json({saved: true});
+    } catch (err) {
+      next(err);
+    }
+  },
+
 }
 
 module.exports = bots;

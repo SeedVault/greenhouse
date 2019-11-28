@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var uniqueValidator = require('mongoose-unique-validator');
-const { Component } = require('./Component');
+const { Component, PropertySchema } = require('./Component');
 const { Dotbot, DotbotPublisher, DotService, ServiceProp } = require('./Dotbot');
 
 const ConfigSchema = mongoose.Schema({
@@ -186,6 +186,9 @@ const BotSchema = mongoose.Schema({
     match: [/^[a-zA-Z0-9]+$/, 'validation.regex'],
     index: true,
     trim: true
+  },
+  properties: {
+    type: [ PropertySchema ],
   },
   botEngine: {
     type: ConfigSchema,

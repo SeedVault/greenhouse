@@ -28,6 +28,8 @@
     data-bot-load-font="Montserrat:300,400,600"
     :data-bot-bbot-uri="getRhizomeUrl('/')"
     data-bot-publisher-token="a5e83f01-14a9-4d8f-bc75-27cf0da3d9ef"
+    data-bot-tts-locale="en_GB"
+    data-bot-tts-voice-id="0"
 ></span>
 
             <div class="row row-form">

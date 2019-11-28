@@ -2,7 +2,7 @@ let bodyParser = require('body-parser');
 let cookieParser = require('cookie-parser');
 let helmet = require('helmet');
 var db = require('../domain/services/database');
-let csrf = require('csurf');
+// let csrf = require('csurf');
 let passport = require('passport');
 const redis = require('redis')
 const session = require('express-session')
@@ -155,7 +155,7 @@ module.exports = function(app) {
   // This endpoint handles OAuth2 requests (exchanges code for token)
   app.get('/auth/callback',
     passport.authenticate('oauth2', { failureRedirect: '/' }),
-    (req, res, next) => {
+    (req, res) => {
       if (!req.user) {
         throw new Error('user null');
       }
@@ -192,6 +192,9 @@ module.exports = function(app) {
   app.post('/api/bots/delete', bots.delete);
   app.post('/api/bots/:id/change-picture', upload.single('pictureFile'), bots.changePicture);
   app.get('/api/bots/:id', bots.view);
+  app.post('/api/bots/property/save', bots.saveProperty);
+  app.post('/api/bots/property/delete', bots.deleteProperty);
+  app.post('/api/bots/property/reorder', bots.reorderProperties);
   app.get('/api/marketplace/bots', marketplace.marketplaceBotsList);
   app.get('/api/marketplace/bots/:id', marketplace.marketplaceBotsView);
   app.get('/api/marketplace/components', marketplace.marketplaceComponentsList);
