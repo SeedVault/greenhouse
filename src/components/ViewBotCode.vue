@@ -30,6 +30,7 @@
     data-bot-publisher-token="a5e83f01-14a9-4d8f-bc75-27cf0da3d9ef"
     data-bot-tts-locale="en_GB"
     data-bot-tts-voice-id="0"
+    data-bot-track-anonymous-user-id="true"
 ></span>
 
             <div class="row row-form">
@@ -138,6 +139,7 @@ export default {
     data-bot-uses-3d-avatar-cam-target-pos-x="0"
     data-bot-uses-3d-avatar-cam-target-pos-y="72"
     data-bot-uses-3d-avatar-cam-target-pos-z="0"
+    data-bot-track-anonymous-user-id="true"
 ></span>
 <script type="text/javascript" src="${launcherBundleJs}"><\/script>`; // eslint-disable-line no-useless-escape
     },

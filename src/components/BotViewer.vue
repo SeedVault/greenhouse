@@ -48,6 +48,7 @@
                 data-bot-uses-3d-avatar-cam-target-pos-z="0"
                 data-bot-tts-locale="en_GB"
                 data-bot-tts-voice-id="0"
+                data-bot-track-anonymous-user-id="true"
               ></span>
             </template>
 

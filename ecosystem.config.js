@@ -7,6 +7,7 @@ module.exports = {
     node_args: '-r dotenv/config',
     instances: 1,
     autorestart: true,
+    exec_mode: 'fork_mode',
     exp_backoff_restart_delay: 100,
     watch: false,
     max_memory_restart: '1G'
