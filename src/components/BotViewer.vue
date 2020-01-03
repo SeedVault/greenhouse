@@ -33,7 +33,7 @@
                 :data-bot-external-css="getHadronUrl('/sprout/sequoia_b.css')"
                 :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
                 data-bot-load-font="Montserrat:300,400,600"
-                :data-bot-bbot-uri="getRhizomeUrl('/')"
+                :data-bot-bbot-uri="getRhizomeUrl()"
                 data-bot-close-button-action="unload"
                 data-bot-auto-opens="true"
                 data-bot-remembers-state="false"

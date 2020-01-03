@@ -26,7 +26,7 @@
     :data-bot-external-css="getHadronUrl('https://hadron.botanic.io/sprout/sequoia_b.css')"
     :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
     data-bot-load-font="Montserrat:300,400,600"
-    :data-bot-bbot-uri="getRhizomeUrl('/')"
+    :data-bot-bbot-uri="getRhizomeUrl()"
     data-bot-publisher-token="a5e83f01-14a9-4d8f-bc75-27cf0da3d9ef"
     data-bot-tts-locale="en_GB"
     data-bot-tts-voice-id="0"
