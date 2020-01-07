@@ -1,24 +1,26 @@
 <template>
-  <app-layout>
-    <div class="row">
-      <div class="col-sm">
-        <div class="card box">
-          <div class="card-body">
-            <h4 class="card-title">{{ $t('app.community') }}</h4>
-          </div>
-        </div>
-      </div>
-    </div>
-  </app-layout>
+  <app-page>
+    <template v-slot:main>
+
+      <simple-box :title="Community">
+        Content here
+      </simple-box>
+
+    </template>
+    <router-view/>
+  </app-page>
 </template>
 
 <script>
-import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
+import AppPage from 'seed-theme/src/layouts/AppPage.vue';
 
 export default {
   name: 'Community',
   components: {
-    AppLayout,
+    AppPage,
+  },
+  setup() {
   },
 };
+
 </script>

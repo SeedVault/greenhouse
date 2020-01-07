@@ -1,18 +1,5 @@
-module.exports = (api) => {
-  if (api.env('test')) {
-    return {
-      presets: [
-        ['@babel/preset-env', {
-          targets: {
-            node: 'current',
-          },
-        }],
-      ],
-    };
-  }
-  return {
-    presets: [
-      ['@vue/cli-plugin-babel/preset'],
-    ],
-  };
+module.exports = {
+  presets: [
+    '@vue/cli-plugin-babel/preset',
+  ],
 };

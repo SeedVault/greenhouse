@@ -1,14 +1,28 @@
 <template>
-  <component-viewer context="components"></component-viewer>
+  <div>
+    <component-view :services-only="servicesOnly" :screen="screen"></component-view>
+  </div>
 </template>
 
 <script>
-import ComponentViewer from '@/components/ComponentViewer.vue';
+
+import { reactive, toRefs } from '@vue/composition-api';
+import ComponentView from '@/components/ComponentView.vue';
 
 export default {
-  name: 'MarketplaceComponentsView',
   components: {
-    ComponentViewer,
+    ComponentView,
+  },
+  setup() {
+    const data = reactive({
+      servicesOnly: false,
+      screen: 'marketplace',
+    });
+
+    return {
+      ...toRefs(data),
+    };
   },
 };
+
 </script>

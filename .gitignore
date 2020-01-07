@@ -3,6 +3,7 @@ node_modules
 dist
 coverage
 public/uploads
+*.old
 
 tests/e2e/videos/
 tests/e2e/screenshots/
@@ -25,3 +26,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+

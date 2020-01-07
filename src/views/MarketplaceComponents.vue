@@ -1,22 +1,21 @@
 <template>
   <div>
-    <component-view :services-only="servicesOnly" :screen="screen"></component-view>
+    <component-list :services-only="servicesOnly" screen="marketplace"></component-list>
   </div>
 </template>
 
 <script>
 
 import { reactive, toRefs } from '@vue/composition-api';
-import ComponentView from '@/components/ComponentView.vue';
+import ComponentList from '@/components/ComponentList.vue';
 
 export default {
   components: {
-    ComponentView,
+    ComponentList,
   },
   setup() {
     const data = reactive({
-      servicesOnly: true,
-      screen: 'marketplace',
+      servicesOnly: false,
     });
 
     return {

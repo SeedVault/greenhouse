@@ -1,54 +1,43 @@
 <template>
-  <app-layout>
-    <loading-circle loading="loading" v-show="loading"></loading-circle>
-    <oops v-show="oops"></oops>
+  <app-page>
+    <template v-slot:main>
+      <full-centered v-slot:main v-if="loading || oops">
+        <loading-checkmark visible="false" :loading="loading" v-if="!oops"></loading-checkmark>
+        <oops v-show="oops"></oops>
+      </full-centered>
 
-    <div class="row" v-show="!loading && !oops">
-      <div class="col-lg-7">
-        <div class="card box">
-          <div class="card-body">
-            <h4 class="card-title">{{ $t('dashboard.balance') }}</h4>
-            <div class="balance">
-              <img src="@/assets/images/seed-icon@2x.svg" />
-              {{ balance | toCryptoCurrency() }}
+      <div class="row" v-show="!loading && !oops">
+        <div class="col-lg-7">
+          <simple-box :title="$t('dashboard.balance')">
+            <div class="display-1 text-truncate mb-3">
+              <icon icon="seed-symbol"
+              class="token-symbol" /> {{ $n(balance, 'cryptoCurrency') }}
             </div>
             <balance-chart v-if="!loading" :chartdata="chartBalanceData"
             :options="chartBalanceOptions" :height="200"></balance-chart>
-          </div>
-        </div>
+          </simple-box>
 
-        <div class="card box">
-          <div class="card-body">
-            <h4 class="card-title">{{ $t('dashboard.tutorials') }}</h4>
-        <div>{{ $t('dashboard.tutorials_text') }}</div>
-        <br />
-        <div class="media">
-          <a target="_blank" href="https://www.youtube.com/watch?v=nUdJ9-G9xHw&list=PLg58K2Ei6SkEJSkf3ipm1utqGfq_k6-rk">
-          <img class="align-self-start mr-3 img-fluid"
-          src="@/assets/images/tutorial-nUdJ9-G9xHwmq.jpg"
-          alt="Tutorial" style="width: 120px"></a>
-          <div class="media-body">
-            <a target="_blank" href="https://www.youtube.com/watch?v=nUdJ9-G9xHw&list=PLg58K2Ei6SkEJSkf3ipm1utqGfq_k6-rk">
-            <h6 class="mt-0">Greenhouse: Create New Bot with DialogFlow agent
-            for Web and Telegram</h6></a>
-            In this short tutorial, Gaby walks you through the steps to create
-            a new bot in the Greenhouse marketplace from scratch.
-          </div>
-        </div>
+          <simple-box :title="$t('dashboard.tutorials')">
+            <div class="mb-3">{{ $t('dashboard.tutorials_text') }}</div>
+            <div class="d-flex flex-column flex-sm-row">
+              <div class="pr-3"><img class="align-self-start img-fluid mb-3"
+              src="/images/tutorial-nUdJ9-G9xHwmq.jpg" alt="Tutorial"></div>
+              <div class="">
+                <a target="_blank" href="https://www.youtube.com/watch?v=nUdJ9-G9xHw&list=PLg58K2Ei6SkEJSkf3ipm1utqGfq_k6-rk">
+                <h6 class="mt-0">Greenhouse: Create New Bot with DialogFlow agent
+                for Web and Telegram</h6></a>
+                <div class="smallest-text text-black-50">In this short tutorial, Gaby walks you
+                  through the steps to create a new bot in the Greenhouse marketplace
+                  from scratch.</div>
+              </div>
+            </div>
+          </simple-box>
 
-          </div>
-        </div>
-        <div class="card box">
-          <div class="card-body">
-
-            <h4 class="card-title">{{ $t('dashboard.tutorials_community') }}</h4>
-
-            <br />
-
+          <simple-box :title="$t('dashboard.tutorials_community')">
             <div class="media">
               <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
               <img class="align-self-start mr-3"
-              src="@/assets/images/discord-logo-color.svg"
+              src="/images/discord-logo-color.svg"
               alt="Tutorial" style="width: 48px"></a>
               <div class="media-body">
                 <h6>{{ $t('dashboard.tutorials_join_discord') }}</h6>
@@ -63,7 +52,7 @@
             <div class="media">
               <a target="_blank" href="https://discordapp.com/invite/Suv5bFT">
               <img class="align-self-start mr-3"
-              src="@/assets/images/telegram-logo.svg"
+              src="/images/telegram-logo.svg"
               alt="Tutorial" style="width: 48px"></a>
               <div class="media-body">
                 <h6>{{ $t('dashboard.tutorials_join_telegram_title') }}</h6>
@@ -73,75 +62,43 @@
                 </a>
               </div>
             </div>
-          </div>
+          </simple-box>
+        </div>
+        <div class="col-lg-5">
+          <simple-box :title="$t('dashboard.latest_transactions')">
+            <p class="mt-5 text-black-50" v-if="latestTransactions.length === 0">
+              {{ $t('dashboard.there_are_no_transactions') }}
+            </p>
+            <div class="mt-5">
+              <a class="smallest-text" :href="getExplorerUrl()"
+              target="_blank">{{ $t('dashboard.view_all_transactions') }}</a>
+            </div>
+          </simple-box>
+          <simple-box :title="$t('dashboard.our_discord_channel')">
+            <iframe src="https://disweb.dashflo.net/channels/417290225446944768/426348970361487360"
+          height="600" width="100%"></iframe>
+          </simple-box>
         </div>
       </div>
 
-      <div class="col-lg-5">
-        <div class="card box">
-          <div class="card-body">
-            <h4 class="card-title" style="margin-bottom: 30px">
-              {{ $t('dashboard.latest_transactions') }}</h4>
-            <p class="no-transactions" v-if="latestTransactions.length === 0">
-              {{ $t('dashboard.there_are_no_transactions') }}
-            </p>
-            <table class="table table-responsive-xs transactions__table"
-            v-if="latestTransactions.length > 0">
-              <tbody>
-                <tr v-for="(transaction, index) in latestTransactions" :key="index">
-                  <td>
-                    <div class="transactions__date">{{ transaction.date | toDate('short') }}</div>
-                    <div class="transactions__user">{{ transaction.user !== ''?
-                      transaction.user: $t('dashboard.unknown') }}</div>
-                  </td>
-                  <td>{{ (transaction.sent? $t('dashboard.withdraw'):
-                    $t('dashboard.deposit')) }}</td>
-                  <template v-if="transaction.sent">
-                    <td class="v-if transactions__amount-withdraw">
-                      <img src="@/assets/icons/ArrowOut@2x.svg" />
-                      {{ transaction.amount | toCryptoCurrency }} SEED
-                    </td>
-                  </template>
-                  <template v-else>
-                    <td class="transactions__amount-deposit">
-                      <img src="@/assets/icons/ArrowIn@2x.svg" />
-                      {{ transaction.amount | toCryptoCurrency }} SEED
-                    </td>
-                  </template>
-                </tr>
-              </tbody>
-            </table>
-            <a class="mt-4" style="font-size: 12px" :href="getExplorerUrl"
-            target="_blank">{{ $t('dashboard.view_all_transactions') }}</a>
-          </div>
-        </div>
 
-        <div class="card box">
-          <div class="card-body">
-            <h4 class="card-title" style="margin-bottom: 30px">
-              {{ $t('dashboard.our_discord_channel') }}</h4>
-            <iframe src="https://disweb.dashflo.net/channels/417290225446944768/426348970361487360"
-          height="600" width="100%"></iframe>
-          </div>
-        </div>
-    </div>
-    </div>
-  </app-layout>
+    </template>
+    <router-view/>
+  </app-page>
 </template>
 
 <script>
-import AppLayout from 'seed-theme/src/layouts/AppLayout.vue';
+import AppPage from 'seed-theme/src/layouts/AppPage.vue';
 import BigNumber from 'bignumber.js';
-import BalanceChart from '../components/BalanceChart.vue';
+import { reactive, toRefs } from '@vue/composition-api';
 
 export default {
   name: 'Dashboard',
   components: {
-    AppLayout,
-    BalanceChart,
+    AppPage,
   },
-  data() {
-    return {
+  setup(props, context) {
+    const data = reactive({
       loading: false,
       oops: false,
       balance: '',
@@ -161,112 +118,63 @@ export default {
           },
         ],
       },
+    });
+
+    async function getData() {
+      try {
+        data.loading = true;
+        data.oops = false;
+        data.validationErrors = [];
+        const response = await context.root.axios.get('/wallet/me/dashboard');
+        data.balance = response.data.balance;
+        data.latestTransactions = response.data.latestTransactions;
+        data.chartBalanceData.labels = [];
+        data.chartBalanceData.datasets[0].data = [];
+        let balanceHistory = new BigNumber(response.data.balance);
+        const hist = [balanceHistory];
+        for (let i = 0; i < data.latestTransactions.length; i += 1) {
+          // console.log(i, data.latestTransactions[i].amount);
+          const amount = new BigNumber(data.latestTransactions[i].amount);
+          if (data.latestTransactions[i].sent) {
+            balanceHistory = balanceHistory.plus(amount);
+          } else {
+            balanceHistory = balanceHistory.minus(amount);
+          }
+          hist.push(balanceHistory);
+        }
+        for (let i = data.latestTransactions.length - 1; i >= 0; i -= 1) {
+          data.chartBalanceData.labels.push(
+            data.$options.filters.toDate(data.latestTransactions[i].date, 'short'),
+          );
+          data.chartBalanceData.datasets[0].data.push(hist[i]);
+        }
+        data.loading = false;
+      } catch (error) {
+        data.loading = false;
+        data.oops = true;
+      }
+    }
+
+    function getExplorerUrl() {
+      return process.env.VUE_APP_PARITY_URL_EXPLORER;
+    }
+
+    getData();
+
+    return {
+      ...toRefs(data), getData, getExplorerUrl,
     };
   },
-  created() {
-    this.getData();
-  },
-  computed: {
-    getExplorerUrl() {
-      return process.env.VUE_APP_PARITY_URL_EXPLORER;
-    },
-  },
-  methods: {
-    getData() {
-      this.loading = true;
-      this.axios.get('/api/dashboard')
-        .then((result) => {
-          this.loading = false;
-          this.balance = result.data.balance;
-          this.latestTransactions = result.data.latestTransactions;
-          this.chartBalanceData.labels = [];
-          this.chartBalanceData.datasets[0].data = [];
-          let balanceHistory = new BigNumber(result.data.balance);
-          const hist = [balanceHistory];
-          for (let i = 0; i < this.latestTransactions.length; i += 1) {
-            // console.log(i, this.latestTransactions[i].amount);
-            const amount = new BigNumber(this.latestTransactions[i].amount);
-            if (this.latestTransactions[i].sent) {
-              balanceHistory = balanceHistory.plus(amount);
-            } else {
-              balanceHistory = balanceHistory.minus(amount);
-            }
-            hist.push(balanceHistory);
-          }
-          for (let i = this.latestTransactions.length - 1; i >= 0; i -= 1) {
-            this.chartBalanceData.labels.push(this.$options.filters.toDate(this.latestTransactions[i].date, 'short'));
-            this.chartBalanceData.datasets[0].data.push(hist[i]);
-          }
-        })
-        .catch(() => {
-          this.loading = false;
-          this.oops = true;
-        });
-    },
-  },
 };
+
 </script>
 
 <style lang="scss" scoped>
-
-.balance {
-  font-size: 50px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-
-  img {
-    margin-right: 20px;
-  }
+.token-symbol {
+  height: 0.88em;
+  top: -2px;
+  position: relative;
 }
-
-.no-transactions {
-  color: #999;
-}
-
-.transactions {
-    &__table {
-      margin-top: 20px;
-
-      tbody tr:nth-of-type(2n) {
-        background-color: #f7f8f9;
-      }
-
-      td {
-        border-top: 0;
-        vertical-align: middle;
-        font-weight: 500;
-
-        .right {
-          text-align: right;
-        }
-      }
-    }
-
-    &__user {
-      color: #686b77;
-      font-weight: normal;
-    }
-
-    &__amount {
-      text-align: right;
-
-      img {
-        margin-right: 10px;
-      }
-
-      &-withdraw {
-        color: #f5296a;
-      }
-
-      &-deposit {
-        color: #39b54a;
-      }
-    }
-  }
-
-// h6 { color: #212529 }
 
 .media {
   color: #686b77;

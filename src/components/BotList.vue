@@ -51,11 +51,11 @@
                 </label>
                 <input-select-small v-show="canWrite()"
                 v-model="status"
-                :options="componentStatuses()" id="status"
+                :options="botStatuses()" id="status"
                 v-on:change="doSearch()"
                 class=" mr-sm-2 mb-2"></input-select-small>
                 <input-select-small v-model="category"
-                :options="componentCategories()" id="category" class="mb-2"
+                :options="botCategories()" id="category" class="mb-2"
                 v-on:change="doSearch()"></input-select-small>
               </div>
 
@@ -100,27 +100,22 @@
           </div>
         </div>
       </div>
-      <template v-if="!loading & components.length === 0">
+      <template v-if="!loading & bots.length === 0">
         <div class="mt-5 mb-5 text-black-50 text-center medium-text">
-          <template v-if="servicesOnly">
-            {{ $t('services.there_are_no_services') }}
-          </template>
-          <template v-else>
-            {{ $t('components.there_are_no_components') }}
-          </template>
+          {{ $t('bots.there_are_no_bots') }}
         </div>
       </template>
       <template v-else>
-        <div v-for="(component, index) in components" :key="index">
+        <div v-for="(bot, index) in bots" :key="index">
           <div class="d-flex flex-column flex-md-row mt-3 paginated-list__border-bottom">
             <div class="pr-sm-3">
               <img class="paginated-list__image rounded-lg align-self-start mb-3 cursor-pointer"
-              :src="component.pictureUrl" @click.prevent="view(component._id)">
+              :src="bot.pictureUrl" @click.prevent="view(bot._id)">
             </div>
             <div class="flex-fill pr-sm-3">
-              <h2 class="h5 mt-0">{{ component.name }}</h2>
+              <h2 class="h5 mt-0">{{ bot.name }}</h2>
               <div class="medium-text text-black-50 mb-3">
-                {{ component.description }}
+                {{ bot.description }}
               </div>
               <div class="d-flex flex-column flex-lg-row mb-sm-3 smallest-text
                 paginated-list__metadata">
@@ -130,24 +125,24 @@
                 </div>
                 <div class="pr-lg-2 mb-2 paginated-list__horizontal-separator">
                   {{ $t("common.by") }} <a href="#"
-                  @click.prevent="profile(component.user.username)">
-                    {{ component.user.username }}</a>
+                  @click.prevent="profile(bot.user.username)">
+                    {{ bot.user.username }}</a>
                 </div>
                 <div class="ml-lg-2 pr-sm-2 mb-2 paginated-list__horizontal-separator">
                   <icon icon="tag" class="paginated-list__icon-tag" />
-                  {{ $t(`domain.component_categories.${component.category}`) }}
+                  {{ $t(`domain.bot_categories.${bot.category}`) }}
                 </div>
                 <div class="ml-lg-2 mb-2">
                   <icon icon="timer" class="paginated-list__icon-timer" />
-                  {{ $t("components.updated") }}
-                  {{ humanDate(component.updatedAt) }}
-                  <!-- {{ $d(Date.parse(component.updatedAt), 'short') }} -->
+                  {{ $t("bots.updated") }}
+                  {{ humanDate(bot.updatedAt) }}
+                  <!-- {{ $d(Date.parse(bot.updatedAt), 'short') }} -->
                 </div>
               </div>
             </div>
             <div class="d-flex flex-column align-items-center">
               <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold m-4"
-              @click.prevent="view(component._id)">
+              @click.prevent="view(bot._id)">
                 {{ $t('common.view') }}
               </a>
             </div>
@@ -177,16 +172,16 @@ import StarRating from 'vue-star-rating';
 import { reactive, toRefs } from '@vue/composition-api';
 
 export default {
-  name: 'ComponentList',
+  name: 'BotList',
   components: {
     StarRating,
   },
-  props: ['servicesOnly', 'screen'],
+  props: ['screen'],
   setup(props, context) {
     const data = reactive({
       loading: false,
       oops: false,
-      components: [],
+      bots: [],
       pagesCount: 0,
       resultsCount: 0,
       page: 1,
@@ -198,36 +193,36 @@ export default {
       validationErrors: [],
     });
 
-    function componentStatuses() {
-      const componentStatusList = [];
-      componentStatusList.push({
+    function botStatuses() {
+      const botStatusList = [];
+      botStatusList.push({
         value: '',
-        text: context.root.$i18n.t('domain.component_statuses.all'),
+        text: context.root.$i18n.t('domain.bot_statuses.all'),
       });
-      const { allComponentStatuses } = context.root.$store.getters;
-      for (let i = 0; i < allComponentStatuses.length; i += 1) {
-        componentStatusList.push({
-          value: allComponentStatuses[i],
-          text: context.root.$i18n.t(`domain.component_statuses.${allComponentStatuses[i]}`),
+      const { allBotStatuses } = context.root.$store.getters;
+      for (let i = 0; i < allBotStatuses.length; i += 1) {
+        botStatusList.push({
+          value: allBotStatuses[i],
+          text: context.root.$i18n.t(`domain.bot_statuses.${allBotStatuses[i]}`),
         });
       }
-      return componentStatusList;
+      return botStatusList;
     }
 
-    function componentCategories() {
-      const componentCategoryList = [];
-      componentCategoryList.push({
+    function botCategories() {
+      const botCategoryList = [];
+      botCategoryList.push({
         value: '',
-        text: context.root.$i18n.t('domain.component.all_categories'),
+        text: context.root.$i18n.t('domain.bot.all_categories'),
       });
-      const { allComponentCategories } = context.root.$store.getters;
-      for (let i = 0; i < allComponentCategories.length; i += 1) {
-        componentCategoryList.push({
-          value: allComponentCategories[i],
-          text: context.root.$i18n.t(`domain.component_categories.${allComponentCategories[i]}`),
+      const { allBotCategories } = context.root.$store.getters;
+      for (let i = 0; i < allBotCategories.length; i += 1) {
+        botCategoryList.push({
+          value: allBotCategories[i],
+          text: context.root.$i18n.t(`domain.bot_categories.${allBotCategories[i]}`),
         });
       }
-      return componentCategoryList;
+      return botCategoryList;
     }
 
 
@@ -235,7 +230,7 @@ export default {
       const sortOptionsList = [];
       sortOptionsList.push({
         value: 'name',
-        text: context.root.$i18n.t('domain.component.name'),
+        text: context.root.$i18n.t('domain.bot.name'),
       });
       sortOptionsList.push({
         value: 'updatedAt',
@@ -249,11 +244,8 @@ export default {
       try {
         data.loading = true;
         data.oops = false;
-        data.components = [];
-        let prefix = 'components';
-        if (props.servicesOnly) {
-          prefix = 'services';
-        }
+        data.bots = [];
+        const prefix = 'bots';
         let url = `/${prefix}`;
         if (props.screen === 'users') {
           url = `/${prefix}/user/${encodeURI(context.root.$route.params.username)}`;
@@ -271,7 +263,7 @@ export default {
         });
         data.pagesCount = response.data.pagesCount;
         data.resultsCount = response.data.resultsCount;
-        data.components = response.data.results;
+        data.bots = response.data.results;
         data.loading = false;
       } catch (error) {
         data.loading = false;
@@ -306,35 +298,16 @@ export default {
     }
 
     function addNew() {
-      let routeName = 'usersComponentsForm';
-      if (props.servicesOnly) {
-        routeName = 'usersServicesForm';
-      }
       context.root.$router.push({
-        name: routeName,
+        name: 'usersBotsForm',
         params: {
           username: context.root.$route.params.username,
         },
       });
-      /* switch (context.root.$route.name) {
-        case 'usersComponents':
-          context.root.$router.push({ name: 'componentsForm',
-          params: { username: data.username } });
-          break;
-        case 'usersBots':
-          context.root.$router.push({ name: 'botsForm', params: { username: data.username } });
-          break;
-        default:
-          // do nothing
-      } */
     }
 
     function view(id) {
-      let s = 'Components';
-      if (props.servicesOnly) {
-        s = 'Services';
-      }
-      const routeName = `${props.screen}${s}View`;
+      const routeName = `${props.screen}BotsView`;
       context.root.$router.push({ name: routeName, params: { id } });
     }
 
@@ -342,11 +315,7 @@ export default {
       if (props.screen === 'users' && context.root.$route.params.username === username) {
         return;
       }
-      let routeName = 'usersComponents';
-      if (props.servicesOnly) {
-        routeName = 'usersServices';
-      }
-      context.root.$router.push({ name: routeName, params: { username } });
+      context.root.$router.push({ name: 'usersBots', params: { username } });
     }
 
     function canWrite() {
@@ -359,8 +328,8 @@ export default {
 
     return {
       ...toRefs(data),
-      componentStatuses,
-      componentCategories,
+      botStatuses,
+      botCategories,
       sortOptions,
       getData,
       doSearch,

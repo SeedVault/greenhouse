@@ -1,22 +1,21 @@
 <template>
   <div>
-    <component-view :services-only="servicesOnly" :screen="screen"></component-view>
+    <component-form :services-only="servicesOnly"></component-form>
   </div>
 </template>
 
 <script>
 
 import { reactive, toRefs } from '@vue/composition-api';
-import ComponentView from '@/components/ComponentView.vue';
+import ComponentForm from '@/components/ComponentForm.vue';
 
 export default {
   components: {
-    ComponentView,
+    ComponentForm,
   },
   setup() {
     const data = reactive({
-      servicesOnly: true,
-      screen: 'marketplace',
+      servicesOnly: false,
     });
 
     return {

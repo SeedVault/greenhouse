@@ -15,8 +15,8 @@ export default {
   },
   setup() {
     const data = reactive({
-      servicesOnly: true,
-      screen: 'marketplace',
+      servicesOnly: false,
+      screen: 'users',
     });
 
     return {
