@@ -7,13 +7,13 @@
       </full-centered>
 
       <div class="row" v-show="!loading && !oops">
-        <div class="col-lg-7">
+        <div class="col-xl-7">
           <simple-box :title="$t('dashboard.balance')">
             <div class="display-1 text-truncate mb-3">
               <icon icon="seed-symbol"
               class="token-symbol" /> {{ $n(balance, 'cryptoCurrency') }}
             </div>
-            <balance-chart v-if="!loading" :chartdata="chartBalanceData"
+            <balance-chart v-if="!loading" :chart-data="chartBalanceData"
             :options="chartBalanceOptions" :height="200"></balance-chart>
           </simple-box>
 
@@ -64,15 +64,9 @@
             </div>
           </simple-box>
         </div>
-        <div class="col-lg-5">
+        <div class="col-xl-5">
           <simple-box :title="$t('dashboard.latest_transactions')">
-            <p class="mt-5 text-black-50" v-if="latestTransactions.length === 0">
-              {{ $t('dashboard.there_are_no_transactions') }}
-            </p>
-            <div class="mt-5">
-              <a class="smallest-text" :href="getExplorerUrl()"
-              target="_blank">{{ $t('dashboard.view_all_transactions') }}</a>
-            </div>
+            <latest-transactions :transactions="latestTransactions"></latest-transactions>
           </simple-box>
           <simple-box :title="$t('dashboard.our_discord_channel')">
             <iframe src="https://disweb.dashflo.net/channels/417290225446944768/426348970361487360"
@@ -144,7 +138,7 @@ export default {
         }
         for (let i = data.latestTransactions.length - 1; i >= 0; i -= 1) {
           data.chartBalanceData.labels.push(
-            data.$options.filters.toDate(data.latestTransactions[i].date, 'short'),
+            context.root.$i18n.d(Date.parse(data.latestTransactions[i].date), 'short'),
           );
           data.chartBalanceData.datasets[0].data.push(hist[i]);
         }
@@ -155,14 +149,10 @@ export default {
       }
     }
 
-    function getExplorerUrl() {
-      return process.env.VUE_APP_PARITY_URL_EXPLORER;
-    }
-
     getData();
 
     return {
-      ...toRefs(data), getData, getExplorerUrl,
+      ...toRefs(data), getData,
     };
   },
 };
@@ -170,6 +160,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .token-symbol {
   height: 0.88em;
   top: -2px;
@@ -186,4 +177,5 @@ hr {
   padding-top: 15px;
   border-top: 1px dotted #dedfe0;
 }
+
 </style>
