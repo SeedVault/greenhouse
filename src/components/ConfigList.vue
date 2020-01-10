@@ -23,13 +23,15 @@
       <transition-group type="transition"
       :name="!drag ? 'flip-list' : null">
         <li class="list-group-item" v-for="config in collection"
-        :key="config.name">
+        :key="config.component">
           <icon icon="drag" class="mr-2" />
+          <img class="component-logo-small"
+          :src="cachedComponentPictureUrl(config.component)" />
           <a class="list-group-item-link"
-          @click="editConfig(config.name)"
-          >{{ config.name }}</a>
+          @click="editConfig(config.component)"
+          >{{ cachedComponentName(config.component) }}</a>
           <a class="list-group-item-delete icon-hover"
-          @click="confirmDeleteConfig(config.name)">
+          @click="confirmDeleteConfig(config.component)">
             <icon icon="delete" />
           </a>
         </li>
@@ -48,8 +50,8 @@ export default {
     draggable,
     HelpTooltip,
   },
-  props: ['collection', 'collectionName', 'title', 'emptyMessage', 'tooltip',
-    'titleEdit', 'titleDelete'],
+  props: ['collection', 'collectionName', 'componentType', 'title', 'emptyMessage', 'tooltip',
+    'titleEdit', 'titleDelete', 'selectTitle', 'cache'],
   setup(props, context) {
     const data = reactive({
       drag: false,
@@ -60,29 +62,31 @@ export default {
         configFormTitle: props.titleAddNew,
         configCollectionName: props.collectionName,
         configCollectionIndex: -1,
+        configSelectTitle: props.selectTitle,
+        configComponentType: props.componentType,
       });
     }
 
-    function getIndex(configName) {
+    function getIndex(componentId) {
       for (let i = 0; i < props.collection.length; i++) {
-        if (props.collection[i].name === configName) {
+        if (props.collection[i].component === componentId) {
           return i;
         }
       }
       return -1;
     }
 
-    function editConfig(configName) {
-      const index = getIndex(configName);
+    function editConfig(componentId) {
+      const index = getIndex(componentId);
       context.emit('edit-config', {
         configCollectionName: props.collectionName,
         configCollectionIndex: index,
       });
     }
 
-    async function confirmDeleteConfig(configName) {
-      const index = getIndex(configName);
-      const value = context.root.$bvModal.msgBoxConfirm(
+    async function confirmDeleteConfig(componentId) {
+      const index = getIndex(componentId);
+      const value = await context.root.$bvModal.msgBoxConfirm(
         props.titleDelete, {
           okVariant: 'danger',
           okTitle: context.root.$i18n.t('common.delete'),
@@ -106,12 +110,28 @@ export default {
       };
     }
 
+    function cachedComponentName(componentId) {
+      if (props.cache.has(componentId)) {
+        return props.cache.get(componentId).name;
+      }
+      return componentId;
+    }
+
+    function cachedComponentPictureUrl(componentId) {
+      if (props.cache.has(componentId)) {
+        return props.cache.get(componentId).pictureUrl;
+      }
+      return componentId;
+    }
+
     return {
       ...toRefs(data),
       newConfig,
       editConfig,
       confirmDeleteConfig,
       dragOptions,
+      cachedComponentName,
+      cachedComponentPictureUrl,
     };
   },
 };
@@ -162,5 +182,12 @@ a.list-group-item-delete {
     color: #6b4c9f;
     text-decoration: underline;
   }
+}
+
+.component-logo-small {
+  margin-right: 15px;
+  vertical-align: middle;
+  width: 26px;
+  border-radius: 5px;
 }
 </style>

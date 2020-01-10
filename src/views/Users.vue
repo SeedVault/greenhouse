@@ -106,8 +106,6 @@ export default {
       userFound: true,
     });
 
-    // console.log(context.root.$route.params.username);
-
     if (typeof context.root.$route.params.username === 'undefined') {
       data.username = '';
       data.userFound = false;

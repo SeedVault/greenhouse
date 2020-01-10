@@ -1,5 +1,10 @@
 <template>
   <div class="row row-form">
+    <div class="col-12 mb-4">
+      <a class="back" @click.prevent="cancelPropertyForm()">
+          <icon icon="chevron-left" />
+          {{ $t('common.back') }}</a>
+    </div>
     <div class="col-md-3">
       <h4>{{ title }}</h4>
     </div>
@@ -60,9 +65,7 @@
         <div class="form-row">
           <div class="form-group col-md-4 mt-2">
             <input type="submit" id="submit" :value="$t('common.save')"
-              class="btn btn-lg btn-primary mr-2"/>
-            <input type="button" id="cancel" :value="$t('common.cancel')"
-              class="btn btn-lg btn-secondary" @click="cancelPropertyForm"/>
+              class="btn btn-lg btn-primary px-5 font-weight-bold"/>
           </div>
         </div>
       </form>

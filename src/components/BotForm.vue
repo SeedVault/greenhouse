@@ -8,24 +8,41 @@
       </full-centered>
 
       <simple-box v-show="showPropertyForm">
-        <property-form :property="property"
+        <property-form
+          :property="property"
           :title="propertyFormTitle"
           @cancel-property-from="closePropertyForm()"
           @save-property="saveProperty()">
         </property-form>
       </simple-box>
 
-      <simple-box v-show="showComponentList" >
-        <a class="back" @click.prevent="showComponentList = false">
+      <simple-box v-if="showComponentList" >
+        <a class="back" @click.prevent="closeChooseComponent()">
           <icon icon="chevron-left" />
           {{ $t('common.back') }}</a>
-        <h3 class="mt-4">Select your Bot Engine</h3>
+        <h4 class="my-4">{{ configSelectTitle }}</h4>
         <hr />
-        <component-list :services-only="false" screen="choose"></component-list>
+        <component-list
+          screen="select"
+          :services-only = "false"
+          :component-type="configComponentType"
+          @component-selected="configureComponent"
+        ></component-list>
       </simple-box>
 
-      <back-box :to="urlToGoBack()" v-show="!saving && !saved && !loading
-        && !oops && !showPropertyForm && !showComponentList">
+      <simple-box v-if="showConfigForm">
+        <a class="back" @click.prevent="closeConfigForm()">
+          <icon icon="chevron-left" />
+          {{ $t('common.back') }}</a>
+        <config-form
+          :config="configForDeveloper"
+          :values="configValues"
+          @save-config="saveConfig"
+        ></config-form>
+      </simple-box>
+
+      <back-box :to="urlToGoBack()" v-if="!saving && !saved && !loading
+        && !oops && !showPropertyForm && !showComponentList && !showConfigForm">
 
         <full-centered v-slot:main v-if="saving || saved">
           <loading-checkmark visible="false" :loading="saving" showCheckmark="saved" >
@@ -149,7 +166,8 @@
 
               <!-- Properties -->
              <hr class="mb-4" />
-              <property-list :collection="bot.properties"
+              <property-list
+                :collection="bot.properties"
                 collection-name = "properties"
                 :title="$t('domain.bot.properties')"
                 :empty-message="$t('bots.there_are_no_properties')"
@@ -161,15 +179,19 @@
                 @delete-property="deleteProperty">
               </property-list>
 
-                <hr class="mt-5 mb-4" />
+              <hr class="mt-5 mb-4" />
 
               <!-- Bot Engine -->
-              <config-list :collection="bot.botengine"
+              <config-list
+                :collection="bot.botengine"
                 collection-name = "botengine"
+                component-type = "botengine"
+                :select-title="$t('bots.select_a_bot_engine')"
                 :title="$t('domain.bot.bot_engine')"
                 :empty-message="$t('bots.there_are_no_bot_engines_selected')"
                 :title-delete="$t('domain.bot.delete_this_bot_engine')"
                 :tooltip="$t('domain.bot.bot_engine_tooltip')"
+                :cache="cachedComponents"
                 @new-config="newConfig"
                 @edit-config="editConfig"
                 @delete-config="deleteConfig">
@@ -178,12 +200,16 @@
               <hr class="mt-5 mb-4" />
 
               <!-- Services -->
-              <config-list :collection="bot.services"
+              <config-list
+                :collection="bot.services"
                 collection-name = "services"
+                component-type = "service"
+                :select-title="$t('bots.select_a_service')"
                 :title="$t('domain.bot.services')"
                 :empty-message="$t('bots.there_are_no_services_selected')"
                 :title-delete="$t('domain.bot.delete_this_service')"
                 :tooltip="$t('domain.bot.services_tooltip')"
+                :cache="cachedComponents"
                 @new-config="newConfig"
                 @edit-config="editConfig"
                 @delete-config="deleteConfig">
@@ -192,58 +218,22 @@
               <hr class="mt-5 mb-4" />
 
               <!-- Channels -->
-              <config-list :collection="bot.channels"
+              <config-list
+                :collection="bot.channels"
                 collection-name = "channels"
+                component-type = "channel"
+                :select-title="$t('bots.select_a_channel')"
                 :title="$t('domain.bot.channels')"
                 :empty-message="$t('bots.there_are_no_channels_selected')"
                 :title-delete="$t('domain.bot.delete_this_channel')"
                 :tooltip="$t('domain.bot.channels_tooltip')"
+                :cache="cachedComponents"
                 @new-config="newConfig"
                 @edit-config="editConfig"
                 @delete-config="deleteConfig">
               </config-list>
 
               <hr class="mt-5 mb-4" />
-<!--
-              <template v-else>
-                <a name="headers"></a>
-                <property-list :collection="component.headers"
-                  collection-name = "headers"
-                  :title="$t('domain.component.headers')"
-                  :empty-message="$t('components.there_are_no_headers')"
-                  :title-add-new="$t('components.new_header')"
-                  :title-edit="$t('components.edit_header')"
-                  :title-delete="$t('components.delete_this_header')"
-                  @new-property="newProperty"
-                  @edit-property="editProperty"
-                  @delete-property="deleteProperty">
-                </property-list>
-                <hr class="mt-5 mb-4" />
-                <property-list :collection="component.predefinedVars"
-                  collection-name = "predefinedVars"
-                  :title="$t('domain.component.predefinedVars')"
-                  :empty-message="$t('components.there_are_no_predefined_vars')"
-                  :title-add-new="$t('components.new_predefined_var')"
-                  :title-edit="$t('components.edit_predefined_var')"
-                  :title-delete="$t('components.delete_this_predefined_var')"
-                  @new-property="newProperty"
-                  @edit-property="editProperty"
-                  @delete-property="deleteProperty">
-                </property-list>
-                <hr class="mt-5 mb-4" />
-                <property-list :collection="component.mappedVars"
-                  collection-name = "mappedVars"
-                  :title="$t('domain.component.mappedVars')"
-                  :empty-message="$t('components.there_are_no_mapped_vars')"
-                  :title-add-new="$t('components.new_mapped_var')"
-                  :title-edit="$t('components.edit_mapped_var')"
-                  :title-delete="$t('components.delete_this_mapped_var')"
-                  @new-property="newProperty"
-                  @edit-property="editProperty"
-                  @delete-property="deleteProperty">
-                </property-list>
-              </template>
-              <hr class="mt-5 mb-4" /> -->
 
               <div class="form-row mt-4">
                 <div class="form-group col-md-4 button-area">
@@ -269,6 +259,7 @@ import ConfigList from '@/components/ConfigList.vue';
 import ComponentList from '@/components/ComponentList.vue';
 import PropertyList from '@/components/PropertyList.vue';
 import PropertyForm from '@/components/PropertyForm.vue';
+import ConfigForm from '@/components/ConfigForm.vue';
 
 export default {
   name: 'BotsForm',
@@ -278,6 +269,7 @@ export default {
     ComponentList,
     PropertyList,
     PropertyForm,
+    ConfigForm,
   },
   setup(props, context) {
     const data = reactive({
@@ -308,12 +300,20 @@ export default {
       propertyCollectionName: '',
       propertyCollectionIndex: -1,
       showPropertyForm: false,
-      config: {},
       configCollectionName: '',
       configCollectionIndex: -1,
+      configSelectTitle: '',
+      configComponentType: 'service',
+      configForDeveloper: {
+        properties: {},
+      },
+      configValues: {
+        subscriptionType: '',
+      },
       showConfigForm: false,
       showComponentList: false,
       validationErrors: [],
+      cachedComponents: new Map(),
     });
 
     if (typeof context.root.$route.params.id === 'undefined') {
@@ -387,7 +387,6 @@ export default {
       return httpMethodsList;
     }
 
-
     function displayPropertyForm() {
       data.showPropertyForm = true;
       data.scrollPosition = document.getElementById(data.propertyCollectionName).offsetTop;
@@ -415,7 +414,7 @@ export default {
       data.propertyFormTitle = event.propertyFormTitle;
       data.propertyCollectionName = event.propertyCollectionName;
       data.propertyCollectionIndex = event.propertyCollectionIndex;
-      data.property = data.bots[data.propertyCollectionName][data.propertyCollectionIndex];
+      data.property = data.bot[data.propertyCollectionName][data.propertyCollectionIndex];
       displayPropertyForm();
     }
 
@@ -448,41 +447,146 @@ export default {
     function newConfig(event) {
       data.configCollectionName = event.configCollectionName;
       data.configCollectionIndex = -1;
-      /* data.propertyFormTitle = event.propertyFormTitle;
-      data.propertyCollectionName = event.propertyCollectionName;
-      data.propertyCollectionIndex = -1;
-      data.property = {
-        _id: '',
-        name: '',
-        valueType: 'fixed',
-        inputType: 'text',
-        options: '',
-        required: 'yes',
-        value: '',
-        tooltip: '',
-      }; */
+      data.configSelectTitle = event.configSelectTitle;
+      data.configComponentType = event.configComponentType;
       chooseComponent();
+    }
+
+    function closeChooseComponent() {
+      data.showComponentList = false;
+      if (data.showConfigForm === false) {
+        setTimeout(() => {
+          document.getElementById(data.configCollectionName).scrollIntoView();
+        }, 100);
+      }
+    }
+
+    async function getPropertiesForValueType(id, valueType) {
+      try {
+        data.loading = true;
+        data.oops = false;
+        data.validationErrors = [];
+        const response = await context.root.axios.get(`/components/${id}/properties/${valueType}`);
+        data.loading = false;
+        return response.data;
+      } catch (error) {
+        data.loading = false;
+        data.oops = true;
+      }
+      return false;
+    }
+
+    async function configureComponent(event) {
+      data.configForDeveloper = await getPropertiesForValueType(event.id, 'developer');
+      data.cachedComponents.set(data.configForDeveloper._id, data.configForDeveloper);
+      data.configValues = {
+        component: data.configForDeveloper._id,
+        subscriptionType: '',
+        values: new Map(),
+      };
+      switch (data.configForDeveloper.pricingModel) {
+        case 'free':
+          data.configValues.subscriptionType = 'free';
+          break;
+        case 'pay_per_use':
+          data.configValues.subscriptionType = 'use';
+          break;
+        case 'pay_per_month':
+          data.configValues.subscriptionType = 'month';
+          break;
+        case 'pay_per_use_or_month':
+          data.configValues.subscriptionType = 'month';
+          break;
+        default:
+          // do nothing
+      }
+      let current = null;
+      if (data.configCollectionIndex !== -1) {
+        current = data.bot[data.configCollectionName][data.configCollectionIndex];
+        if (typeof current.values === 'undefined') {
+          current.values = new Map();
+        }
+      }
+      const collectionNames = ['properties', 'headers', 'predefinedVars', 'mappedVars'];
+      for (let i = 0; i < collectionNames.length; i++) {
+        const collectionName = collectionNames[i];
+        for (let j = 0; j < data.configForDeveloper[collectionName].length; j++) {
+          const property = data.configForDeveloper[collectionName][j];
+          data.configValues.values.set(property._id, property.value);
+          if (data.configCollectionIndex !== -1) {
+            if (current.values.has(property._id)) {
+              data.configValues.values.set(property._id, current.values.get(property._id));
+            }
+          }
+        }
+      }
+      data.showConfigForm = true;
+      closeChooseComponent();
     }
 
     function editConfig(event) {
       data.configCollectionName = event.configCollectionName;
       data.configCollectionIndex = event.configCollectionIndex;
-      data.config = data.bots[data.configCollectionName][data.configCollectionIndex];
-      // displayConfigForm();
+      data.configComponentType = event.configComponentType;
+      const id = data.bot[data.configCollectionName][data.configCollectionIndex].component;
+      data.scrollPosition = document.getElementById(data.configCollectionName).offsetTop;
+      window.scrollTo(0, 0);
+      configureComponent({ id });
+    }
+
+    function closeConfigForm() {
+      data.showConfigForm = false;
+      setTimeout(() => {
+        document.getElementById(data.configCollectionName).scrollIntoView();
+      }, 100);
+    }
+
+    function saveConfig(event) {
+      data.showConfigForm = false;
+      if (data.configCollectionIndex === -1) {
+        data.bot[data.configCollectionName].push(event.values);
+      } else {
+        data.bot[data.configCollectionName][data.configCollectionIndex] = event.values;
+      }
+      closeConfigForm();
     }
 
     function deleteConfig(event) {
       data.bot[event.configCollectionName].splice(event.configCollectionIndex, 1);
     }
 
-
     async function getBot() {
       try {
         data.loading = true;
         data.oops = false;
         data.validationErrors = [];
-        const response = await context.root.axios.get(`/bots/${data.id}/mine`);
+        const response = await context.root.axios.get(`/bots/${data.id}`);
         data.bot = response.data;
+        data.bot.botengine = [data.bot.botEngine];
+        // Create array of component ids to load them into cache
+        const ids = [];
+        const collectionNames = ['botengine', 'services', 'channels'];
+        for (let i = 0; i < collectionNames.length; i++) {
+          const c = collectionNames[i];
+          for (let j = 0; j < data.bot[c].length; j++) {
+            ids.push(data.bot[c][j].component);
+            // Convert object to Maps
+            if (typeof data.bot[c][j].values === 'undefined') {
+              data.bot[c][j].values = new Map();
+            } else {
+              const mapData = new Map();
+              const keys = Object.keys(data.bot[c][j].values);
+              for (let k = 0; k < keys.length; k++) {
+                mapData.set(keys[k], data.bot[c][j].values[keys[k]]);
+              }
+              data.bot[c][j].values = mapData;
+            }
+          }
+        }
+        const results = await context.root.axios.get('/components/lookup', { params: { ids: ids.join(',') } });
+        for (let i = 0; i < results.data.length; i++) {
+          data.cachedComponents.set(results.data[i]._id, results.data[i]);
+        }
         data.loading = false;
       } catch (error) {
         data.loading = false;
@@ -495,14 +599,22 @@ export default {
         data.validationErrors = [];
         data.saving = true;
         data.saved = false;
+        // Fix serialization for javascript maps
+        const botData = Object.assign({}, data.bot);
+        const collectionNames = ['botengine', 'services', 'channels'];
+        for (let i = 0; i < collectionNames.length; i++) {
+          const c = collectionNames[i];
+          for (let j = 0; j < botData[c].length; j++) {
+            botData[c][j].values = JSON.stringify([...botData[c][j].values]);
+          }
+        }
         const results = await context.root.axios.post('/bots/save', {
-          bot: data.bot,
+          bot: botData,
         });
         data.saving = false;
         data.saved = true;
         const { id } = results.data;
-        context.root.$router.push({ name: 'botsView', params: { id } });
-        window.scrollTo(0, 0);
+        context.root.$router.push({ name: 'usersBotsView', params: { id } });
       } catch (error) {
         data.saving = false;
         if (error.response.status === 422) {
@@ -530,10 +642,14 @@ export default {
       newProperty,
       editProperty,
       deleteProperty,
+      saveConfig,
       newConfig,
       editConfig,
       deleteConfig,
       chooseComponent,
+      closeChooseComponent,
+      configureComponent,
+      closeConfigForm,
       save,
     };
   },

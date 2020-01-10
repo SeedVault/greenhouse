@@ -103,6 +103,12 @@ const routes = [
         }],
       },
       {
+        path: 'marketplace/bots/:id',
+        name: 'marketplaceBotsView',
+        component: () => import(/* webpackChunkName: "marketplace" */ '@/views/MarketplaceBotsView.vue'),
+        meta: { authenticated: true },
+      },
+      {
         path: 'marketplace/components/:id',
         name: 'marketplaceComponentsView',
         component: () => import(/* webpackChunkName: "marketplace" */ '@/views/MarketplaceComponentsView.vue'),
@@ -169,6 +175,12 @@ const routes = [
         beforeEnter: mustMatchTheLoggedInUsername,
       },
       {
+        path: 'users/:username/bots/:id',
+        name: 'usersBotsView',
+        component: () => import(/* webpackChunkName: "users" */ '@/views/UsersBotsView.vue'),
+        meta: { authenticated: true },
+      },
+      {
         path: 'users/:username/services/form/:id?',
         name: 'usersServicesForm',
         component: () => import(/* webpackChunkName: "users" */ '@/views/UsersServicesForm.vue'),
@@ -231,6 +243,9 @@ const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'active',
   base: process.env.BASE_URL,
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   routes,
 });
 

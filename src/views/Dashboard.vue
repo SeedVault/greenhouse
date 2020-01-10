@@ -127,7 +127,6 @@ export default {
         let balanceHistory = new BigNumber(response.data.balance);
         const hist = [balanceHistory];
         for (let i = 0; i < data.latestTransactions.length; i += 1) {
-          // console.log(i, data.latestTransactions[i].amount);
           const amount = new BigNumber(data.latestTransactions[i].amount);
           if (data.latestTransactions[i].sent) {
             balanceHistory = balanceHistory.plus(amount);

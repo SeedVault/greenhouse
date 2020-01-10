@@ -54,6 +54,11 @@
                 :options="botStatuses()" id="status"
                 v-on:change="doSearch()"
                 class=" mr-sm-2 mb-2"></input-select-small>
+                <input-select-small v-show="screen === 'marketplace'"
+                v-model="subscription"
+                :options="botSubscriptionOptions()" id="subscription"
+                v-on:change="doSearch()"
+                class=" mr-sm-2 mb-2"></input-select-small>
                 <input-select-small v-model="category"
                 :options="botCategories()" id="category" class="mb-2"
                 v-on:change="doSearch()"></input-select-small>
@@ -190,6 +195,7 @@ export default {
       sortType: 'asc',
       search: '',
       category: '',
+      subscription: '',
       validationErrors: [],
     });
 
@@ -207,6 +213,19 @@ export default {
         });
       }
       return botStatusList;
+    }
+
+    function botSubscriptionOptions() {
+      const botSubscriptionOptionsList = [];
+      botSubscriptionOptionsList.push({
+        value: '',
+        text: context.root.$i18n.t('domain.bot_statuses.all'),
+      });
+      botSubscriptionOptionsList.push({
+        value: 'mine',
+        text: context.root.$i18n.t('bots.my_subscriptions'),
+      });
+      return botSubscriptionOptionsList;
     }
 
     function botCategories() {
@@ -259,6 +278,7 @@ export default {
             status: data.status,
             sortBy: data.sortBy,
             sortType: data.sortType,
+            subscription: data.subscription,
           },
         });
         data.pagesCount = response.data.pagesCount;
@@ -329,6 +349,7 @@ export default {
     return {
       ...toRefs(data),
       botStatuses,
+      botSubscriptionOptions,
       botCategories,
       sortOptions,
       getData,

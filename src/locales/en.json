@@ -443,7 +443,8 @@
     "get": "Get",
     "subscription_type": "Subscription type",
     "by": "by",
-    "show": "Show"
+    "show": "Show",
+    "select": "Select"
   },
   "app": {
     "dashboard": "Dashboard",
@@ -560,6 +561,9 @@
     "there_are_no_properties": "There are no properties",
     "new_property": "New property",
     "edit_property": "Edit property",
-    "delete_this_property": "Delete this property?"
+    "delete_this_property": "Delete this property?",
+    "select_a_bot_engine": "Select a Bot Engine",
+    "select_a_service": "Select a service",
+    "select_a_channel": "Select a channel"
   }
 }

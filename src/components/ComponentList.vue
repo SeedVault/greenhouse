@@ -115,7 +115,7 @@
           <div class="d-flex flex-column flex-md-row mt-3 paginated-list__border-bottom">
             <div class="pr-sm-3">
               <img class="paginated-list__image rounded-lg align-self-start mb-3 cursor-pointer"
-              :src="component.pictureUrl" @click.prevent="view(component._id)">
+              :src="component.pictureUrl" @click.prevent="doAction(component._id)">
             </div>
             <div class="flex-fill pr-sm-3">
               <h2 class="h5 mt-0">{{ component.name }}</h2>
@@ -147,8 +147,13 @@
             </div>
             <div class="d-flex flex-column align-items-center">
               <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold m-4"
-              @click.prevent="view(component._id)">
-                {{ $t('common.view') }}
+              @click.prevent="doAction(component._id)">
+                <template v-if="screen === 'select'">
+                  {{ $t('common.select') }}
+                </template>
+                <template v-else>
+                  {{ $t('common.view') }}
+                </template>
               </a>
             </div>
           </div>
@@ -181,7 +186,7 @@ export default {
   components: {
     StarRating,
   },
-  props: ['servicesOnly', 'screen'],
+  props: ['servicesOnly', 'componentType', 'screen'],
   setup(props, context) {
     const data = reactive({
       loading: false,
@@ -247,9 +252,6 @@ export default {
 
     async function getData() {
       try {
-        data.loading = true;
-        data.oops = false;
-        data.components = [];
         let prefix = 'components';
         if (props.servicesOnly) {
           prefix = 'services';
@@ -258,7 +260,12 @@ export default {
         if (props.screen === 'users') {
           url = `/${prefix}/user/${encodeURI(context.root.$route.params.username)}`;
         }
-
+        if (props.screen === 'select') {
+          url = `/components/type/${encodeURI(props.componentType)}`;
+        }
+        data.loading = true;
+        data.oops = false;
+        data.components = [];
         const response = await context.root.axios.get(url, {
           params: {
             page: data.page,
@@ -283,17 +290,6 @@ export default {
       data.page = 1;
       getData();
     }
-
-    /*
-    function setStatus(column) {
-      data.status = column;
-      doSearch();
-    }
-
-    function setSortBy(column) {
-      data.sortBy = column;
-      doSearch();
-    } */
 
     function toggleSortType() {
       data.sortType = (data.sortType === 'asc' ? 'desc' : 'asc');
@@ -329,16 +325,25 @@ export default {
       } */
     }
 
-    function view(id) {
-      let s = 'Components';
-      if (props.servicesOnly) {
-        s = 'Services';
+    function doAction(id) {
+      if (props.screen === 'select') {
+        context.emit('component-selected', {
+          id,
+        });
+      } else {
+        let s = 'Components';
+        if (props.servicesOnly) {
+          s = 'Services';
+        }
+        const routeName = `${props.screen}${s}View`;
+        context.root.$router.push({ name: routeName, params: { id } });
       }
-      const routeName = `${props.screen}${s}View`;
-      context.root.$router.push({ name: routeName, params: { id } });
     }
 
     function profile(username) {
+      if (props.screen === 'select') {
+        return;
+      }
       if (props.screen === 'users' && context.root.$route.params.username === username) {
         return;
       }
@@ -368,7 +373,7 @@ export default {
       setSortBy, */
       toggleSortType,
       jumpToPage,
-      view,
+      doAction,
       profile,
       addNew,
       canWrite,

@@ -80,7 +80,7 @@ export default {
 
     async function confirmDeleteProperty(propertyName) {
       const index = getIndex(propertyName);
-      const value = context.root.$bvModal.msgBoxConfirm(
+      const value = await context.root.$bvModal.msgBoxConfirm(
         props.titleDelete, {
           okVariant: 'danger',
           okTitle: context.root.$i18n.t('common.delete'),

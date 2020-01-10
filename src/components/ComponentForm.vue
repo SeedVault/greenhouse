@@ -492,7 +492,6 @@ export default {
           routeName = 'usersServicesView';
         }
         context.root.$router.push({ name: routeName, params: { id } });
-        window.scrollTo(0, 0);
       } catch (error) {
         data.saving = false;
         if (error.response.status === 422) {
