@@ -124,6 +124,16 @@
               @click.prevent="editBot()">
                 {{ $t('common.modify') }}
               </a>
+            </template>
+            <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
+            @click.prevent="subscribe()" v-show="!subscribed">
+              {{ $t('bots.subscribe') }}
+            </a>
+            <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
+            @click.prevent="subscribe()" v-show="subscribed">
+              {{ $t('bots.configure') }}
+            </a>
+            <template v-if="canWrite()">
               <a href="#" class="btn btn-md btn-danger btn-block font-weight-bold px-5"
               @click.prevent="deleteBot()">
                 {{ $t('common.delete') }}
@@ -164,6 +174,7 @@ export default {
         status: 'enabled',
         user: {},
       },
+      subscribed: false,
       selectedTab: 'description',
     });
 
@@ -204,8 +215,9 @@ export default {
       try {
         data.loading = true;
         data.oops = false;
-        const response = await context.root.axios.get(`/bots/${data.id}`);
-        data.bot = response.data;
+        const response = await context.root.axios.get(`/bots/${data.id}/subscription`);
+        data.bot = response.data.bot;
+        data.subscribed = response.data.token !== '';
         if (canWrite()) {
           context.refs.pictureChanger.loadImage(
             data.bot.pictureUrl,
@@ -227,6 +239,15 @@ export default {
         routeName = 'usersServicesForm';
       }
       context.root.$router.push({ name: routeName, params: { id } });
+    }
+
+    function subscribe() {
+      const { id } = data;
+      let routeName = 'marketplaceBotsConfigure';
+      if (props.screen === 'users') {
+        routeName = 'usersBotsConfigure';
+      }
+      this.$router.push({ name: routeName, params: { id } });
     }
 
     async function deleteBot() {
@@ -261,12 +282,14 @@ export default {
       return true;
     }
 
+
     getBot();
 
     return {
       ...toRefs(data),
       getBot,
       editBot,
+      subscribe,
       deleteBot,
       urlToGoBack,
       canWrite,

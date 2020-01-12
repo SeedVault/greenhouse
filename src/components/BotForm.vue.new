@@ -35,7 +35,7 @@
           <icon icon="chevron-left" />
           {{ $t('common.back') }}</a>
         <config-form
-          :config="configForUser"
+          :config="configForDeveloper"
           :values="configValues"
           @save-config="saveConfig"
         ></config-form>
@@ -304,7 +304,7 @@ export default {
       configCollectionIndex: -1,
       configSelectTitle: '',
       configComponentType: 'service',
-      configForUser: {
+      configForDeveloper: {
         properties: {},
       },
       configValues: {
@@ -477,14 +477,14 @@ export default {
     }
 
     async function configureComponent(event) {
-      data.configForUser = await getPropertiesForValueType(event.id, 'developer');
-      data.cachedComponents.set(data.configForUser._id, data.configForUser);
+      data.configForDeveloper = await getPropertiesForValueType(event.id, 'developer');
+      data.cachedComponents.set(data.configForDeveloper._id, data.configForDeveloper);
       data.configValues = {
-        component: data.configForUser._id,
+        component: data.configForDeveloper._id,
         subscriptionType: '',
         values: new Map(),
       };
-      switch (data.configForUser.pricingModel) {
+      switch (data.configForDeveloper.pricingModel) {
         case 'free':
           data.configValues.subscriptionType = 'free';
           break;
@@ -510,8 +510,8 @@ export default {
       const collectionNames = ['properties', 'headers', 'predefinedVars', 'mappedVars'];
       for (let i = 0; i < collectionNames.length; i++) {
         const collectionName = collectionNames[i];
-        for (let j = 0; j < data.configForUser[collectionName].length; j++) {
-          const property = data.configForUser[collectionName][j];
+        for (let j = 0; j < data.configForDeveloper[collectionName].length; j++) {
+          const property = data.configForDeveloper[collectionName][j];
           data.configValues.values.set(property._id, property.value);
           if (data.configCollectionIndex !== -1) {
             if (current.values.has(property._id)) {
