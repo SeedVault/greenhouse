@@ -22,6 +22,39 @@
           </loading-checkmark>
         </little-centered>
 
+        <template v-show="subscribed">
+          <span id="hadron-container"
+            data-bot-first-message="Hi"
+            data-bot-size-class="tall"
+            data-bot-placeholder=""
+            data-bot-talks-first="true"
+            data-bot-subtitle=""
+            data-bot-voice-recognition-visible="true"
+            data-bot-voice-recognition-continuous="true"
+            data-bot-voice-recognition-stoplistening-command="stop listening"
+            :data-bot-title="bot.name"
+            :data-bot-external-css="getHadronUrl('/sprout/sequoia_b.css')"
+            :data-bot-launcher-external-css="getHadronUrl('/sprout/sequoia-launcher_b.css')"
+            data-bot-load-font="Montserrat:300,400,600"
+            :data-bot-bbot-uri="getRhizomeUrl('')"
+            data-bot-close-button-action="unload"
+            data-bot-auto-opens="true"
+            data-bot-remembers-state="false"
+            :data-bot-publisher-token="subscription.token"
+            data-bot-uses-3d-avatar="true"
+            data-bot-uses-3d-text-panel="false"
+            data-bot-uses-3d-avatar-cam-pos-x="5"
+            data-bot-uses-3d-avatar-cam-pos-y="72"
+            data-bot-uses-3d-avatar-cam-pos-z="60"
+            data-bot-uses-3d-avatar-cam-target-pos-x="0"
+            data-bot-uses-3d-avatar-cam-target-pos-y="72"
+            data-bot-uses-3d-avatar-cam-target-pos-z="0"
+            data-bot-tts-locale="en_GB"
+            data-bot-tts-voice-id="0"
+            data-bot-track-anonymous-user-id="true"
+          ></span>
+        </template>
+
         <div class="d-flex flex-column flex-md-row mt-3" v-if="!deleting && !deleted">
           <div class="pr-sm-4">
             <template v-if="canWrite()">
@@ -133,6 +166,19 @@
             @click.prevent="subscribe()" v-show="subscribed">
               {{ $t('bots.configure') }}
             </a>
+            <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
+            @click.prevent="testBot()" v-show="subscribed">
+              {{ $t('bots.test_bot') }}
+            </a>
+            <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
+            @click.prevent="viewCode()" v-show="subscribed">
+              {{ $t('bots.view_code') }}
+            </a>
+            <a href="#" class="btn btn-md btn-danger btn-block font-weight-bold px-5"
+            @click.prevent="unsubscribe()"
+            v-show="subscribed && canUnsubscribe()">
+              {{ $t('bots.unsubscribe') }}
+            </a>
             <template v-if="canWrite()">
               <a href="#" class="btn btn-md btn-danger btn-block font-weight-bold px-5"
               @click.prevent="deleteBot()">
@@ -151,7 +197,7 @@
 <script>
 import AppPage from 'seed-theme/src/layouts/AppPage.vue';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
-import { reactive, toRefs } from '@vue/composition-api';
+import { reactive, toRefs, onBeforeUnmount } from '@vue/composition-api';
 import StarRating from 'vue-star-rating';
 
 export default {
@@ -174,15 +220,49 @@ export default {
         status: 'enabled',
         user: {},
       },
+      subscription: {},
       subscribed: false,
       selectedTab: 'description',
     });
+
+    onBeforeUnmount(() => {
+      // context.root.removeHadron();
+    });
+
+    function getHadronUrl(suffix) {
+      return process.env.VUE_APP_HADRON_URL + suffix;
+    }
+
+    function getRhizomeUrl(suffix) {
+      return process.env.VUE_APP_RHIZOME_URL + suffix;
+    }
+
+    function removeHadron() {
+      if (typeof window.inToggle !== 'undefined') {
+        window.inToggle.hideHadron();
+      }
+    }
+
+    function injectHadron() {
+      if (typeof window.inToggle === 'undefined') {
+        const script = document.createElement('script');
+        script.onload = () => { };
+        script.src = this.getHadronUrl('/launcher.bundle.js');
+        document.head.appendChild(script);
+      } else {
+        window.inToggle.init();
+      }
+    }
 
     data.id = context.root.$route.params.id;
 
     function canWrite() {
       return props.screen === 'users'
       && context.root.$route.params.username === context.root.$store.getters.user.username;
+    }
+
+    function canUnsubscribe() {
+      return context.root.$route.params.username !== context.root.$store.getters.user.username;
     }
 
     function urlToGoBack() {
@@ -217,6 +297,7 @@ export default {
         data.oops = false;
         const response = await context.root.axios.get(`/bots/${data.id}/subscription`);
         data.bot = response.data.bot;
+        data.subscription = response.data;
         data.subscribed = response.data.token !== '';
         if (canWrite()) {
           context.refs.pictureChanger.loadImage(
@@ -249,6 +330,53 @@ export default {
       }
       this.$router.push({ name: routeName, params: { id } });
     }
+
+    function testBot() {
+      this.removeHadron();
+      this.injectHadron();
+    }
+
+    function viewCode() {
+      const { id } = data;
+      let routeName = 'marketplaceBotsCode';
+      if (props.screen === 'users') {
+        routeName = 'usersBotsCode';
+      }
+      this.$router.push({ name: routeName, params: { id } });
+    }
+
+    async function unsubscribe() {
+      const confirmed = await context.root.$bvModal.msgBoxConfirm(
+        context.root.$i18n.t('bots.unsubscribe_from_this_bot'), {
+          okVariant: 'danger',
+          okTitle: context.root.$i18n.t('bots.unsubscribe'),
+          centered: true,
+        },
+      );
+      if (confirmed === false) {
+        return false;
+      }
+      try {
+        data.deleting = true;
+        data.deleted = false;
+        data.oops = false;
+        await context.root.axios.post(`/bots/${data.id}/unsubscribe`);
+        data.deleting = false;
+        data.deleted = true;
+        setTimeout(() => {
+          context.root.$router.push(urlToGoBack());
+        }, 1000);
+      } catch (error) {
+        data.deleting = false;
+        if (error.response.status === 422) {
+          data.validationErrors = context.root.normalizeErrors(error.response);
+        } else {
+          data.oops = true;
+        }
+      }
+      return true;
+    }
+
 
     async function deleteBot() {
       const confirmed = await context.root.$bvModal.msgBoxConfirm(
@@ -287,12 +415,20 @@ export default {
 
     return {
       ...toRefs(data),
+      getHadronUrl,
+      getRhizomeUrl,
+      removeHadron,
+      injectHadron,
       getBot,
       editBot,
       subscribe,
+      testBot,
+      viewCode,
+      unsubscribe,
       deleteBot,
       urlToGoBack,
       canWrite,
+      canUnsubscribe,
     };
   },
 };

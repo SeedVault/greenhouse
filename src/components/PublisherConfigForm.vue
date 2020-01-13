@@ -41,6 +41,7 @@ import { reactive, toRefs } from '@vue/composition-api';
 import ConfigInputSelect from '@/components/ConfigInputSelect.vue';
 import ConfigInputText from '@/components/ConfigInputText.vue';
 import ConfigInputTextarea from '@/components/ConfigInputTextarea.vue';
+import usePropertyValidator from '@/use/PropertyValidator';
 
 export default {
   name: 'PublisherConfigForm',
@@ -55,6 +56,8 @@ export default {
       validationErrors: [],
       collectionNames: ['properties', 'headers', 'predefinedVars', 'mappedVars'],
     });
+
+    const propertyValidator = usePropertyValidator();
 
     function findInputType(property) {
       let sControl = '';
@@ -75,7 +78,10 @@ export default {
     }
 
     function saveConfig() {
-      context.emit('save-config', { values: props.values });
+      data.validationErrors = propertyValidator.validate(props.values, props.config);
+      if (Object.keys(data.validationErrors).length === 0) {
+        context.emit('save-config', { values: props.values });
+      }
     }
 
     function updateValues(fieldName, value) {

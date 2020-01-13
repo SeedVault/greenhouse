@@ -247,9 +247,6 @@ export default {
       data.configCollectionName = event.configCollectionName;
       data.configCollectionIndex = event.configCollectionIndex;
       data.configComponentType = event.configComponentType;
-      // eslint-disable-next-line max-len
-      // const id = data.subscription[data.configCollectionName][data.configCollectionIndex].component;
-      // console.log(id);
       data.scrollPosition = document.getElementById(data.configCollectionName).offsetTop;
       window.scrollTo(0, 0);
       configureComponent();
@@ -258,6 +255,8 @@ export default {
     function saveConfig(event) {
       data.showConfigForm = false;
       data.subscription[data.configCollectionName][data.configCollectionIndex] = event.values;
+      console.log('SAVED: ', data.configCollectionName);
+      console.log(data.subscription[data.configCollectionName][data.configCollectionIndex]);
       closeConfigForm();
     }
 
@@ -268,6 +267,24 @@ export default {
         data.validationErrors = [];
         const response = await context.root.axios.get(`/bots/${data.id}/subscription`);
         data.subscription = response.data;
+        if (data.subscription.token === '') {
+          switch (data.subscription.bot.pricingModel) {
+            case 'free':
+              data.subscription.subscriptionType = 'free';
+              break;
+            case 'pay_per_use':
+              data.subscription.subscriptionType = 'use';
+              break;
+            case 'pay_per_month':
+              data.subscription.subscriptionType = 'month';
+              break;
+            case 'pay_per_use_or_month':
+              data.subscription.subscriptionType = 'month';
+              break;
+            default:
+              // do nothing
+          }
+        }
         data.cachedMetadata = new Map();
         const collectionNames = ['properties', 'botengine', 'services', 'channels'];
         for (let i = 0; i < collectionNames.length; i++) {
@@ -300,7 +317,7 @@ export default {
         }
         data.loading = false;
       } catch (error) {
-        console.error(error);
+        console.log(error);
         data.loading = false;
         data.oops = true;
       }

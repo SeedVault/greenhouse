@@ -109,6 +109,12 @@ const routes = [
         meta: { authenticated: true },
       },
       {
+        path: 'marketplace/bots/:id/code',
+        name: 'marketplaceBotsCode',
+        component: () => import(/* webpackChunkName: "marketplace" */ '@/views/MarketplaceBotsCode.vue'),
+        meta: { authenticated: true },
+      },
+      {
         path: 'marketplace/bots/:id/configure',
         name: 'marketplaceBotsConfigure',
         component: () => import(/* webpackChunkName: "marketplace" */ '@/views/MarketplaceBotsConfigure.vue'),
@@ -184,6 +190,12 @@ const routes = [
         path: 'users/:username/bots/:id',
         name: 'usersBotsView',
         component: () => import(/* webpackChunkName: "users" */ '@/views/UsersBotsView.vue'),
+        meta: { authenticated: true },
+      },
+      {
+        path: 'users/:username/bots/:id/code',
+        name: 'usersBotsCode',
+        component: () => import(/* webpackChunkName: "users" */ '@/views/UsersBotsCode.vue'),
         meta: { authenticated: true },
       },
       {

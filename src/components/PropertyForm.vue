@@ -64,7 +64,7 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-4 mt-2">
-            <input type="submit" id="submit" :value="$t('common.save')"
+            <input type="submit" id="submit" :value="$t('common.continue')"
               class="btn btn-lg btn-primary px-5 font-weight-bold"/>
           </div>
         </div>
@@ -75,6 +75,7 @@
 
 <script>
 import { reactive, toRefs } from '@vue/composition-api';
+import usePropertyValidator from '@/use/PropertyValidator';
 
 export default {
   name: 'PropertyForm',
@@ -84,8 +85,13 @@ export default {
       validationErrors: [],
     });
 
+    const propertyValidator = usePropertyValidator();
+
     function saveProperty() {
-      context.emit('save-property', props.property);
+      data.validationErrors = propertyValidator.validateDefinition(props.property);
+      if (Object.keys(data.validationErrors).length === 0) {
+        context.emit('save-property', props.property);
+      }
     }
 
     function cancelPropertyForm() {
@@ -125,6 +131,7 @@ export default {
 
     return {
       ...toRefs(data),
+      propertyValidator,
       saveProperty,
       cancelPropertyForm,
       valueTypes,
