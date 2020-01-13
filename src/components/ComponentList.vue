@@ -145,8 +145,8 @@
                 </div>
               </div>
             </div>
-            <div class="d-flex flex-column align-items-center">
-              <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold m-4"
+            <div class="d-flex flex-column justify-content-start">
+              <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
               @click.prevent="doAction(component._id)">
                 <template v-if="screen === 'select'">
                   {{ $t('common.select') }}
@@ -241,6 +241,10 @@ export default {
       sortOptionsList.push({
         value: 'name',
         text: context.root.$i18n.t('domain.component.name'),
+      });
+      sortOptionsList.push({
+        value: 'averageRating',
+        text: context.root.$i18n.t('domain.bot.average_rating'),
       });
       sortOptionsList.push({
         value: 'updatedAt',

@@ -255,8 +255,6 @@ export default {
     function saveConfig(event) {
       data.showConfigForm = false;
       data.subscription[data.configCollectionName][data.configCollectionIndex] = event.values;
-      console.log('SAVED: ', data.configCollectionName);
-      console.log(data.subscription[data.configCollectionName][data.configCollectionIndex]);
       closeConfigForm();
     }
 
@@ -317,7 +315,6 @@ export default {
         }
         data.loading = false;
       } catch (error) {
-        console.log(error);
         data.loading = false;
         data.oops = true;
       }
