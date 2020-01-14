@@ -622,6 +622,15 @@ export default {
         } else {
           data.oops = true;
         }
+      } finally {
+        // Maps are always referenced!. Deserialize maps
+        const collectionNames = ['botengine', 'services', 'channels'];
+        for (let i = 0; i < collectionNames.length; i++) {
+          const c = collectionNames[i];
+          for (let j = 0; j < data.bot[c].length; j++) {
+            data.bot[c][j].values = new Map(JSON.parse(data.bot[c][j].values));
+          }
+        }
       }
     }
 
