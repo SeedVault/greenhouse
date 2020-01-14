@@ -159,7 +159,7 @@
               </a>
             </template>
             <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
-            @click.prevent="subscribe()" v-show="!subscribed">
+            @click.prevent="subscribe()" v-show="!subscribed && canUnsubscribe()">
               {{ $t('bots.subscribe') }}
             </a>
             <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
@@ -262,7 +262,7 @@ export default {
     }
 
     function canUnsubscribe() {
-      return context.root.$route.params.username !== context.root.$store.getters.user.username;
+      return data.bot.user.username !== context.root.$store.getters.user.username;
     }
 
     function urlToGoBack() {
