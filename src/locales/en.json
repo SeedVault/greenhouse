@@ -409,6 +409,9 @@
       "all": "All",
       "enabled": "Enabled",
       "disabled": "Disabled"
+    },
+    "review": {
+      "comments_placeholder": "What would you tell others about your experience?"
     }
   },
   "common": {
@@ -569,5 +572,11 @@
     "select_a_bot_engine": "Select a Bot Engine",
     "select_a_service": "Select a service",
     "select_a_channel": "Select a channel"
+  },
+  "reviews": {
+    "click_to_rate_it": "Click to rate it",
+    "rate_and_review": "Rate and review",
+    "disclamer": "Your review will be posted publicly on the web",
+    "submit_review": "Submit review"
   }
 }

@@ -12,7 +12,7 @@
     </little-centered>
 
 
-    <div v-show="!loading && !oops">
+    <div v-if="!loading && !oops">
       <div class="row mt-2 mb-5">
         <div class="col-12 col-sm-4 mb-2">
           <div class="d-flex flex-column flex-lg-row mb-3">
@@ -125,8 +125,9 @@
               <div class="d-flex flex-column flex-lg-row mb-sm-3 smallest-text
                 paginated-list__metadata">
                 <div class="mr-sm-3 mb-2">
-                  <star-rating :rating="3.5" :increment="0.5" :star-size="18"
-                  :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                  <rating instance-type="bot" :instance-id="bot.id"
+                  :average-rating="bot.averageRating"
+                  :reviews-count="bot.reviewsCount"></rating>
                 </div>
                 <div class="pr-lg-2 mb-2 paginated-list__horizontal-separator">
                   {{ $t("common.by") }} <a href="#"
@@ -177,13 +178,13 @@
 </template>
 
 <script>
-import StarRating from 'vue-star-rating';
 import { reactive, toRefs } from '@vue/composition-api';
+import Rating from '@/components/Rating.vue';
 
 export default {
   name: 'BotList',
   components: {
-    StarRating,
+    Rating,
   },
   props: ['screen'],
   setup(props, context) {

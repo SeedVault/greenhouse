@@ -57,20 +57,20 @@
 
         <div class="d-flex flex-column flex-md-row mt-3" v-if="!deleting && !deleted">
           <div class="pr-sm-4">
-            <template v-if="canWrite()">
-              <picture-changer ref="pictureChanger"></picture-changer>
-            </template>
-            <template v-else>
-              <img :src="bot.pictureUrl" class="rounded-lg" />
-            </template>
+            <picture-changer ref="pictureChanger" v-show="canWrite"></picture-changer>
+            <img :src="bot.pictureUrl" class="rounded-lg" v-show="!canWrite" />
           </div>
           <div class="flex-fill pr-sm-3">
             <h1 class="h3">{{ bot.name }}</h1>
             <div class="d-flex flex-column flex-lg-row mb-sm-3
               view__metadata">
               <div class="mr-sm-3 mb-2">
-                <star-rating :rating="3.5" :increment="0.5" :star-size="18"
-                :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                <template v-if="!loading && !oops">
+                <rating instance-type="bot"
+                :instance-id="bot.id"
+                :average-rating="bot.averageRating"
+                :reviews-count="bot.reviewsCount"></rating>
+                </template>
               </div>
             </div>
 
@@ -152,7 +152,7 @@
 
           </div>
           <div class="d-flex flex-column align-items-center">
-            <template v-if="canWrite()">
+            <template v-if="canWrite">
               <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
               @click.prevent="editBot()">
                 {{ $t('common.modify') }}
@@ -179,7 +179,7 @@
             v-show="subscribed && canUnsubscribe()">
               {{ $t('bots.unsubscribe') }}
             </a>
-            <template v-if="canWrite()">
+            <template v-if="canWrite">
               <a href="#" class="btn btn-md btn-danger btn-block font-weight-bold px-5"
               @click.prevent="deleteBot()">
                 {{ $t('common.delete') }}
@@ -197,15 +197,17 @@
 <script>
 import AppPage from 'seed-theme/src/layouts/AppPage.vue';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
-import { reactive, toRefs, onBeforeUnmount } from '@vue/composition-api';
-import StarRating from 'vue-star-rating';
+import {
+  reactive, toRefs, onBeforeUnmount, computed,
+} from '@vue/composition-api';
+import Rating from '@/components/Rating.vue';
 
 export default {
   name: 'BotView',
   components: {
     AppPage,
     PictureChanger,
-    StarRating,
+    Rating,
   },
   props: ['servicesOnly', 'screen'],
   setup(props, context) {
@@ -223,10 +225,8 @@ export default {
       subscription: {},
       subscribed: false,
       selectedTab: 'description',
-    });
-
-    onBeforeUnmount(() => {
-      // context.root.removeHadron();
+      canWrite: computed(() => props.screen === 'users'
+      && context.root.$route.params.username === context.root.$store.getters.user.username),
     });
 
     function getHadronUrl(suffix) {
@@ -243,6 +243,10 @@ export default {
       }
     }
 
+    onBeforeUnmount(() => {
+      removeHadron();
+    });
+
     function injectHadron() {
       if (typeof window.inToggle === 'undefined') {
         const script = document.createElement('script');
@@ -255,11 +259,6 @@ export default {
     }
 
     data.id = context.root.$route.params.id;
-
-    function canWrite() {
-      return props.screen === 'users'
-      && context.root.$route.params.username === context.root.$store.getters.user.username;
-    }
 
     function canUnsubscribe() {
       return data.bot.user.username !== context.root.$store.getters.user.username;
@@ -299,7 +298,7 @@ export default {
         data.bot = response.data.bot;
         data.subscription = response.data;
         data.subscribed = response.data.token !== '';
-        if (canWrite()) {
+        if (data.canWrite) {
           context.refs.pictureChanger.loadImage(
             data.bot.pictureUrl,
             `${data.id}.jpg`,
@@ -427,7 +426,7 @@ export default {
       unsubscribe,
       deleteBot,
       urlToGoBack,
-      canWrite,
+      // canWrite,
       canUnsubscribe,
     };
   },

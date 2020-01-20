@@ -24,20 +24,19 @@
 
         <div class="d-flex flex-column flex-md-row mt-3" v-if="!deleting && !deleted">
           <div class="pr-sm-4">
-            <template v-if="canWrite()">
-              <picture-changer ref="pictureChanger"></picture-changer>
-            </template>
-            <template v-else>
-              <img :src="component.pictureUrl" class="rounded-lg" />
-            </template>
+            <picture-changer ref="pictureChanger" v-show="canWrite"></picture-changer>
+            <img :src="component.pictureUrl" class="rounded-lg" v-show="!canWrite" />
           </div>
           <div class="flex-fill pr-sm-3">
             <h1 class="h3">{{ component.name }}</h1>
             <div class="d-flex flex-column flex-lg-row mb-sm-3
               view__metadata">
               <div class="mr-sm-3 mb-2">
-                <star-rating :rating="3.5" :increment="0.5" :star-size="18"
-                :show-rating="false" :inline="true" :read-only="true"></star-rating>
+                <template v-if="!loading && !oops">
+                <rating instance-type="component" :instance-id="component.id"
+                  :average-rating="component.averageRating" :reviews-count="component.reviewsCount">
+                </rating>
+                 </template>
               </div>
             </div>
 
@@ -130,7 +129,7 @@
 
           </div>
           <div class="d-flex flex-column align-items-center">
-            <template v-if="canWrite()">
+            <template v-if="canWrite">
               <a href="#" class="btn btn-md btn-primary btn-block font-weight-bold px-5"
               @click.prevent="editComponent()">
                 {{ $t('common.modify') }}
@@ -152,15 +151,15 @@
 <script>
 import AppPage from 'seed-theme/src/layouts/AppPage.vue';
 import PictureChanger from 'seed-theme/src/components/PictureChanger.vue';
-import { reactive, toRefs } from '@vue/composition-api';
-import StarRating from 'vue-star-rating';
+import { reactive, toRefs, computed } from '@vue/composition-api';
+import Rating from '@/components/Rating.vue';
 
 export default {
   name: 'ComponentView',
   components: {
     AppPage,
     PictureChanger,
-    StarRating,
+    Rating,
   },
   props: ['servicesOnly', 'screen'],
   setup(props, context) {
@@ -176,14 +175,12 @@ export default {
         user: {},
       },
       selectedTab: 'description',
+      canWrite: computed(() => props.screen === 'users'
+      && context.root.$route.params.username === context.root.$store.getters.user.username),
     });
 
     data.id = context.root.$route.params.id;
 
-    function canWrite() {
-      return props.screen === 'users'
-      && context.root.$route.params.username === context.root.$store.getters.user.username;
-    }
 
     function urlToGoBack() {
       if (props.screen === 'users') {
@@ -217,7 +214,7 @@ export default {
         data.oops = false;
         const response = await context.root.axios.get(`/components/${data.id}`);
         data.component = response.data;
-        if (canWrite()) {
+        if (data.canWrite) {
           context.refs.pictureChanger.loadImage(
             data.component.pictureUrl,
             `${data.id}.jpg`,
@@ -280,7 +277,6 @@ export default {
       editComponent,
       deleteComponent,
       urlToGoBack,
-      canWrite,
     };
   },
 };

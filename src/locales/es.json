@@ -409,6 +409,9 @@
       "all": "Todos",
       "enabled": "Activado",
       "disabled": "Desactivado"
+    },
+    "review": {
+      "comments_placeholder": "¿Qué les dirías a los demás sobre tu experiencia?"
     }
   },
   "common": {
@@ -573,5 +576,11 @@
     "select_a_bot_engine": "Elige un Bot Engine",
     "select_a_service": "Elige un servicio",
     "select_a_channel": "Elige un canal"
+  },
+  "reviews": {
+    "click_to_rate_it": "Click para calificarlo",
+    "rate_and_review": "Califica y comenta",
+    "disclamer": "Su califación será publicada en la web",
+    "submit_review": "Enviar calificación"
   }
 }
