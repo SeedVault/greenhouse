@@ -36,7 +36,7 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-4 mt-2">
-            <input type="submit" id="submit" :value="$t('common.save')"
+            <input type="submit" id="submit" :value="$t('common.continue')"
               class="btn btn-lg btn-primary px-5 font-weight-bold"/>
           </div>
         </div>
