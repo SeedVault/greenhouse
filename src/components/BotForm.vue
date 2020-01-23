@@ -254,7 +254,7 @@
 
 <script>
 import AppPage from 'seed-theme/src/layouts/AppPage.vue';
-import { reactive, toRefs } from '@vue/composition-api';
+import { reactive, toRefs, set } from '@vue/composition-api';
 import ConfigList from '@/components/ConfigList.vue';
 import ComponentList from '@/components/ComponentList.vue';
 import PropertyList from '@/components/PropertyList.vue';
@@ -562,7 +562,9 @@ export default {
         data.validationErrors = [];
         const response = await context.root.axios.get(`/bots/${data.id}`);
         data.bot = response.data;
-        data.bot.botengine = [data.bot.botEngine];
+        // data.bot.botengine = Object.assign({}, response.data.channels);
+        set(data.bot, 'botengine', [response.data.botEngine]);
+        // const o = data.bot.botEngine;
         // Create array of component ids to load them into cache
         const ids = [];
         const collectionNames = ['botengine', 'services', 'channels'];

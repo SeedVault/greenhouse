@@ -7,6 +7,8 @@
       </div>
       <div class="d-flex justify-content-end">
         <a href="#" class="btn btn-sm btn-primary w-xs-100 font-weight-bold"
+        v-show="collectionName !== 'botengine' ||
+        (collectionName === 'botengine' && collection.length === 0)"
         @click.prevent="newConfig()">{{ $t('common.choose_from_list') }}</a>
       </div>
     </div>
