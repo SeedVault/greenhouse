@@ -100,7 +100,7 @@
               <h2 class="h5">{{ $t("domain.component.description") }}</h2>
               <p class="nl2br text-black-50 medium-text mb-4">{{ component.description }}</p>
 
-              <h2 class="h5">{{ $t("domain.component.url") }}</h2>
+              <!-- <h2 class="h5">{{ $t("domain.component.url") }}</h2>
               <p class="nl2br text-black-50 medium-text mb-4">
                 <a :href="component.url" target="_blank">{{ component.url }}</a>
               </p>
@@ -109,7 +109,7 @@
               <p class="nl2br text-black-50 medium-text mb-4">{{ component.key }}</p>
 
               <h2 class="h5">{{ $t("domain.component.function_name") }}</h2>
-              <p class="nl2br text-black-50 medium-text mb-4">{{ component.functionName }}</p>
+              <p class="nl2br text-black-50 medium-text mb-4">{{ component.functionName }}</p> -->
 
               <h2 class="h5">{{ $t("domain.component.status") }}</h2>
               <p class="nl2br text-black-50 medium-text">
