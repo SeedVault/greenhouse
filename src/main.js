@@ -11,8 +11,8 @@ Vue.config.productionTip = false;
 Vue.prototype.axios = axios;
 
 // Register function to detect admin user
-Vue.prototype.userIsAdmin = () => store.getters.user.username
-=== process.env.VUE_APP_API_ADMIN_USERNAME;
+Vue.prototype.userIsAdmin = () => store.getters.user.username.toLowerCase()
+=== process.env.VUE_APP_API_ADMIN_USERNAME.toLowerCase();
 
 new Vue({
   router,
