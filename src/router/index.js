@@ -54,9 +54,6 @@ const routes = [
       }
       store.dispatch('setLang', { lang: i18n.locale });
       moment.locale(i18n.locale);
-      if (to.name === 'dashboard') {
-        next(`/${i18n.locale}/marketplace/bots`);
-      }
       next();
     },
     children: [
