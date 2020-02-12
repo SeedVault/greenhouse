@@ -10,12 +10,12 @@ export default new Vuex.Store({
     user: null,
     csrf: null,
     menu: [
-      {
+      /* {
         id: 1,
         text: 'app.dashboard',
         icon: 'dashboard',
         target: 'dashboard',
-      },
+      }, */
       {
         id: 2,
         type: 'group',
