@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vue/composition-api": "^0.3.4",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bignumber.js": "^9.0.0",
     "core-js": "^3.6.4",
     "moment": "^2.24.0",
